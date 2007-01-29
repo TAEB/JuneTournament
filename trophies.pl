@@ -226,7 +226,7 @@ sub display_trophy
         }
         else
         {
-          $callback_html =~ s!<<.*>>!<a href="$scorer">$scorer</a>!g;
+          $callback_html =~ s!<<.*>>!<a href="$scorer.html">$scorer</a>!g;
         }
 
         $txt_output_for{$name} .= sprintf "%s %d: %s\n", $my_score ? "*" : " ", $n+1, $callback_txt;
