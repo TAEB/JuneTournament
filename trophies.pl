@@ -226,7 +226,7 @@ sub write_pages
 {
   while (my ($name, $output) = each %output_for)
   {
-    open(my $handle, ">", "pages/$name.txt") or warn "Unable to open $name.html: $!";
+    open(my $handle, ">", "pages/$name.txt") or warn "Unable to open pages/$name.txt: $!";
     print {$handle} $output;
     close $handle;
   }
