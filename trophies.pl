@@ -233,16 +233,6 @@ sub write_pages
   }
 }
 
-sub most_ascensions
-{
-  return [map {[$_, @{$ascensions_for{$_}}]} keys %ascensions_for];
-}
-
-sub ascstreak
-{
-  return [map {[$_, @{$best_ascstreak_for{$_}}]} keys %best_ascstreak_for];
-}
-
 sub b13_for
 {
   my $games_ref = shift;
@@ -306,14 +296,14 @@ my @trophies =
   },
   {
     name             => "Most ascensions",
-    list_sub         => \&most_ascensions,
+    list_sub         => sub {[map {[$_, @{$ascensions_for{$_}}]} keys %ascensions_for]},
     sorter           => sub { $b->[1] <=> $a->[1] || $a->[2] <=> $b->[2]},
     get_name         => sub { $_[0][0] },
     display_callback => sub {my $ma = shift; sprintf "%s %d", $ma->[0], $ma->[1]}
   },
   {
     name             => "Longest ascension streak",
-    list_sub         => \&ascstreak,
+    list_sub         => sub {[map {[$_, @{$best_ascstreak_for{$_}}]} keys %best_ascstreak_for]},
     sorter           => sub { $b->[1] <=> $a->[1] || $a->[2] <=> $b->[2]},
     get_name         => sub { $_[0][0] },
     display_callback => sub {my $ma = shift; sprintf "%s %d", $ma->[0], $ma->[1]}
