@@ -216,8 +216,8 @@ sub display_trophy
         my $callback_html = $display_callback->($sorted[$n]);
         my $callback_txt = $callback_html;
         $callback_txt =~ s/<<|>>//g;
-        my ($scorer) = $callback_html =~ /<<(.*)>>/;
 
+        my ($scorer) = $callback_html =~ /<<(.*)>>/;
         my $my_score = $scorer eq $name;
 
         if ($my_score)
