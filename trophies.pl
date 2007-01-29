@@ -324,7 +324,7 @@ foreach my $name (keys %txt_output_for)
 {
   my $asc = exists($ascensions_for{$name}) ? $ascensions_for{$name}[0] : 0;
   $txt_output_for{$name}  = sprintf "Player: %s\nAscensions: %d/%d (%.2f%%)\n\n", $name, $asc, $games_for{$name}, 100*$asc/$games_for{$name};
-  $html_output_for{$name} = sprintf "    <h2>%s</h2>\n    <h3>Ascensions: %d/%d (%.2f%%)</h3>\n\n", $name, $asc, $games_for{$name}, 100*$asc/$games_for{$name};
+  $html_output_for{$name} = sprintf "    <h2>%s</h2>\n    <h3>Ascensions: %d/%d (%.2f%%)</h3>\n<ul id=\"mainlinks\"><li><a href=\"$name.txt\">plaintext version</a></li><li><a href=\"../index.html\">main page</a><li><a href=\"../winners.html\">trophy winners</a></li><li><a href=\"http://alt.org/nethack/\">nethack.alt.org</a></ul>\n", $name, $asc, $games_for{$name}, 100*$asc/$games_for{$name};
 }
 
 my @trophies =
