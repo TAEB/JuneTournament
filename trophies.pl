@@ -145,7 +145,7 @@ sub display_trophy
   sub 
   {
     my $g = shift; 
-    sprintf "<<%s>> %s", $g->{name}, $g->{$trophy_stat}
+    sprintf "<<%s>> - %s", $g->{name}, $g->{$trophy_stat};
   };
 
   # how are we sorting? we need to maintain stability, so reverse sort is bad
@@ -355,36 +355,36 @@ my @trophies =
     list_sub         => \&best_of_13,
     sorter           => sub { $b->[1] <=> $a->[1] || $a->[2] <=> $b->[2]},
     get_name         => sub { $_[0][0] },
-    display_callback => sub {my $b13 = shift; sprintf "<<%s>> %d", $b13->[0], $b13->[1]}
+    display_callback => sub {my $b13 = shift; sprintf "<<%s>> - %d", $b13->[0], $b13->[1]}
   },
   {
     name             => "Most ascensions",
     list_sub         => sub {[map {[$_, @{$ascensions_for{$_}}]} keys %ascensions_for]},
     sorter           => sub { $b->[1] <=> $a->[1] || $a->[2] <=> $b->[2]},
     get_name         => sub { $_[0][0] },
-    display_callback => sub {my $ma = shift; sprintf "<<%s>> %d", $ma->[0], $ma->[1]}
+    display_callback => sub {my $ma = shift; sprintf "<<%s>> - %d", $ma->[0], $ma->[1]}
   },
   {
     name             => "Longest ascension streak",
     list_sub         => sub {[map {[$_, @{$best_ascstreak_for{$_}}]} keys %best_ascstreak_for]},
     sorter           => sub { $b->[1] <=> $a->[1] || $a->[2] <=> $b->[2]},
     get_name         => sub { $_[0][0] },
-    display_callback => sub {my $ma = shift; sprintf "<<%s>> %d", $ma->[0], $ma->[1]}
+    display_callback => sub {my $ma = shift; sprintf "<<%s>> - %d", $ma->[0], $ma->[1]}
   },
   {
     name             => "First ascension",
     trophy_stat      => "endtime",
-    display_callback => sub {my $g = shift; my $time = gmtime($g->{endtime} - 8 * 3600); $time =~ s/  / /; sprintf "<<%s>> #%d (%s)", $g->{name}, $g->{num}, $time}
+    display_callback => sub {my $g = shift; my $time = gmtime($g->{endtime} - 8 * 3600); $time =~ s/  / /; sprintf "<<%s>> - #%d (%s)", $g->{name}, $g->{num}, $time}
   },
   {
     name             => "Fastest ascension",
     trophy_stat      => "turns",
-    display_callback => sub {my $g = shift; sprintf "<<%s>> T:%d", $g->{name}, $g->{turns}}
+    display_callback => sub {my $g = shift; sprintf "<<%s>> - T:%d", $g->{name}, $g->{turns}}
   },
   {
     name             => "Quickest ascension",
     trophy_stat      => "realtime",
-    display_callback => sub {my $g = shift; sprintf "<<%s>> %s", $g->{name}, demunge_realtime($g->{realtime})}
+    display_callback => sub {my $g = shift; sprintf "<<%s>> - %s", $g->{name}, demunge_realtime($g->{realtime})}
   },
   {
     name             => "Best behaved ascension",
