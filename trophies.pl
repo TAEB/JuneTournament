@@ -225,10 +225,30 @@ sub display_trophy
 
 sub write_pages
 {
-  while (my ($name, $output) = each %txt_output_for)
+  my $extension = 'txt';
+  my $pre  = '';
+  my $post = '';
+
+  while (1)
   {
-    open(my $handle, ">", "pages/$name.txt") or warn "Unable to open pages/$name.txt: $!";
-    print {$handle} $output;
+    my ($name, $output);
+    if ($extension eq 'txt')
+    {
+      ($name, $output) = each %txt_output_for
+        or do
+        {
+          $extension = 'html';
+          $pre = "<html>\n  <body>\n    <h1>The June nethack.alt.org Tournament</h1>\n    <hr />\n";
+          $post = "  </body>\n</html>\n";
+        }
+    }
+    if ($extension eq 'html')
+    {
+      ($name, $output) = each %html_output_for or last;
+    }
+
+    open(my $handle, ">", "pages/$name.$extension") or warn "Unable to open pages/$name.$extension: $!";
+    print {$handle} $pre, $output, $post;
     close $handle;
   }
 }
@@ -282,7 +302,8 @@ read_xlogfile("xlogfile");
 foreach my $name (keys %txt_output_for)
 {
   my $asc = exists($ascensions_for{$name}) ? $ascensions_for{$name}[0] : 0;
-  $txt_output_for{$name} = sprintf "Player: %s\nAscensions: %d/%d (%.2f%%)\n\n", $name, $asc, $games_for{$name}, 100*$asc/$games_for{$name};
+  $txt_output_for{$name}  = sprintf "Player: %s\nAscensions: %d/%d (%.2f%%)\n\n", $name, $asc, $games_for{$name}, 100*$asc/$games_for{$name};
+  $html_output_for{$name} = sprintf "    <h2>%s</h2>\n    <h3>Ascensions: %d/%d (%.2f%%)</h3>\n\n", $name, $asc, $games_for{$name}, 100*$asc/$games_for{$name};
 }
 
 my @trophies =
