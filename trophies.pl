@@ -7,7 +7,8 @@ my @ascensions;
 my %games_for;
 my %ascensions_for;
 my %best_ascstreak_for;
-my %output_for;
+my %txt_output_for;
+my %html_output_for;
 
 my @roles = qw{Arc Bar Cav Hea Kni Mon Pri Ran Rog Sam Tou Val Wiz};
 my %expand =
@@ -79,7 +80,7 @@ sub read_xlogfile
       $ascstreak_for{$game{name}} = [0, 0];
     }
 
-    $output_for{$game{name}} = "";
+    $txt_output_for{$game{name}} = $html_output_for{$game{name}} = "";
     push @games, \%game;
     push @ascensions, \%game if $game{ascended};
   }
@@ -173,7 +174,7 @@ sub display_trophy
   }
 
   # build up output for each player
-  foreach my $name (keys %output_for)
+  foreach my $name (keys %txt_output_for)
   {
     my $num;
     my @nums = (0..2);
@@ -200,31 +201,31 @@ sub display_trophy
     pop @nums while $nums[-1] >= @sorted;
 
     # add trophy name to output
-    $output_for{$name} .= $display_name . ":\n";
+    $txt_output_for{$name} .= $display_name . ":\n";
 
     foreach my $n (@nums)
     {
       if (ref($n))
       {
-        $output_for{$name} .= "  ...\n";
+        $txt_output_for{$name} .= "  ...\n";
       }
       else
       {
         my $pre = defined($num) && $n == $num ? "*" : " ";
-        $output_for{$name} .= sprintf "%s %d: %s\n", $pre, $n+1, $display_callback->($sorted[$n]);
+        $txt_output_for{$name} .= sprintf "%s %d: %s\n", $pre, $n+1, $display_callback->($sorted[$n]);
       }
     }
     if (!exists($player_info{$name}))
     {
-      $output_for{$name} .= "  (No eligible games for $name)\n";
+      $txt_output_for{$name} .= "  (No eligible games for $name)\n";
     }
-    $output_for{$name} .= "\n";
+    $txt_output_for{$name} .= "\n";
   }
 }
 
 sub write_pages
 {
-  while (my ($name, $output) = each %output_for)
+  while (my ($name, $output) = each %txt_output_for)
   {
     open(my $handle, ">", "pages/$name.txt") or warn "Unable to open pages/$name.txt: $!";
     print {$handle} $output;
@@ -278,10 +279,10 @@ sub best_of_13
 # and now the actual code
 
 read_xlogfile("xlogfile");
-foreach my $name (keys %output_for)
+foreach my $name (keys %txt_output_for)
 {
   my $asc = exists($ascensions_for{$name}) ? $ascensions_for{$name}[0] : 0;
-  $output_for{$name} = sprintf "Player: %s\nAscensions: %d/%d (%.2f%%)\n\n", $name, $asc, $games_for{$name}, 100*$asc/$games_for{$name};
+  $txt_output_for{$name} = sprintf "Player: %s\nAscensions: %d/%d (%.2f%%)\n\n", $name, $asc, $games_for{$name}, 100*$asc/$games_for{$name};
 }
 
 my @trophies =
