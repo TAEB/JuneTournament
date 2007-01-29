@@ -383,4 +383,5 @@ foreach my $trophy_ref (@trophies)
   display_trophy($trophy_ref);
 }
 
+print "Printing player pages\n";
 write_pages();
