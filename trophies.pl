@@ -246,7 +246,6 @@ sub display_trophy
 sub write_pages
 {
   my $extension = 'txt';
-  my $pre  = '';
   my $post = '';
 
   while (1)
@@ -258,7 +257,6 @@ sub write_pages
         or do
         {
           $extension = 'html';
-          $pre = "<html>\n  <body>\n    <h1>The June nethack.alt.org Tournament</h1>\n    <hr />\n";
           $post = "  </body>\n</html>\n";
         }
     }
@@ -268,7 +266,7 @@ sub write_pages
     }
 
     open(my $handle, ">", "pages/$name.$extension") or warn "Unable to open pages/$name.$extension: $!";
-    print {$handle} $pre, $output, $post;
+    print {$handle} $output, $post;
     close $handle;
   }
 }
@@ -323,8 +321,30 @@ read_xlogfile("xlogfile");
 foreach my $name (keys %txt_output_for)
 {
   my $asc = exists($ascensions_for{$name}) ? $ascensions_for{$name}[0] : 0;
+
   $txt_output_for{$name}  = sprintf "Player: %s\nAscensions: %d/%d (%.2f%%)\n\n", $name, $asc, $games_for{$name}, 100*$asc/$games_for{$name};
-  $html_output_for{$name} = sprintf "    <h2>%s</h2>\n    <h3>Ascensions: %d/%d (%.2f%%)</h3>\n<ul id=\"mainlinks\"><li><a href=\"$name.txt\">plaintext version</a></li><li><a href=\"../index.html\">main page</a><li><a href=\"../winners.html\">trophy winners</a></li><li><a href=\"http://alt.org/nethack/\">nethack.alt.org</a></ul>\n", $name, $asc, $games_for{$name}, 100*$asc/$games_for{$name};
+
+  # html output
+
+  my $format_string = << "EOH";
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <title>The 2007 June nethack.alt.org Tournament - %s</title>
+    <link rel="stylesheet" type="text/css" href="../player.css" />
+  </head>
+  <body>
+    <h1>The 2007 June nethack.alt.org Tournament - %s</h1>
+    <h2>Ascensions: %d/%d (%.2f%%)</h2>
+    <ul id="mainlinks">
+      <li><a href="%s.txt">plaintext version</a></li>
+      <li><a href="../index.html">main page</a></li>
+      <li><a href="../winners.html">trophy winners</a></li>
+      <li><a href="http://alt.org/nethack/">nethack.alt.org</a></li>
+    </ul>
+EOH
+
+  $html_output_for{$name} = sprintf $format_string, $name, $name, $asc, $games_for{$name}, 100*$asc/$games_for{$name}, $name;
 }
 
 my @trophies =
