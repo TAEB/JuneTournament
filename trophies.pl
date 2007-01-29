@@ -202,14 +202,15 @@ sub display_trophy
 
     # add trophy name to output
     $txt_output_for{$name} .= $display_name . ":\n";
-    $html_output_for{$name} .= "<hr /><h3>$display_name</h3><ul>\n";
+    $html_output_for{$name} .= "    <hr />\n    <h3>$display_name</h3>\n    <ol class=\"trophy\">\n";
 
-    foreach my $n (@nums)
+    foreach my $el (0..$#nums)
     {
+      my $n = $nums[$el];
       if (ref($n))
       {
         $txt_output_for{$name} .= "  ...\n";
-        $html_output_for{$name} .= "<li>  ...</li>\n";
+        $html_output_for{$name} .= "    </ol>\n<div class=\"ellipses\">...</div>\n    <ol class=\"trophy\" start=\"".(1+$nums[$el+1])."\">\n";
       }
       else
       {
@@ -230,16 +231,16 @@ sub display_trophy
         }
 
         $txt_output_for{$name} .= sprintf "%s %d: %s\n", $my_score ? "*" : " ", $n+1, $callback_txt;
-        $html_output_for{$name} .= sprintf "<li>%s%d: %s%s</li>\n", $my_score ? "<strong>" : "", $n+1, $callback_html, $my_score ? "</strong>" : "";
+        $html_output_for{$name} .= sprintf "      <li%s>%s</li>\n", $my_score ? " class=\"me\"" : "", $callback_html;
       }
     }
     if (!exists($player_info{$name}))
     {
       $txt_output_for{$name} .= "  (No eligible games for $name)\n";
-      $html_output_for{$name} .= "<li>(No eligible games for $name)</li>\n";
+      $html_output_for{$name} .= "      <li>(No eligible games for $name)</li>\n";
     }
     $txt_output_for{$name} .= "\n";
-    $html_output_for{$name} .= "</ul>\n";
+    $html_output_for{$name} .= "    </ol>\n";
   }
 }
 
