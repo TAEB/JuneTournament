@@ -311,7 +311,7 @@ my @trophies =
   {
     name             => "First ascension",
     trophy_stat      => "num",
-    need_sort       => 0,
+    need_sort        => 0,
     display_callback => sub {my $g = shift; my $time = gmtime($g->{endtime} - 8 * 3600); $time =~ s/  / /; sprintf "%s #%d (%s)", $g->{name}, $g->{num}, $time}
   },
   {
@@ -327,7 +327,7 @@ my @trophies =
   {
     name             => "Best behaved ascension",
     trophy_stat      => "conducts",
-    need_reverse    => 1,
+    need_reverse     => 1,
     display_callback => sub {my $g = shift; sprintf "%s - %s", $g->{name}, (join ', ', demunge_conduct($g->{conduct})) || "(none)"}
   },
   {
@@ -338,7 +338,7 @@ my @trophies =
   {
     name             => "High-scoring ascension",
     trophy_stat      => "points",
-    need_reverse    => 1,
+    need_reverse     => 1,
     display_callback => sub {my $g = shift; sprintf "%s - %d point%s", $g->{name}, $g->{points}, $g->{points} == 1 ? "" : "s"}
   }
 );
@@ -347,10 +347,10 @@ foreach my $role (@roles)
 {
   push @trophies,
   {
-    name =>          "High-scoring $expand{$role}",
+    name             => "High-scoring $expand{$role}",
     list             => \@games,
     trophy_stat      => "points",
-    need_reverse    => 1,
+    need_reverse     => 1,
     grep_callback    => sub {grep {$_->{role} eq $role} @_},
     display_callback => sub {my $g = shift; $|++; sprintf "%s - %d point%s", $g->{name}, $g->{points}, $g->{points} == 1 ? "" : "s"}
   };
