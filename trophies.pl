@@ -132,7 +132,6 @@ sub display_trophy
   my $display_name = $args->{name};
 
   my $reverse     = defined($args->{need_reverse}) ? $args->{need_reverse}  : 0;
-  my $sort        = defined($args->{need_sort})    ? $args->{need_sort}     : 1;
   my $list        = defined($args->{list})         ? $args->{list} : \@ascensions;
   $list = $args->{list_sub}() if defined($args->{list_sub});
 
@@ -149,7 +148,7 @@ sub display_trophy
   };
 
   # how are we sorting? we need to maintain stability, so reverse sort is bad
-  if ($sort && !defined($sorter))
+  if (!defined($sorter))
   {
     if ($reverse)
     {
@@ -164,7 +163,7 @@ sub display_trophy
   # get the list we want in the correct order
   my @sorted = @{$list};
   @sorted = $grep->(@sorted) if defined $grep;
-  @sorted = sort $sorter @sorted if $sort;
+  @sorted = sort $sorter @sorted;
 
   # go from index-by-gamenum to index-by-playername
   foreach my $n (0..$#sorted)
@@ -310,8 +309,7 @@ my @trophies =
   },
   {
     name             => "First ascension",
-    trophy_stat      => "num",
-    need_sort        => 0,
+    trophy_stat      => "endtime",
     display_callback => sub {my $g = shift; my $time = gmtime($g->{endtime} - 8 * 3600); $time =~ s/  / /; sprintf "%s #%d (%s)", $g->{name}, $g->{num}, $time}
   },
   {
