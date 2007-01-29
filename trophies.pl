@@ -298,6 +298,7 @@ sub best_of_13
 
 # and now the actual code
 
+print "Reading xlogfile\n";
 read_xlogfile("xlogfile");
 foreach my $name (keys %txt_output_for)
 {
@@ -378,6 +379,7 @@ foreach my $role (@roles)
 
 foreach my $trophy_ref (@trophies)
 {
+  print "Processing $trophy_ref->{name}\n";
   display_trophy($trophy_ref);
 }
 
