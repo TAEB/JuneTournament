@@ -328,7 +328,7 @@ my @trophies =
     name             => "Best behaved ascension",
     trophy_stat      => "conducts",
     need_reverse     => 1,
-    display_callback => sub {my $g = shift; sprintf "%s - %s", $g->{name}, (join ', ', demunge_conduct($g->{conduct})) || "(none)"}
+    display_callback => sub {my $g = shift; sprintf "%s - %d: %s", $g->{name}, $g->{conducts}, (join ', ', demunge_conduct($g->{conduct})) || "(none)"}
   },
   {
     name             => "Low-scoring ascension",
