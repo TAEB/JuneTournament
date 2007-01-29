@@ -210,7 +210,7 @@ sub display_trophy
       if (ref($n))
       {
         $txt_output_for{$name} .= "  ...\n";
-        $html_output_for{$name} .= "    </ol>\n<div class=\"ellipses\">...</div>\n    <ol class=\"trophy\" start=\"".(1+$nums[$el+1])."\">\n";
+        $html_output_for{$name} .= "    </ol>\n    <div class=\"ellipses\">...</div>\n    <ol class=\"trophy\" start=\"".(1+$nums[$el+1])."\">\n";
       }
       else
       {
@@ -234,13 +234,13 @@ sub display_trophy
         $html_output_for{$name} .= sprintf "      <li%s>%s</li>\n", $my_score ? " class=\"me\"" : "", $callback_html;
       }
     }
+    $html_output_for{$name} .= "    </ol>\n";
     if (!exists($player_info{$name}))
     {
       $txt_output_for{$name} .= "  (No eligible games for $name)\n";
-      $html_output_for{$name} .= "      <li>(No eligible games for $name)</li>\n";
+      $html_output_for{$name} .= "    <div class=\"nogames\">(No eligible games for $name)</div>\n";
     }
     $txt_output_for{$name} .= "\n";
-    $html_output_for{$name} .= "    </ol>\n";
   }
 }
 
@@ -332,7 +332,7 @@ foreach my $name (keys %txt_output_for)
 <html>
   <head>
     <title>The 2007 June nethack.alt.org Tournament - %s</title>
-    <link rel="stylesheet" type="text/css" href="../player.css" />
+    <link rel="stylesheet" type="text/css" href="player.css" />
   </head>
   <body>
     <h1>The 2007 June nethack.alt.org Tournament - %s</h1>
