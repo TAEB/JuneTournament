@@ -13,6 +13,7 @@ my %clan_points_for;
 my %txt_output_for;
 my %html_output_for;
 
+my @points_for_position = (1.00, .60, .30);
 my @roles = qw{Arc Bar Cav Hea Kni Mon Pri Ran Rog Sam Tou Val Wiz};
 my %expand =
 (
@@ -199,7 +200,7 @@ sub display_trophy
     if (exists($player_info{$name}))
     {
       $num = $player_info{$name}[0]{num};
-      $clan_points_for{$name} += $args->{clan_points} if $num == 0;
+      $clan_points_for{$name} += $args->{clan_points} * $points_for_position[$num] if $num < @points_for_position;
 
       # display top 3 and 2 around, or top N if sufficiently highly ranked
       if ($num < 7)
