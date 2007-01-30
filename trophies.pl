@@ -516,6 +516,20 @@ my @trophies =
     display_callback => sub {my $g = shift; sprintf "{{%s}} - %d: %s", $g->{name}, $g->{conducts}, (join ', ', demunge_conduct($g->{conduct})) || "(none)"}
   },
   {
+    name             => "Extinctionist",
+    clan_points      => 5,
+    trophy_stat      => "kills",
+    list             => \@games,
+    display_callback => sub {my $g = shift; sprintf "{{%s}} - %d kill%s", $g->{name}, $g->{kills}, $g->{kills} == 1 ? "" : "s"}
+  },
+  {
+    name             => "Truest pacifist ascension",
+    clan_points      => 5,
+    trophy_stat      => "kills",
+    needs_reverse    => 1,
+    display_callback => sub {my $g = shift; sprintf "{{%s}} - %d kill%s", $g->{name}, $g->{kills}, $g->{kills} == 1 ? "" : "s"}
+  },
+  {
     name             => "Low-scoring ascension",
     clan_points      => 7,
     trophy_stat      => "points",
