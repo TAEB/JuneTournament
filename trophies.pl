@@ -112,9 +112,9 @@ sub demunge_realtime
   return sprintf "%d:%02d:%02d", $hours, $minutes, $seconds;
 }
 
-sub demunge_conduct 
-{ 
-  my $conduct = hex(shift); 
+sub demunge_conduct
+{
+  my $conduct = hex(shift);
   my @achieved;
 
   foreach
@@ -130,14 +130,14 @@ sub demunge_conduct
     [polyselfless => 0x0100],
     [wishless     => 0x0200],
     [artiwishless => 0x0400],
-    [genoless     => 0x0800],  
+    [genoless     => 0x0800],
   )
   {
     push @achieved, $_->[0] if $conduct & $_->[1];
   }
 
-  return @achieved; 
-} 
+  return @achieved;
+}
 
 sub display_trophy
 {
@@ -158,9 +158,9 @@ sub display_trophy
   my $sorter      = $args->{sorter}        || undef;
 
   my $display_callback = $args->{display_callback} ||
-  sub 
+  sub
   {
-    my $g = shift; 
+    my $g = shift;
     sprintf "<<%s>> - %s", $g->{name}, $g->{$trophy_stat};
   };
 
@@ -201,7 +201,7 @@ sub display_trophy
     if (exists($player_info{$name}))
     {
       $num = $player_info{$name}[0]{num};
-      
+
       for (my $n = 0; $n < @{$player_info{$name}} && $player_info{$name}[$n]{num} < @points_for_position; ++$n)
       {
         $clan_points += int($args->{clan_points} * $points_for_position[$player_info{$name}[$n]{num}]);
@@ -272,7 +272,7 @@ sub display_trophy
        {
          if (exists $clan_of{$name})
          {
-           sprintf ' (%d point%s)', 
+           sprintf ' (%d point%s)',
                    $clan_points,
                    $clan_points == 1 ? '' : 's';
          }
@@ -313,7 +313,7 @@ sub write_pages
                   {
                     if (exists $clan_points_for{$1})
                     {
-                      sprintf ' (%d point%s)', 
+                      sprintf ' (%d point%s)',
                               $clan_points_for{$1},
                               $clan_points_for{$1} == 1 ? '' : 's';
                     }
