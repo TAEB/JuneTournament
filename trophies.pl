@@ -194,13 +194,18 @@ sub display_trophy
   {
     my $num;
     my @nums = (0..2);
+    my $clan_points = 0;
 
     # does this player have any games eligible for this trophy?
     # if not we just display the top three
     if (exists($player_info{$name}))
     {
       $num = $player_info{$name}[0]{num};
-      $clan_points_for{$name} += $args->{clan_points} * $points_for_position[$num] if $num < @points_for_position;
+      
+      for (my $n = 0; $n < @{$player_info{$name}} && $player_info{$name}[$n]{num} < @points_for_position; ++$n)
+      {
+        $clan_points += int($args->{clan_points} * $points_for_position[$player_info{$name}[$n]{num}]);
+      }
 
       # display top 3 and 2 around, or top N if sufficiently highly ranked
       if ($num < 7)
@@ -218,8 +223,8 @@ sub display_trophy
     pop @nums while $nums[-1] >= @sorted;
 
     # add trophy name to output
-    $txt_output_for{$name} .= $display_name . ":\n";
-    $html_output_for{$name} .= "    <hr />\n    <h3>$display_name</h3>\n    <ol class=\"trophy\">\n";
+    $txt_output_for{$name} .= $display_name . "<<TROPHY_CLAN_POINTS>>:\n";
+    $html_output_for{$name} .= "    <hr />\n    <h3>$display_name<<TROPHY_CLAN_POINTS>></h3>\n    <ol class=\"trophy\">\n";
 
     foreach my $el (0..$#nums)
     {
@@ -258,6 +263,25 @@ sub display_trophy
       $html_output_for{$name} .= "    <div class=\"nogames\">(No eligible games for $name)</div>\n";
     }
     $txt_output_for{$name} .= "\n";
+
+    $clan_points_for{$name} += $clan_points if $clan_points && exists $clan_of{$name};
+
+    for ($txt_output_for{$name}, $html_output_for{$name})
+    {
+      s{<<TROPHY_CLAN_POINTS>>}
+       {
+         if (exists $clan_of{$name})
+         {
+           sprintf ' (%d point%s)', 
+                   $clan_points,
+                   $clan_points == 1 ? '' : 's';
+         }
+         else
+         {
+           ''
+         }
+       }eg;
+    }
   }
 }
 
@@ -285,15 +309,22 @@ sub write_pages
 
     $output =~ s{<<CLAN_POINTS:(\w+)>>}
                 {
-                  if (exists $clan_points_for{$1})
+                  if (exists $clan_of{$1})
                   {
-                    sprintf '%d point%s', 
-                            $clan_points_for{$1},
-                            $clan_points_for{$1} == 1 ? '' : 's';
+                    if (exists $clan_points_for{$1})
+                    {
+                      sprintf ' (%d point%s)', 
+                              $clan_points_for{$1},
+                              $clan_points_for{$1} == 1 ? '' : 's';
+                    }
+                    else
+                    {
+                      " (0 points)"
+                    }
                   }
                   else
                   {
-                    "0 points"
+                    ""
                   }
                 }eg;
 
@@ -356,13 +387,13 @@ read_clan_info("clan_info");
 foreach my $name (keys %txt_output_for)
 {
   my $asc = exists($ascensions_for{$name}) ? $ascensions_for{$name}[0] : 0;
-  my $clan_info = exists $clan_of{$name} ? "Clan: $clan_of{$name} (<<CLAN_POINTS:$name>>)\n"
+  my $clan_info = exists $clan_of{$name} ? "Clan: $clan_of{$name}<<CLAN_POINTS:$name>>\n"
                                          : '';
 
   $txt_output_for{$name}  = sprintf "Player: %s\nAscensions: %d/%d (%.2f%%)\n%s\n", $name, $asc, $games_for{$name}, 100*$asc/$games_for{$name}, $clan_info;
 
   # html output
-  $clan_info = exists $clan_of{$name} ? "    <h2>Clan: $clan_of{$name} (<<CLAN_POINTS:$name>>)</h2>\n"
+  $clan_info = exists $clan_of{$name} ? "    <h2>Clan: $clan_of{$name}<<CLAN_POINTS:$name>></h2>\n"
                                       : '';
   my $format_string = << "EOH";
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -397,8 +428,8 @@ EOH2
     my $mates = join '',
                 map
                 {
-                  $_ eq $name ? "      <li class=\"me\">$_ (<<CLAN_POINTS:$_>>)</li>\n"
-                              : "      <li><a href=\"$_.html\">$_</a> (<<CLAN_POINTS:$_>>)</li>\n"
+                  $_ eq $name ? "      <li class=\"me\">$_<<CLAN_POINTS:$_>></li>\n"
+                              : "      <li><a href=\"$_.html\">$_</a><<CLAN_POINTS:$_>></li>\n"
                 }
                 sort
                 keys %{$clan_roster{ $clan_of{$name} }};
