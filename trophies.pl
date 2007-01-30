@@ -9,6 +9,7 @@ my %ascensions_for;
 my %best_ascstreak_for;
 my %clan_of;
 my %clan_roster;
+my %clan_points_for;
 my %txt_output_for;
 my %html_output_for;
 
@@ -198,6 +199,7 @@ sub display_trophy
     if (exists($player_info{$name}))
     {
       $num = $player_info{$name}[0]{num};
+      $clan_points_for{$name} += $args->{clan_points} if $num == 0;
 
       # display top 3 and 2 around, or top N if sufficiently highly ranked
       if ($num < 7)
@@ -280,6 +282,20 @@ sub write_pages
       ($name, $output) = each %html_output_for or last;
     }
 
+    $output =~ s{<<CLAN_POINTS:(\w+)>>}
+                {
+                  if (exists $clan_points_for{$1})
+                  {
+                    sprintf '%d point%s', 
+                            $clan_points_for{$1},
+                            $clan_points_for{$1} == 1 ? '' : 's';
+                  }
+                  else
+                  {
+                    "0 points"
+                  }
+                }eg;
+
     open(my $handle, ">", "pages/$name.$extension") or warn "Unable to open pages/$name.$extension: $!";
     print {$handle} $output, $post;
     close $handle;
@@ -339,11 +355,14 @@ read_clan_info("clan_info");
 foreach my $name (keys %txt_output_for)
 {
   my $asc = exists($ascensions_for{$name}) ? $ascensions_for{$name}[0] : 0;
+  my $clan_info = exists $clan_of{$name} ? "Clan: $clan_of{$name} (<<CLAN_POINTS:$name>>)\n"
+                                         : '';
 
-  $txt_output_for{$name}  = sprintf "Player: %s\nAscensions: %d/%d (%.2f%%)\n\n", $name, $asc, $games_for{$name}, 100*$asc/$games_for{$name};
+  $txt_output_for{$name}  = sprintf "Player: %s\nAscensions: %d/%d (%.2f%%)\n%s\n", $name, $asc, $games_for{$name}, 100*$asc/$games_for{$name}, $clan_info;
 
   # html output
-
+  $clan_info = exists $clan_of{$name} ? "    <h2>Clan: $clan_of{$name} (<<CLAN_POINTS:$name>>)</h2>\n"
+                                      : '';
   my $format_string = << "EOH";
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
@@ -354,6 +373,7 @@ foreach my $name (keys %txt_output_for)
   <body>
     <h1>The 2007 June nethack.alt.org Tournament - %s</h1>
     <h2>Ascensions: %d/%d (%.2f%%)</h2>
+    %s
     <ul id="mainlinks">
       <li><a href="%s.txt">plaintext version</a></li>
       <li><a href="../index.html">main page</a></li>
@@ -362,7 +382,7 @@ foreach my $name (keys %txt_output_for)
     </ul>
 EOH
 
-  $html_output_for{$name} = sprintf $format_string, $name, $name, $asc, $games_for{$name}, 100*$asc/$games_for{$name}, $name;
+  $html_output_for{$name} = sprintf $format_string, $name, $name, $asc, $games_for{$name}, 100*$asc/$games_for{$name}, $clan_info, $name;
 
   if (exists $clan_of{$name})
   {
@@ -376,8 +396,8 @@ EOH2
     my $mates = join '',
                 map
                 {
-                  $_ eq $name ? "      <li class=\"me\">$_</li>\n"
-                              : "      <li><a href=\"$_.html\">$_</a></li>\n"
+                  $_ eq $name ? "      <li class=\"me\">$_ (<<CLAN_POINTS:$_>>)</li>\n"
+                              : "      <li><a href=\"$_.html\">$_</a> (<<CLAN_POINTS:$_>>)</li>\n"
                 }
                 sort
                 keys %{$clan_roster{ $clan_of{$name} }};
@@ -392,6 +412,7 @@ my @trophies =
 (
   {
     name             => "Best of 13",
+    clan_points      => 10,
     list_sub         => \&best_of_13,
     sorter           => sub { $b->[1] <=> $a->[1] || $a->[2] <=> $b->[2]},
     get_name         => sub { $_[0][0] },
@@ -399,6 +420,7 @@ my @trophies =
   },
   {
     name             => "Most ascensions",
+    clan_points      => 9,
     list_sub         => sub {[map {[$_, @{$ascensions_for{$_}}]} keys %ascensions_for]},
     sorter           => sub { $b->[1] <=> $a->[1] || $a->[2] <=> $b->[2]},
     get_name         => sub { $_[0][0] },
@@ -406,6 +428,7 @@ my @trophies =
   },
   {
     name             => "Longest ascension streak",
+    clan_points      => 9,
     list_sub         => sub {[map {[$_, @{$best_ascstreak_for{$_}}]} keys %best_ascstreak_for]},
     sorter           => sub { $b->[1] <=> $a->[1] || $a->[2] <=> $b->[2]},
     get_name         => sub { $_[0][0] },
@@ -413,32 +436,38 @@ my @trophies =
   },
   {
     name             => "First ascension",
+    clan_points      => 6,
     trophy_stat      => "endtime",
     display_callback => sub {my $g = shift; my $time = gmtime($g->{endtime} - 8 * 3600); $time =~ s/  / /; sprintf "<<%s>> - #%d (%s)", $g->{name}, $g->{num}, $time}
   },
   {
     name             => "Fastest ascension",
+    clan_points      => 8,
     trophy_stat      => "turns",
     display_callback => sub {my $g = shift; sprintf "<<%s>> - T:%d", $g->{name}, $g->{turns}}
   },
   {
     name             => "Quickest ascension",
+    clan_points      => 8,
     trophy_stat      => "realtime",
     display_callback => sub {my $g = shift; sprintf "<<%s>> - %s", $g->{name}, demunge_realtime($g->{realtime})}
   },
   {
     name             => "Best behaved ascension",
+    clan_points      => 7,
     trophy_stat      => "conducts",
     need_reverse     => 1,
     display_callback => sub {my $g = shift; sprintf "<<%s>> - %d: %s", $g->{name}, $g->{conducts}, (join ', ', demunge_conduct($g->{conduct})) || "(none)"}
   },
   {
     name             => "Low-scoring ascension",
+    clan_points      => 7,
     trophy_stat      => "points",
     display_callback => sub {my $g = shift; sprintf "<<%s>> - %d point%s", $g->{name}, $g->{points}, $g->{points} == 1 ? "" : "s"}
   },
   {
     name             => "High-scoring ascension",
+    clan_points      => 5,
     trophy_stat      => "points",
     need_reverse     => 1,
     display_callback => sub {my $g = shift; sprintf "<<%s>> - %d point%s", $g->{name}, $g->{points}, $g->{points} == 1 ? "" : "s"}
@@ -450,6 +479,7 @@ foreach my $role (@roles)
   push @trophies,
   {
     name             => "High-scoring $expand{$role}",
+    clan_points      => 2,
     list             => \@games,
     trophy_stat      => "points",
     need_reverse     => 1,
