@@ -12,6 +12,7 @@ my %clan_roster;
 my %clan_points_for;
 my %txt_output_for;
 my %html_output_for;
+my %all_fields;
 
 # some constants
 my @points_for_position = (1.00, .60, .30);
@@ -78,6 +79,11 @@ sub read_xlogfile
     $game{ascended} = $game{death} eq 'ascended' ? 1 : 0;
     $game{conducts} = scalar demunge_conduct($game{conduct});
     $game{num}      = $num;
+
+    foreach (keys %game)
+    {
+      $all_fields{$_} = 1;
+    }
 
     ++$games_for{$game{name}};
 
@@ -155,10 +161,16 @@ sub display_trophy
   my $list        = defined($args->{list})         ? $args->{list} : \@ascensions;
   $list = $args->{list_sub}() if defined($args->{list_sub});
 
-  my $trophy_stat = $args->{trophy_stat}   || "foo";
+  my $trophy_stat = $args->{trophy_stat}   || "";
   my $get_name    = $args->{get_name}      || sub {$_[0]{name}};
   my $grep        = $args->{grep_callback} || undef;
   my $sorter      = $args->{sorter}        || undef;
+
+  if ($trophy_stat ne "" && !exists($all_fields{$trophy_stat}))
+  {
+    warn "I want to award the '$display_name' trophy based on the '$trophy_stat' field, but I've never heard of it. Aborting this trophy.\n";
+    return;
+  }
 
   my $display_callback = $args->{display_callback} ||
   sub
