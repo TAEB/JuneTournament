@@ -202,12 +202,14 @@ sub display_trophy
     {
       $num = $player_info{$name}[0]{num};
 
+      # add clan points -- this handles the player placing more than once
+      # in the top N (where N = @points_for_position - 1, probably 3)
       for (my $n = 0; $n < @{$player_info{$name}} && $player_info{$name}[$n]{num} < @points_for_position; ++$n)
       {
         $clan_points += int($args->{clan_points} * $points_for_position[$player_info{$name}[$n]{num}]);
       }
 
-      # display top 3 and 2 around, or top N if sufficiently highly ranked
+      # display top 3 and 2 around, or just top N if sufficiently highly ranked
       if ($num < 7)
       {
         push @nums, 3 .. $num+2;
