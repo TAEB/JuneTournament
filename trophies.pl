@@ -398,10 +398,10 @@ sub best_of_13
 
 # entry point
 
-print "Reading xlogfile\n";
-read_xlogfile("xlogfile");
 print "Reading clan_info\n";
 read_clan_info("clan_info");
+print "Reading xlogfile\n";
+read_xlogfile("xlogfile");
 
 # read_xlogfile populates %txt_output_for's keys with each player
 # so we put any initial text for each player's page here
