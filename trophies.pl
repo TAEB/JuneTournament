@@ -420,8 +420,16 @@ read_xlogfile("xlogfile");
 foreach my $name (keys %txt_output_for)
 {
   my $asc = exists($ascensions_for{$name}) ? $ascensions_for{$name}[0] : 0;
-  my $clan_info = exists $clan_of{$name} ? "Clan: $clan_of{$name}<<CLAN_POINTS:$name>>\n"
-                                         : '';
+  my $clan_info = '';
+
+  if (exists $clan_of{$name})
+  {
+    $clan_info = "Clan: $clan_of{$name}<<CLAN_POINTS:$name>>\n  Clan mates:\n" .
+                 join '',
+                 map { "    $_<<CLAN_POINTS:$_>>\n" }
+                 sort
+                 keys %{$clan_roster{ $clan_of{$name} }};
+  }
 
   $txt_output_for{$name}  = sprintf "Player: %s\nAscensions: %d/%d (%.2f%%)\n%s\n", $name, $asc, $games_for{$name}, 100*$asc/$games_for{$name}, $clan_info;
 
