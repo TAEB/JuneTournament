@@ -7,6 +7,8 @@ my @ascensions;
 my %games_for;
 my %ascensions_for;
 my %best_ascstreak_for;
+my %clan_of;
+my %clan_roster;
 my %txt_output_for;
 my %html_output_for;
 
@@ -27,6 +29,18 @@ my %expand =
   Val => 'Valkyrie',
   Wiz => 'Wizard',
 );
+
+sub read_clan_info
+{
+  local @ARGV = @_;
+
+  while (<>)
+  {
+    my ($nick, $clan) = split ':';
+    $clan_of{$nick} = $clan;
+    $clan_roster{$clan}{$nick} = 1;
+  }
+}
 
 sub read_xlogfile
 {
@@ -319,6 +333,9 @@ sub best_of_13
 
 print "Reading xlogfile\n";
 read_xlogfile("xlogfile");
+print "Reading clan_info\n";
+read_clan_info("clan_info");
+
 foreach my $name (keys %txt_output_for)
 {
   my $asc = exists($ascensions_for{$name}) ? $ascensions_for{$name}[0] : 0;
@@ -346,6 +363,29 @@ foreach my $name (keys %txt_output_for)
 EOH
 
   $html_output_for{$name} = sprintf $format_string, $name, $name, $asc, $games_for{$name}, 100*$asc/$games_for{$name}, $name;
+
+  if (exists $clan_of{$name})
+  {
+    my $format_string = << "EOH2";
+    <hr />
+    <h3>Members of <a href=\"../clans/%s.html\">%s</a></h3>
+    <ul id="clanmates">
+      %s
+    </ul>
+EOH2
+    my $mates = join '',
+                map
+                {
+                  $_ eq $name ? "      <li class=\"me\">$_</li>\n"
+                              : "      <li><a href=\"$_.html\">$_</a></li>\n"
+                }
+                sort
+                keys %{$clan_roster{ $clan_of{$name} }};
+    $html_output_for{$name} .= sprintf $format_string, $clan_of{$name}, $clan_of{$name}, $mates;
+  }
+  else
+  {
+  }
 }
 
 my @trophies =
