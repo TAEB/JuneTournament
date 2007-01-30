@@ -6,12 +6,16 @@ my @games;
 my @ascensions;
 my %games_for;
 my %ascensions_for;
+my %clan_games;
+my %clan_ascs;
 my %best_ascstreak_for;
 my %clan_of;
 my %clan_roster;
 my %clan_points_for;
 my %txt_output_for;
 my %html_output_for;
+my %clan_txt_output_for;
+my %clan_html_output_for;
 my %all_fields;
 
 # some constants
@@ -44,6 +48,7 @@ sub read_clan_info
     my ($nick, $clan) = split ':' or last;
     $clan_of{$nick} = $clan;
     $clan_roster{$clan}{$nick} = 1;
+    $clan_txt_output_for{$clan} = $clan_html_output_for{$clan} = "";
   }
 }
 
@@ -87,9 +92,11 @@ sub read_xlogfile
     }
 
     ++$games_for{$game{name}};
+    ++$clan_games{$clan_of{$game{name}}} if exists $clan_of{$game{name}};
 
     if ($game{ascended})
     {
+      ++$clan_ascs{$clan_of{$game{name}}} if exists $clan_of{$game{name}};
       ++$ascensions_for{$game{name}}[0];
       $ascensions_for{$game{name}}[1] = $num;
 
@@ -316,24 +323,57 @@ sub display_trophy
 
 sub write_pages
 {
+  my $directory = 'pages';
   my $extension = 'txt';
-  my $post = '';
+  my $post      = '';
 
   while (1)
   {
     my ($name, $output);
+
+    # order is (player-txt, player-html, clan-txt, clan-html)
     if ($extension eq 'txt')
     {
-      ($name, $output) = each %txt_output_for
-        or do
-        {
-          $extension = 'html';
-          $post = "  </body>\n</html>\n";
-        }
+      my $next_set = 0;
+      if ($directory eq 'pages')
+      {
+        ($name, $output) = each %txt_output_for or $next_set = 1;
+      }
+      else
+      {
+        ($name, $output) = each %clan_txt_output_for or $next_set = 1;
+      }
+
+      if ($next_set)
+      {
+        $extension = 'html';
+        $post = "  </body>\n</html>\n";
+      }
     }
+
     if ($extension eq 'html')
     {
-      ($name, $output) = each %html_output_for or last;
+      my $next_set = 0;
+      if ($directory eq 'pages')
+      {
+        ($name, $output) = each %html_output_for or $next_set = 1;
+      }
+      else
+      {
+        ($name, $output) = each %clan_html_output_for or $next_set = 1;
+      }
+
+      if ($next_set)
+      {
+        if ($directory eq 'clan')
+        {
+          last;
+        }
+        $directory = 'clan';
+        $extension = 'txt';
+        $post      = '';
+        next;
+      }
     }
 
     # last call to fill in any placeholders
@@ -358,7 +398,7 @@ sub write_pages
                   }
                 }eg;
 
-    open(my $handle, ">", "pages/$name.$extension") or warn "Unable to open pages/$name.$extension: $!";
+    open(my $handle, ">", "$directory/$name.$extension") or warn "Unable to open $directory/$name.$extension: $!";
     print {$handle} $output, $post;
     close $handle;
   }
@@ -484,6 +524,17 @@ EOH2
   }
 }
 
+# read_clan_info populates %clan_txt_output_for's keys with each clan
+# so we put any initial text for each clan's page here
+foreach my $clan (keys %clan_txt_output_for)
+{
+  my $roster = join '',
+               map { "  $_<<CLAN_POINTS:$_>>\n" }
+               sort
+               keys %{$clan_roster{$clan}};
+  $clan_txt_output_for{$clan} = sprintf "Clan: %s\nAscensions: %d/%d (%.2f%%)\n\nRoster:\n%s\n", $clan, $clan_ascs{$clan} || 0, $clan_games{$clan} || 0, $clan_games{$clan} ? 100*$clan_ascs{$clan}/$clan_games{$clan} : 0, $roster;
+}
+
 # prefer data structures to code
 my @trophies =
 (
@@ -585,5 +636,5 @@ foreach my $trophy_ref (@trophies)
   display_trophy($trophy_ref);
 }
 
-print "Printing player pages\n";
+print "Printing player and clan pages\n";
 write_pages();
