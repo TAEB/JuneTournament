@@ -13,6 +13,7 @@ my %clan_points_for;
 my %txt_output_for;
 my %html_output_for;
 
+# some constants
 my @points_for_position = (1.00, .60, .30);
 my @roles = qw{Arc Bar Cav Hea Kni Mon Pri Ran Rog Sam Tou Val Wiz};
 my %expand =
@@ -64,6 +65,7 @@ sub read_xlogfile
     chomp;
     ++$num;
 
+    # parse the logfile.. ahh I love aardvarkj
     foreach (split /:/, $_)
     {
       next unless /^([^=]+)=(.*)$/;
@@ -72,6 +74,7 @@ sub read_xlogfile
 
     next if $game{death} eq "a trickery";
 
+    # add a few more fields
     $game{ascended} = $game{death} eq 'ascended' ? 1 : 0;
     $game{conducts} = scalar demunge_conduct($game{conduct});
     $game{num}      = $num;
@@ -143,7 +146,7 @@ sub display_trophy
 {
   my %player_info;
 
-  # read arguments, lot of subtleties here!
+  # read arguments; tread lightly if you change this code
   my $args = shift;
 
   my $display_name = $args->{name};
@@ -164,7 +167,8 @@ sub display_trophy
     sprintf "<<%s>> - %s", $g->{name}, $g->{$trophy_stat};
   };
 
-  # how are we sorting? we need to maintain stability, so reverse sort is bad
+  # how are we sorting? we need to maintain stability, so simple "reverse sort"
+  # won't work
   if (!defined($sorter))
   {
     if ($reverse)
@@ -177,7 +181,7 @@ sub display_trophy
     }
   }
 
-  # get the list we want in the correct order
+  # actually do the sorting, after we narrow down the list we want
   my @sorted = @{$list};
   @sorted = $grep->(@sorted) if defined $grep;
   @sorted = sort $sorter @sorted;
@@ -209,7 +213,8 @@ sub display_trophy
         $clan_points += int($args->{clan_points} * $points_for_position[$player_info{$name}[$n]{num}]);
       }
 
-      # display top 3 and 2 around, or just top N if sufficiently highly ranked
+      # display top N if sufficiently highly ranked
+      # otherwise top 3 and 2 around
       if ($num < 7)
       {
         push @nums, 3 .. $num+2;
@@ -224,10 +229,11 @@ sub display_trophy
     # stop when we get to the lowest ranked player
     pop @nums while $nums[-1] >= @sorted;
 
-    # add trophy name to output
+    # add trophy name to output, with a placeholder for clan points
     $txt_output_for{$name} .= $display_name . "<<TROPHY_CLAN_POINTS>>:\n";
     $html_output_for{$name} .= "    <hr />\n    <h3>$display_name<<TROPHY_CLAN_POINTS>></h3>\n    <ol class=\"trophy\">\n";
 
+    # can't do a for (@nums) here because we need to look ahead
     foreach my $el (0..$#nums)
     {
       my $n = $nums[$el];
@@ -238,6 +244,10 @@ sub display_trophy
       }
       else
       {
+        # the callback surrounds nicks like "<<eidolos2>>" to let us know what
+        # to link for the html version; in the text version we just remove the
+        # markers
+
         my $callback_html = $display_callback->($sorted[$n]);
         my $callback_txt = $callback_html;
         $callback_txt =~ s/<<|>>//g;
@@ -247,6 +257,7 @@ sub display_trophy
 
         if ($my_score)
         {
+          # don't link to our own page
           $callback_html = $callback_txt;
         }
         else
@@ -258,6 +269,7 @@ sub display_trophy
         $html_output_for{$name} .= sprintf "      <li%s>%s</li>\n", $my_score ? " class=\"me\"" : "", $callback_html;
       }
     }
+
     $html_output_for{$name} .= "    </ol>\n";
     if (!exists($player_info{$name}))
     {
@@ -268,6 +280,8 @@ sub display_trophy
 
     $clan_points_for{$name} += $clan_points if $clan_points && exists $clan_of{$name};
 
+    # now fill in the clan point placeholders since we're done processing the
+    # current player's games
     for ($txt_output_for{$name}, $html_output_for{$name})
     {
       s{<<TROPHY_CLAN_POINTS>>}
@@ -309,6 +323,7 @@ sub write_pages
       ($name, $output) = each %html_output_for or last;
     }
 
+    # last call to fill in any placeholders
     $output =~ s{<<CLAN_POINTS:(\w+)>>}
                 {
                   if (exists $clan_of{$1})
@@ -365,6 +380,8 @@ sub b13_for
 sub best_of_13
 {
   my %games_for;
+
+  # we want all the games of only people who've ascended
   foreach (@games)
   {
     push @{$games_for{$_->{name}}}, $_ if exists($ascensions_for{$_->{name}});
@@ -379,13 +396,15 @@ sub best_of_13
   return \@best_of_13;
 }
 
-# and now the actual code
+# entry point
 
 print "Reading xlogfile\n";
 read_xlogfile("xlogfile");
 print "Reading clan_info\n";
 read_clan_info("clan_info");
 
+# read_xlogfile populates %txt_output_for's keys with each player
+# so we put any initial text for each player's page here
 foreach my $name (keys %txt_output_for)
 {
   my $asc = exists($ascensions_for{$name}) ? $ascensions_for{$name}[0] : 0;
@@ -427,6 +446,7 @@ EOH
       %s
     </ul>
 EOH2
+
     my $mates = join '',
                 map
                 {
@@ -439,9 +459,11 @@ EOH2
   }
   else
   {
+    # might add a "join a clan, doofus!" message
   }
 }
 
+# prefer data structures to code
 my @trophies =
 (
   {
