@@ -421,7 +421,7 @@ read_xlogfile("xlogfile");
 foreach my $name (keys %txt_output_for)
 {
   my $asc = exists($ascensions_for{$name}) ? $ascensions_for{$name}[0] : 0;
-  my $clan_info = '';
+  my $clan_info = "Clan: none!\n";
 
   if (exists $clan_of{$name})
   {
@@ -436,7 +436,7 @@ foreach my $name (keys %txt_output_for)
 
   # html output
   $clan_info = exists $clan_of{$name} ? "    <h2>Clan: $clan_of{$name}<<CLAN_POINTS:$name>></h2>\n"
-                                      : '';
+                                      : "    <h2>Clan: <em>none!</em></h2>\n";
   my $format_string = << "EOH";
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
