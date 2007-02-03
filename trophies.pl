@@ -463,9 +463,10 @@ sub b13_for
  
   foreach (@type)
   {
-    $html_status{"Best of 13"}{$name} .= "      <h4>$_->[1]</h4>\n";
+    my $ascs = 0;
+    $html_status{"Best of 13"}{$name} .= "      <h4>$_->[1] (<<CURRENT_B13>>)</h4>\n";
     $html_status{"Best of 13"}{$name} .= "      <ol>\n";
-    $txt_status{"Best of 13"}{$name} .= "  $_->[1]\n";
+    $txt_status{"Best of 13"}{$name} .= "  $_->[1] (<<CURRENT_B13>>)\n";
 
     my %seen;
     for my $num ($_->[0]..$_->[0]+12)
@@ -484,12 +485,15 @@ sub b13_for
         $txt_status{"Best of 13"}{$name} .= sprintf "    %d. %s (repeated)\n", 1+$num-$_->[0], $game_ref->{crga0};
         last;
       }
+      ++$ascs;
       $html_status{"Best of 13"}{$name} .= "        <li class=\"b13 ascend\">$game_ref->{crga0}</li>\n";
       $txt_status{"Best of 13"}{$name} .= sprintf "    %d. %s\n", 1+$num-$_->[0], $game_ref->{crga0};
     }
 
     $html_status{"Best of 13"}{$name} .= "      </ol>\n";
     $txt_status{"Best of 13"}{$name} .= "\n";
+    $html_status{"Best of 13"}{$name} =~ s/<<CURRENT_B13>>/$ascs/g;
+    $txt_status{"Best of 13"}{$name} =~ s/<<CURRENT_B13>>/$ascs/g;
   }
   return ($best, $best_end);
 }
