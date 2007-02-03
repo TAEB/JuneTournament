@@ -539,7 +539,7 @@ foreach my $name (keys %txt_output_for)
 <html>
   <head>
     <title>The 2007 June nethack.alt.org Tournament - %s</title>
-    <link rel="stylesheet" type="text/css" href="player.css" />
+    <link rel="stylesheet" type="text/css" href="../player.css" />
   </head>
   <body>
     <h1>The 2007 June nethack.alt.org Tournament - %s</h1>
