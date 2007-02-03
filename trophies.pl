@@ -427,6 +427,9 @@ sub b13_for
   my $games_ref = shift;
   my $best = 0;
   my $best_end = 0;
+  my $last = 0;
+  my $last_start = 0;
+  my $name = $games_ref->[0]{name};
 
   foreach my $start (0..$#{$games_ref})
   {
@@ -443,8 +446,44 @@ sub b13_for
       $end = $game_ref->{num};
     }
     ($best, $best_end) = ($cur, $end) if $cur > $best;
+    ($last, $last_start) = ($cur, $start) if $cur > $last;
   }
 
+  my $cur_start = @{$games_ref} - 13;
+  $cur_start = 0 if $cur_start < 0;
+
+  my @type = ([$last_start, "Best"], [$cur_start, "Current"]);
+ 
+  foreach (@type)
+  {
+    $html_status{"Best of 13"}{$name} .= "      <h4>$_->[1]</h4>\n";
+    $html_status{"Best of 13"}{$name} .= "      <ol>\n";
+    $txt_status{"Best of 13"}{$name} .= "  $_->[1]\n";
+
+    my %seen;
+    for my $num ($_->[0]..$_->[0]+12)
+    {
+      my $game_ref = $games_ref->[$num];
+      last unless defined $game_ref;
+      if (!$game_ref->{ascended})
+      {
+        $html_status{"Best of 13"}{$name} .= "        <li class=\"b13 death\">died</li>\n";
+        $txt_status{"Best of 13"}{$name} .= sprintf "    %d. %s\n", 1+$num-$_->[0], "died";
+        next;
+      }
+      if ($seen{$game_ref->{crga0}}++)
+      {
+        $html_status{"Best of 13"}{$name} .= "        <li class=\"b13 repeat\">$game_ref->{crga0} (repeated)</li>\n";
+        $txt_status{"Best of 13"}{$name} .= sprintf "    %d. %s (repeated)\n", 1+$num-$_->[0], $game_ref->{crga0};
+        last;
+      }
+      $html_status{"Best of 13"}{$name} .= "        <li class=\"b13 ascend\">$game_ref->{crga0}</li>\n";
+      $txt_status{"Best of 13"}{$name} .= sprintf "    %d. %s\n", 1+$num-$_->[0], $game_ref->{crga0};
+    }
+
+    $html_status{"Best of 13"}{$name} .= "      </ol>\n";
+    $txt_status{"Best of 13"}{$name} .= "\n";
+  }
   return ($best, $best_end);
 }
 
