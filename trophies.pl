@@ -257,15 +257,15 @@ sub display_trophy
     $txt_output_for{$name} .= $display_name . "<<TROPHY_CLAN_POINTS>>:\n";
     $html_output_for{$name} .= "    <hr />\n    <h3>$display_name<<TROPHY_CLAN_POINTS>></h3>\n";
 
-    if (exists $txt_status{$display_name}{$name})
+    if (exists $txt_status{$args->{short}}{$name})
     {
-      $txt_output_for{$name} .= $txt_status{$display_name}{$name};
+      $txt_output_for{$name} .= $txt_status{$args->{short}}{$name};
       $txt_output_for{$name} .= "  Winners\n";
       $indent = '  ';
     }
-    if (exists $html_status{$display_name}{$name})
+    if (exists $html_status{$args->{short}}{$name})
     {
-      $html_output_for{$name} .= $html_status{$display_name}{$name};
+      $html_output_for{$name} .= $html_status{$args->{short}}{$name};
       $html_output_for{$name} .= "      <h4>Winners</h4>\n";
     }
 
@@ -464,9 +464,9 @@ sub b13_for
   foreach (@type)
   {
     my $ascs = 0;
-    $html_status{"Best of 13"}{$name} .= "      <h4>$_->[1] (<<CURRENT_B13>>)</h4>\n";
-    $html_status{"Best of 13"}{$name} .= "      <ol>\n";
-    $txt_status{"Best of 13"}{$name} .= "  $_->[1] (<<CURRENT_B13>>)\n";
+    $html_status{b13}{$name} .= "      <h4>$_->[1] (<<CURRENT_B13>>)</h4>\n";
+    $html_status{b13}{$name} .= "      <ol>\n";
+    $txt_status{b13}{$name} .= "  $_->[1] (<<CURRENT_B13>>)\n";
 
     my %seen;
     for my $num ($_->[0]..$_->[0]+12)
@@ -475,25 +475,25 @@ sub b13_for
       last unless defined $game_ref;
       if (!$game_ref->{ascended})
       {
-        $html_status{"Best of 13"}{$name} .= "        <li class=\"b13 death\">died</li>\n";
-        $txt_status{"Best of 13"}{$name} .= sprintf "    %d. %s\n", 1+$num-$_->[0], "died";
+        $html_status{b13}{$name} .= "        <li class=\"b13 death\">died</li>\n";
+        $txt_status{b13}{$name} .= sprintf "    %d. %s\n", 1+$num-$_->[0], "died";
         next;
       }
       if ($seen{$game_ref->{crga0}}++)
       {
-        $html_status{"Best of 13"}{$name} .= "        <li class=\"b13 repeat\">$game_ref->{crga0} (repeated)</li>\n";
-        $txt_status{"Best of 13"}{$name} .= sprintf "    %d. %s (repeated)\n", 1+$num-$_->[0], $game_ref->{crga0};
+        $html_status{b13}{$name} .= "        <li class=\"b13 repeat\">$game_ref->{crga0} (repeated)</li>\n";
+        $txt_status{b13}{$name} .= sprintf "    %d. %s (repeated)\n", 1+$num-$_->[0], $game_ref->{crga0};
         last;
       }
       ++$ascs;
-      $html_status{"Best of 13"}{$name} .= "        <li class=\"b13 ascend\">$game_ref->{crga0}</li>\n";
-      $txt_status{"Best of 13"}{$name} .= sprintf "    %d. %s\n", 1+$num-$_->[0], $game_ref->{crga0};
+      $html_status{b13}{$name} .= "        <li class=\"b13 ascend\">$game_ref->{crga0}</li>\n";
+      $txt_status{b13}{$name} .= sprintf "    %d. %s\n", 1+$num-$_->[0], $game_ref->{crga0};
     }
 
-    $html_status{"Best of 13"}{$name} .= "      </ol>\n";
-    $txt_status{"Best of 13"}{$name} .= "\n";
-    $html_status{"Best of 13"}{$name} =~ s/<<CURRENT_B13>>/$ascs/g;
-    $txt_status{"Best of 13"}{$name} =~ s/<<CURRENT_B13>>/$ascs/g;
+    $html_status{b13}{$name} .= "      </ol>\n";
+    $txt_status{b13}{$name} .= "\n";
+    $html_status{b13}{$name} =~ s/<<CURRENT_B13>>/$ascs/g;
+    $txt_status{b13}{$name} =~ s/<<CURRENT_B13>>/$ascs/g;
   }
   return ($best, $best_end);
 }
