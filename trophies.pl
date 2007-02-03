@@ -17,6 +17,8 @@ my %html_output_for;
 my %clan_txt_output_for;
 my %clan_html_output_for;
 my %all_fields;
+my %html_status;
+my %txt_status;
 
 # some constants
 my @points_for_position = (1.00, .60, .30);
@@ -220,6 +222,7 @@ sub display_trophy
     my $num;
     my @nums = (0..2);
     my $clan_points = 0;
+    my $indent = '';
 
     # does this player have any games eligible for this trophy?
     # if not we just display the top three
@@ -252,7 +255,21 @@ sub display_trophy
 
     # add trophy name to output, with a placeholder for clan points
     $txt_output_for{$name} .= $display_name . "<<TROPHY_CLAN_POINTS>>:\n";
-    $html_output_for{$name} .= "    <hr />\n    <h3>$display_name<<TROPHY_CLAN_POINTS>></h3>\n    <ol class=\"trophy\">\n";
+    $html_output_for{$name} .= "    <hr />\n    <h3>$display_name<<TROPHY_CLAN_POINTS>></h3>\n";
+
+    if (exists $txt_status{$display_name}{$name})
+    {
+      $txt_output_for{$name} .= $txt_status{$display_name}{$name};
+      $txt_output_for{$name} .= "  Winners\n";
+      $indent = '  ';
+    }
+    if (exists $html_status{$display_name}{$name})
+    {
+      $html_output_for{$name} .= $html_status{$display_name}{$name};
+      $html_output_for{$name} .= "      <h4>Winners</h4>\n";
+    }
+
+    $html_output_for{$name} .= "    <ol class=\"trophy\">\n";
 
     # can't do a for (@nums) here because we need to look ahead
     foreach my $el (0..$#nums)
@@ -260,7 +277,7 @@ sub display_trophy
       my $n = $nums[$el];
       if (ref($n))
       {
-        $txt_output_for{$name} .= "  ...\n";
+        $txt_output_for{$name} .= "$indent  ...\n";
         $html_output_for{$name} .= "    </ol>\n    <div class=\"ellipses\">...</div>\n    <ol class=\"trophy\" start=\"".(1+$nums[$el+1])."\">\n";
       }
       else
@@ -286,7 +303,7 @@ sub display_trophy
           $callback_html =~ s!{{.*}}!<a href="$scorer.html">$scorer</a>!g;
         }
 
-        $txt_output_for{$name} .= sprintf "%s %d: %s\n", $my_score ? "*" : " ", $n+1, $callback_txt;
+        $txt_output_for{$name} .= sprintf "%s%s %d: %s\n", $indent, $my_score ? "*" : " ", $n+1, $callback_txt;
         $html_output_for{$name} .= sprintf "      <li%s>%s</li>\n", $my_score ? " class=\"me\"" : "", $callback_html;
       }
     }
@@ -294,7 +311,7 @@ sub display_trophy
     $html_output_for{$name} .= "    </ol>\n";
     if (!exists($player_info{$name}))
     {
-      $txt_output_for{$name} .= "  (No eligible games for $name)\n";
+      $txt_output_for{$name} .= "$indent  (No eligible games for $name)\n";
       $html_output_for{$name} .= "    <div class=\"nogames\">(No eligible games for $name)</div>\n";
     }
     $txt_output_for{$name} .= "\n";
