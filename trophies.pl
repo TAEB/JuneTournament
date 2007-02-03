@@ -559,7 +559,7 @@ EOH
   {
     my $format_string = << "EOH2";
     <hr />
-    <h3>Members of <a href=\"../clans/%s.html\">%s</a></h3>
+    <h3>Members of <a href=\"../clan/%s.html\">%s</a></h3>
     <ul id="clanmates">
 %s
     </ul>
