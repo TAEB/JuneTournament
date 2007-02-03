@@ -608,6 +608,7 @@ my @trophies =
 (
   {
     name             => "Best of 13",
+    short            => "b13",
     clan_points      => 10,
     list_sub         => \&best_of_13,
     sorter           => sub { $b->[1] <=> $a->[1] || $a->[2] <=> $b->[2]},
@@ -616,6 +617,7 @@ my @trophies =
   },
   {
     name             => "Most ascensions",
+    short            => "mostascs",
     clan_points      => 9,
     list_sub         => sub {[map {[$_, @{$ascensions_for{$_}}]} keys %ascensions_for]},
     sorter           => sub { $b->[1] <=> $a->[1] || $a->[2] <=> $b->[2]},
@@ -624,6 +626,7 @@ my @trophies =
   },
   {
     name             => "Longest ascension streak",
+    short            => "ascstreak",
     clan_points      => 9,
     list_sub         => sub {[map {[$_, @{$best_ascstreak_for{$_}}]} keys %best_ascstreak_for]},
     sorter           => sub { $b->[1] <=> $a->[1] || $a->[2] <=> $b->[2]},
@@ -632,24 +635,28 @@ my @trophies =
   },
   {
     name             => "First ascension",
+    short            => "first",
     clan_points      => 6,
     trophy_stat      => "endtime",
     display_callback => sub {my $g = shift; my $time = gmtime($g->{endtime} - 8 * 3600); $time =~ s/  / /; sprintf "{{%s}} - #%d (%s)", $g->{name}, $g->{num}, $time}
   },
   {
     name             => "Fastest ascension",
+    short            => "fastest",
     clan_points      => 8,
     trophy_stat      => "turns",
     display_callback => sub {my $g = shift; sprintf "{{%s}} - T:%d", $g->{name}, $g->{turns}}
   },
   {
     name             => "Quickest ascension",
+    short            => "quickest",
     clan_points      => 8,
     trophy_stat      => "realtime",
     display_callback => sub {my $g = shift; sprintf "{{%s}} - %s", $g->{name}, demunge_realtime($g->{realtime})}
   },
   {
     name             => "Best behaved ascension",
+    short            => "conduct",
     clan_points      => 7,
     trophy_stat      => "conducts",
     need_reverse     => 1,
@@ -657,6 +664,7 @@ my @trophies =
   },
   {
     name             => "Extinctionist",
+    short            => "extinctionist",
     clan_points      => 5,
     trophy_stat      => "kills",
     list             => \@games,
@@ -664,6 +672,7 @@ my @trophies =
   },
   {
     name             => "Truest pacifist ascension",
+    short            => "pacifistest",
     clan_points      => 5,
     trophy_stat      => "kills",
     needs_reverse    => 1,
@@ -671,12 +680,14 @@ my @trophies =
   },
   {
     name             => "Low-scoring ascension",
+    short            => "lsa",
     clan_points      => 7,
     trophy_stat      => "points",
     display_callback => sub {my $g = shift; sprintf "{{%s}} - %d point%s", $g->{name}, $g->{points}, $g->{points} == 1 ? "" : "s"}
   },
   {
     name             => "High-scoring ascension",
+    short            => "highasc",
     clan_points      => 5,
     trophy_stat      => "points",
     need_reverse     => 1,
@@ -689,6 +700,7 @@ foreach my $role (@roles)
   push @trophies,
   {
     name             => "High-scoring $expand{$role}",
+    short            => "high\l$role",
     clan_points      => 2,
     list             => \@games,
     trophy_stat      => "points",
