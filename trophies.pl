@@ -348,7 +348,7 @@ sub display_trophy
 
 sub write_pages
 {
-  my $directory = 'pages';
+  my $directory = 'player';
   my $extension = 'txt';
   my $post      = '';
 
@@ -360,7 +360,7 @@ sub write_pages
     if ($extension eq 'txt')
     {
       my $next_set = 0;
-      if ($directory eq 'pages')
+      if ($directory eq 'player')
       {
         ($name, $output) = each %txt_output_for or $next_set = 1;
       }
@@ -379,7 +379,7 @@ sub write_pages
     if ($extension eq 'html')
     {
       my $next_set = 0;
-      if ($directory eq 'pages')
+      if ($directory eq 'player')
       {
         ($name, $output) = each %html_output_for or $next_set = 1;
       }
