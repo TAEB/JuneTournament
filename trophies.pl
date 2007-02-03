@@ -85,6 +85,7 @@ sub read_xlogfile
     $game{ascended} = $game{death} eq 'ascended' ? 1 : 0;
     $game{conducts} = scalar demunge_conduct($game{conduct});
     $game{num}      = $num;
+    $game{crga0}    = join ' ', @game{qw/role race gender0 align0/};
 
     foreach (keys %game)
     {
@@ -420,7 +421,7 @@ sub b13_for
       my $game_ref = $games_ref->[$num];
       last unless defined $game_ref;
       next unless $game_ref->{ascended};
-      last if $seen{join ' ', ($game_ref->{role}, $game_ref->{race}, $game_ref->{gender0}, $game_ref->{align0})}++;
+      last if $seen{$game_ref->{crga0}}++;
       ++$cur;
       $end = $game_ref->{num};
     }
