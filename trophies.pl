@@ -532,8 +532,8 @@ foreach my $name (keys %txt_output_for)
   $txt_output_for{$name}  = sprintf "Player: %s\nAscensions: %d/%d (%.2f%%)\n%s\n", $name, $asc, $games_for{$name}, 100*$asc/$games_for{$name}, $clan_info;
 
   # html output
-  $clan_info = exists $clan_of{$name} ? "    <h2>Clan: $clan_of{$name}<<CLAN_POINTS:$name>></h2>\n"
-                                      : "    <h2>Clan: <em>none!</em></h2>\n";
+  $clan_info = exists $clan_of{$name} ? "<h2>Clan: $clan_of{$name}<<CLAN_POINTS:$name>></h2>\n"
+                                      : "<h2>Clan: <em>none!</em></h2>\n";
   my $format_string = << "EOH";
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
@@ -561,15 +561,15 @@ EOH
     <hr />
     <h3>Members of <a href=\"../clans/%s.html\">%s</a></h3>
     <ul id="clanmates">
-      %s
+%s
     </ul>
 EOH2
 
-    my $mates = join '',
+    my $mates = join "\n",
                 map
                 {
-                  $_ eq $name ? "      <li class=\"me\">$_<<CLAN_POINTS:$_>></li>\n"
-                              : "      <li><a href=\"$_.html\">$_</a><<CLAN_POINTS:$_>></li>\n"
+                  $_ eq $name ? "      <li class=\"me\">$_<<CLAN_POINTS:$_>></li>"
+                              : "      <li><a href=\"$_.html\">$_</a><<CLAN_POINTS:$_>></li>"
                 }
                 sort
                 keys %{$clan_roster{ $clan_of{$name} }};
