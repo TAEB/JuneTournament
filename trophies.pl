@@ -47,7 +47,7 @@ sub read_clan_info
   while (<>)
   {
     chomp;
-    my ($nick, $clan) = split ':' or last;
+    my ($nick, $clan) = split ':' or next;
     $clan_of{$nick} = $clan;
     $clan_roster{$clan}{$nick} = 1;
     $clan_txt_output_for{$clan} = $clan_html_output_for{$clan} = "";
