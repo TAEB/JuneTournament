@@ -414,7 +414,7 @@ sub write_pages
                     }
                     else
                     {
-                      " (0 points)"
+                      ""
                     }
                   }
                   else
