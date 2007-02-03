@@ -326,9 +326,16 @@ sub display_trophy
        {
          if (exists $clan_of{$name})
          {
-           sprintf ' (%d point%s)',
-                   $clan_points,
-                   $clan_points == 1 ? '' : 's';
+           if ($clan_points > 0)
+           {
+             sprintf ' (%d point%s)',
+                     $clan_points,
+                     $clan_points == 1 ? '' : 's';
+           }
+           else
+           {
+             ''
+           }
          }
          else
          {
