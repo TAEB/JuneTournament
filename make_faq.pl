@@ -24,7 +24,7 @@ for (@faq, '---')
     }
     else
     {
-      $answer .= "<p>$_</p>\n";
+      $answer .= "    <p>$_</p>\n";
     }
   }
 }
@@ -58,7 +58,7 @@ foreach my $num (1..@questions)
   print << "EOH2";
     <hr />
     <h2 id="q$num">$num. $question</h2>
-    $answer
+$answer
 EOH2
 }
 
