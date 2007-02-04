@@ -102,14 +102,14 @@ sub read_xlogfile
     {
       ++$clan_ascs{$clan_of{$game{name}}} if exists $clan_of{$game{name}};
       ++$ascensions_for{$game{name}}[0];
-      $ascensions_for{$game{name}}[1] = $num;
+      $ascensions_for{$game{name}}[1] = $game{endtime};
 
       # calculate asc streaks here because who needs another pass over all games
       my $a = ++$ascstreak_for{$game{name}}[0];
-      $ascstreak_for{$game{name}}[1] = $num;
+      $ascstreak_for{$game{name}}[1] = $game{endtime};
       if (!exists($best_ascstreak_for{$game{name}}) || $a > $best_ascstreak_for{$game{name}}[0])
       {
-        $best_ascstreak_for{$game{name}} = [$a, $num];
+        $best_ascstreak_for{$game{name}} = [$a, $game{endtime}];
       }
     }
     else
