@@ -215,6 +215,27 @@ sub display_trophy
     open(my $txt_handle, '>', "trophy/$short.txt") or die "Unable to open trophy/$short.txt: $!";
     open(my $html_handle, '>', "trophy/$short.html") or die "Unable to open trophy/$short.html: $!";
 
+    print {$txt_handle} $display_name, "\n";
+    print {$html_handle} << "EOH4";
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <title>The 2007 June nethack.alt.org Tournament - $display_name</title>
+    <link rel="stylesheet" type="text/css" href="../trophy.css" />
+  </head>
+  <body>
+    <h1>The 2007 June nethack.alt.org Tournament</h1>
+    <h2>$display_name</h2>
+    <ul id="mainlinks">
+      <li><a href="$short.txt">plaintext version</a></li>
+      <li><a href="../index.html">main page</a></li>
+      <li><a href="../winners.html">all trophy winners</a></li>
+      <li><a href="http://alt.org/nethack/">nethack.alt.org</a></li>
+    </ul>
+    <hr />
+    <ol>
+EOH4
+
     foreach my $n (0..$#sorted)
     {
       # the callback surrounds nicks like "{{eidolos2}}" to let us know what
@@ -224,11 +245,18 @@ sub display_trophy
       my $callback_html = $display_callback->($sorted[$n]);
       my $callback_txt = $callback_html;
       $callback_txt =~ s/{{|}}//g;
-      $callback_html =~ s!{{(.*)}}!<a href="$1.html">$1</a>!g;
+      $callback_html =~ s!{{(.*)}}!<a href="../player/$1.html">$1</a>!g;
 
       printf {$txt_handle} "%d: %s\n", $n+1, $callback_txt;
-      printf {$html_handle} "  <li>%s</li>\n", $callback_html;
+      printf {$html_handle} "      <li>%s</li>\n", $callback_html;
     }
+
+    print {$html_handle} << "EOH5";
+    </ol>
+  </body>
+</html>
+EOH5
+
   }
 
   # go from index-by-gamenum to index-by-playername
