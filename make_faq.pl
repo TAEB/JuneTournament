@@ -24,7 +24,11 @@ for (@faq, '---')
     }
     else
     {
-      $answer .= "    <p>$_</p>\n";
+      if (!/^\s*</) # does it look like plaintext?
+      {
+        $_ = "<p>$_</p>";
+      }
+      $answer .= "    $_\n";
     }
   }
 }

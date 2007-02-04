@@ -4,4 +4,27 @@ Why yes, <a href="http://nethack.devnull.net/">the devnull tournament</a> is in 
 Who is running this?
 Eidolos of irc.freenode.org #nethack. Posts on rec.games.roguelike.nethack as Shawn M Moore. In general a wonky guy. You can contact him at <a href="mailto:sarNetak@gmHackail.com">sarNetak@gmHackail.com</a> (but do remove the name of the game we play)
 ---
-
+How do I participate?
+Just play as you would normally on <a href="http://alt.org/nethack/">nethack.alt.org</a>. See? Easy!
+---
+What devnull trophies are there going to be?
+<ul>
+  <li>Best of 13</li>
+  <li>Most Ascensions</li>
+  <li>Fastest Ascension: Gametime</li>
+  <li>Lowest-Scored Ascension</li>
+  <li>Best Behaved Ascension</li>
+  <li>First Ascension</li>
+  <li>Most Unique Deaths</li>
+  <li>Highest-Scored Ascension</li>
+  <li>Highest &lt;Role&gt; Score</li>
+  <li>The Full Monty</li>
+  <li>The Grand Slam</li>
+  <li>The Hat Trick</li>
+  <li>The Double Top</li>
+  <li>The Birdie</li>
+  <li>The Dilithium Star</li>
+  <li>The Platinum Star</li>
+  <li>The Gold Star</li>
+</ul>
+Descriptions for each of these trophies can be found <a href="http://nethack.devnull.net/tournament/trophies.shtml">on the devnull site</a>.
