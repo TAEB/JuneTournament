@@ -2,6 +2,8 @@
 use strict;
 use warnings;
 
+system('touch .trophy_time');
+
 my @games;
 my @ascensions;
 my %games_for;
