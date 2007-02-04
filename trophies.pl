@@ -502,7 +502,7 @@ sub b13_for
       next unless $game_ref->{ascended};
       last if $seen{$game_ref->{crga0}}++;
       ++$cur;
-      $end = $game_ref->{num};
+      $end = $game_ref->{endtime};
     }
     ($best, $best_end) = ($cur, $end) if $cur > $best;
     ($last, $last_start) = ($cur, $start) if $cur > $last;
