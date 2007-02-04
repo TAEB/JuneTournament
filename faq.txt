@@ -32,9 +32,9 @@ Descriptions for each of these trophies can be found <a href="http://nethack.dev
 What original trophies from last June's tournament will be awarded?
 <dl>
   <dt>Longest Ascension Streak</dt>
-    <dd>Awarded to the player who ascends with the most zorkmids in his inventory. Some or all of the gold can be in a container. Note that the gold from artifacts, gems, and amulets is <em>not</em> considered. This is intentional.</dd>
-  <dt>Richest Ascension</dt>
     <dd>Awarded to the player who ascends the largest number of times with no intervening deaths.</dd>
+  <dt>Richest Ascension</dt>
+    <dd>Awarded to the player who ascends with the most zorkmids in his inventory. Some or all of the gold can be in a container. Note that the gold from artifacts, gems, and amulets is <em>not</em> considered. This is intentional.</dd>
 </dl>
 ---
 What original trophies from last June's tournament will be burned and forgotten?
