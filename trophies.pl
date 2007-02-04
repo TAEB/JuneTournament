@@ -306,7 +306,7 @@ EOH5
 
     # add trophy name to output, with a placeholder for clan points
     $txt_output_for{$name} .= $display_name . "<<TROPHY_CLAN_POINTS>>:\n";
-    $html_output_for{$name} .= "    <hr />\n    <h3>$display_name<<TROPHY_CLAN_POINTS>></h3>\n";
+    $html_output_for{$name} .= "    <hr />\n    <h3><a href=\"../trophy/$short.html\">$display_name</a><<TROPHY_CLAN_POINTS>></h3>\n";
 
     if (exists $txt_status{$short}{$name})
     {
