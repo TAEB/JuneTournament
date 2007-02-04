@@ -1,6 +1,8 @@
 #!/bin/bash
 
 time perl trophies.pl
+echo "Creating FAQ"
+perl make_faq.pl faq.txt > faq.html
 echo "Compressing all pages"
 tar -jcf pages.tbz2 index.html faq.html player.css player clan trophy
 echo "Uploading tarball"
