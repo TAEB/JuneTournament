@@ -210,6 +210,27 @@ sub display_trophy
   @sorted = $grep->(@sorted) if defined $grep;
   @sorted = sort $sorter @sorted;
 
+  # print all output for this trophy
+  {
+    open(my $txt_handle, '>', "trophy/$short.txt") or die "Unable to open trophy/$short.txt: $!";
+    open(my $html_handle, '>', "trophy/$short.html") or die "Unable to open trophy/$short.html: $!";
+
+    foreach my $n (0..$#sorted)
+    {
+      # the callback surrounds nicks like "{{eidolos2}}" to let us know what
+      # to link for the html version; in the text version we just remove the
+      # markers
+
+      my $callback_html = $display_callback->($sorted[$n]);
+      my $callback_txt = $callback_html;
+      $callback_txt =~ s/{{|}}//g;
+      $callback_html =~ s!{{(.*)}}!<a href="$1.html">$1</a>!g;
+
+      printf {$txt_handle} "%d: %s\n", $n+1, $callback_txt;
+      printf {$html_handle} "  <li>%s</li>\n", $callback_html;
+    }
+  }
+
   # go from index-by-gamenum to index-by-playername
   foreach my $n (0..$#sorted)
   {
