@@ -246,9 +246,10 @@ EOH4
       my $callback_txt = $callback_html;
       $callback_txt =~ s/{{|}}//g;
       $callback_html =~ s!{{(.*)}}!<a href="../player/$1.html">$1</a>!g;
-
-      printf {$txt_handle} "%d: %s\n", $n+1, $callback_txt;
-      printf {$html_handle} "      <li>%s</li>\n", $callback_html;
+      my $clan_points = int($args->{clan_points} * $points_for_position[$n]) if $n < @points_for_position;
+      $clan_points = $clan_points ? sprintf(' (%d point%s)', $clan_points, $clan_points == 1 ? '': 's') : '';
+      printf {$txt_handle} "%d: %s%s\n", $n+1, $callback_txt, $clan_points;
+      printf {$html_handle} "      <li>%s%s</li>\n", $callback_html, $clan_points;;
     }
 
     print {$html_handle} << "EOH5";
