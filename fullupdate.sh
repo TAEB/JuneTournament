@@ -2,7 +2,7 @@
 
 time perl trophies.pl
 echo "Compressing all pages"
-tar -jcf pages.tbz2 index.html faq.html player.css player/* clan/* trophy/*
+tar -jcf pages.tbz2 index.html faq.html player.css player clan trophy
 echo "Uploading tarball"
 scp pages.tbz2 katron.org:public_html/nh/07/
 rm pages.tbz2
