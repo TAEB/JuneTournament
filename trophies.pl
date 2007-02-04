@@ -176,6 +176,7 @@ sub display_trophy
   my $get_name    = $args->{get_name}      || sub {$_[0]{name}};
   my $grep        = $args->{grep_callback} || undef;
   my $sorter      = $args->{sorter}        || undef;
+  my $short       = $args->{short}         || $display_name;
 
   if ($trophy_stat ne "" && !exists($all_fields{$trophy_stat}))
   {
@@ -257,15 +258,15 @@ sub display_trophy
     $txt_output_for{$name} .= $display_name . "<<TROPHY_CLAN_POINTS>>:\n";
     $html_output_for{$name} .= "    <hr />\n    <h3>$display_name<<TROPHY_CLAN_POINTS>></h3>\n";
 
-    if (exists $txt_status{$args->{short}}{$name})
+    if (exists $txt_status{$short}{$name})
     {
-      $txt_output_for{$name} .= $txt_status{$args->{short}}{$name};
+      $txt_output_for{$name} .= $txt_status{$short}{$name};
       $txt_output_for{$name} .= "  Winners\n";
       $indent = '  ';
     }
-    if (exists $html_status{$args->{short}}{$name})
+    if (exists $html_status{$short}{$name})
     {
-      $html_output_for{$name} .= $html_status{$args->{short}}{$name};
+      $html_output_for{$name} .= $html_status{$short}{$name};
       $html_output_for{$name} .= "      <h4>Winners</h4>\n";
     }
 
