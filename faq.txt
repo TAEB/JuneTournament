@@ -82,6 +82,10 @@ Any other new things?
 Of course! Each player, clan, and trophy has its own status page. You can access your player page by finding it in the <a href="player">player</a> subdirectory. You can access your clan page by navigating there from your player page, or by finding it in the <a href="clan">clan</a> subdirectory. Finally, you can access a trophy page by navigating there from either of the above pages, or by finding it in the <a href="trophy">trophy</a> subdirectory.
 We're really proud of this feature. Gotta keep devnull on its toes!
 ---
+I don't have a player page!
+It's probably because you haven't played any games yet.
+However, if you have finished at least one game and have waited an hour, it's definitely a bug. Please contact me immediately.
+---
 How do tie-breaks work?
 For single-game trophies, it's simply determined by which game came first in the logfile. This is the simplest and arguably most fair way to do it.
 For multiple-game trophies, ties are broken by the final game's position in the logfile. So if player A ascends three times in the first week, and then again on June 30th, he'll be beaten by a player who ascends four times in the second week.
