@@ -15,7 +15,7 @@ print "Creating FAQ";
 system("perl make_faq.pl faq.txt > faq.html");
 
 print "Compressing all pages";
-system("tar -jcf pages.tbz2 index.html faq.html player.css player clan trophy");
+system("tar -jcf pages.tbz2 index.html faq.html player.css players.html players.txt player clan trophy");
 
 print "Uploading tarball";
 system("scp pages.tbz2 katron.org:public_html/nh/07/");

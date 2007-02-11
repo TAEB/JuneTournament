@@ -772,3 +772,40 @@ foreach my $trophy_ref (@trophies)
 
 print "Printing player and clan pages\n";
 write_pages();
+
+# print player.html, player.txt
+{
+  open(my $player_html, '>', 'players.html') or die "Unable to open players.html for writing: $!";
+  open(my $player_txt, '>', 'players.txt') or die "Unable to open players.txt for writing: $!";
+
+  print {$player_html} << "EOH6";
+  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+  <html>
+    <head>
+      <title>The 2007 June nethack.alt.org Tournament Players</title>
+      <link rel="stylesheet" type="text/css" href="trophy.css" />
+    </head>
+    <body>
+      <h1>The 2007 June nethack.alt.org Tournament Players</h1>
+      <ul id="mainlinks">
+        <li><a href="players.txt">plaintext version</a></li>
+        <li><a href="index.html">main page</a></li>
+        <li><a href="winners.html">all trophy winners</a></li>
+        <li><a href="http://alt.org/nethack/">nethack.alt.org</a></li>
+      </ul>
+      <hr />
+      <ul>
+EOH6
+
+  for (sort keys %txt_output_for)
+  {
+    printf {$player_html} '      <li><a href="player/%s.html">%s</a> <a href="player/%s.txt">(plaintext)</a>%s</li>%s', $_, $_, $_, exists $clan_of{$_} ? sprintf(' of <a href="clan/%s.html">clan %s</a>', $clan_of{$_}, $clan_of{$_}) : "", "\n";
+    printf {$player_txt} '%s%s%s', $_, exists $clan_of{$_} ? " of clan $clan_of{$_}" : "", "\n";
+  }
+
+  print {$player_html} << "EOH7";
+      </ul>
+    </body>
+  </html>
+EOH7
+}
