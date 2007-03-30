@@ -22,5 +22,5 @@ system("scp pages.tbz2 katron.org:public_html/nh/07/");
 system("rm pages.tbz2");
 
 print "Extracting tarball remotely";
-system("ssh katron.org 'cd public_html/nh/07 && tar -jxf pages.tbz2 && rm pages.tbz2'");
+system("ssh katron.org 'cd public_html/nh/07 && rm player/* clan/* trophy/* && tar -jxf pages.tbz2 && rm pages.tbz2'");
 
