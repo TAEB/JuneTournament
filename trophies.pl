@@ -50,6 +50,16 @@ my %expand =
 );
 # }}}
 
+sub my_die # {{{
+{
+  my $text = join ' ', @_;
+  open my $handle, '>', '.lock'
+    or die "Unable to open .lock file for writing: $!",
+           "propagated by $text";
+  printf {$handle} "time: %s\nreason: ", scalar localtime, $text;
+  die $text;
+} # }}}
+
 sub read_clan_info # {{{
 {
   local @ARGV = @_;
@@ -215,8 +225,8 @@ sub display_trophy # {{{
 
   # print all output for this trophy
   {
-    open(my $txt_handle, '>', "trophy/$short.txt") or die "Unable to open trophy/$short.txt: $!";
-    open(my $html_handle, '>', "trophy/$short.html") or die "Unable to open trophy/$short.html: $!";
+    open(my $txt_handle, '>', "trophy/$short.txt") or my_die "Unable to open trophy/$short.txt: $!";
+    open(my $html_handle, '>', "trophy/$short.html") or my_die "Unable to open trophy/$short.html: $!";
 
     print {$txt_handle} $display_name, "\n";
     print {$html_handle} << "EOH4";
@@ -794,8 +804,8 @@ EOH2
 
 # print player.html, player.txt # {{{
   {
-    open(my $player_html, '>', 'players.html') or die "Unable to open players.html for writing: $!";
-    open(my $player_txt, '>', 'players.txt') or die "Unable to open players.txt for writing: $!";
+    open(my $player_html, '>', 'players.html') or my_die "Unable to open players.html for writing: $!";
+    open(my $player_txt, '>', 'players.txt') or my_die "Unable to open players.txt for writing: $!";
 
     print {$player_html} << "EOH6";
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
