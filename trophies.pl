@@ -497,7 +497,16 @@ sub write_pages # {{{
                   }
                 }eg;
 
-    open(my $handle, ">", "$directory/$name.$extension") or warn "Unable to open $directory/$name.$extension: $!";
+    my $handle;
+    if ($name eq '')
+    {
+      open($handle, ">", "scoreboard.$extension") or warn "Unable to open scoreboard.$extension: $!";
+    }
+    else
+    {
+      open($handle, ">", "$directory/$name.$extension") or warn "Unable to open $directory/$name.$extension: $!";
+    }
+
     print {$handle} $output, $post;
     close $handle;
   }
