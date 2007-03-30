@@ -4,6 +4,8 @@ use warnings;
 
 system('touch .trophy_time');
 
+my $devnull = 0;
+
 my @games;
 my @ascensions;
 my %games_for;
@@ -68,10 +70,11 @@ sub read_xlogfile
   {
     my %game;
 
-    # <devnull only>
-    s/^(\S+ )//;
-    next if $seen{$1}++;
-    # </devnull only>
+    if ($devnull)
+    {
+      s/^(\S+ )//;
+      next if $seen{$1}++;
+    }
 
     chomp;
     ++$num;
