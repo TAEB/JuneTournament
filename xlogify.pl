@@ -135,7 +135,7 @@ sub dumplog_matches # {{{
 
   for
   (
-    "name", "align", "race", "role",
+    qw[name align race role],
   )
   {
     return 0 if  ref($_) && $game_ref->{$_->[0]} ne $dump_ref->{$_->[1]};
