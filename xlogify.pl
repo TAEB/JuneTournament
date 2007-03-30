@@ -87,7 +87,6 @@ sub demunge_logline # {{{
         'align', 'name', 'death'} = @captures;
 
   $game{ascended}   = $game{death} eq 'ascended' ? 1 : 0;
-  $game{conducts}   = scalar demunge_conduct($game{conduct});
   $game{endtime}    = $game{num} unless exists $game{endtime};
   $game{gender0}  ||= $game{gender};
   $game{align0}   ||= $game{align};
