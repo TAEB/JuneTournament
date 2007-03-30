@@ -65,7 +65,6 @@ sub read_xlogfile # {{{
 {
   my %seen;
   my %ascstreak_for;
-  my $num = 0;
 
   local @ARGV = @_;
 
@@ -80,7 +79,6 @@ sub read_xlogfile # {{{
     }
 
     chomp;
-    ++$num;
 
     # parse the logfile.. ahh I love aardvarkj
     foreach (split /:/, $_)
@@ -90,8 +88,6 @@ sub read_xlogfile # {{{
     }
 
     next if $game{death} eq "a trickery";
-
-    $game{num} = $num;
 
     foreach (keys %game)
     {
