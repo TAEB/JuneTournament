@@ -72,8 +72,8 @@ Did I hear you say clan trophies?
 Yes! Clans are supported this year. The processes for setting up and joining a clan will be fleshed out soon. At the moment it looks like it will be the following:
 <ol>
   <li>Clan leader emails me his clan name, and a list of players who he wants in.</li>
-  <li>If needed, I'll ask that the clan leader puts "# I really intend to start <clan name> with <player list>" in his nethackrc (since it's easy to pretend to be someone else).</li>
-  <li>Each player puts "# I intend to join <clan name>" in his nethackrc.</li>
+  <li>If needed, I'll ask that the clan leader puts "# I really intend to start {clan name} with {player list}" in his nethackrc (since it's easy to pretend to be someone else).</li>
+  <li>Each player puts "# I intend to join {clan name}" in his nethackrc.</li>
   <li>If a player wants to join a clan and isn't in the original list, the same process is followed. I'll need some kind of confirmation from the leader.</li>
 </ol>
 Note that the leader can allow other people to confirm new members, just include that in an email.
