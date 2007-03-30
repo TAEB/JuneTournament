@@ -6,6 +6,16 @@ use LWP::Simple;
 die "$0: I refuse to run, there's a .lock file." if -e ".lock";
 system('touch .lock');
 
+sub my_die # {{{
+{
+  my $text = join ' ', @_;
+  open my $handle, '>', '.lock'
+    or die "Unable to open .lock file for writing: $!",
+           "propagated by $text";
+  printf {$handle} "time: %s\nreason: ", scalar localtime, $text;
+  die $text;
+} # }}}
+
 sub demunge_conduct # {{{
 {
   my $conduct = hex(shift);
@@ -106,7 +116,7 @@ sub dumplog_matches # {{{
   my ($dumplog, $game_ref) = @_;
 
   open my $out, '>', 'chardump.txt'
-    or die "Unable to open chardump.txt for writing: $!";
+    or my_die "Unable to open chardump.txt for writing: $!";
   print {$out} $dumplog;
   close $out;
 
@@ -131,21 +141,21 @@ sub dumplog_matches # {{{
 my $num = do {local @ARGV = "num.txt"; <>};
 
 open my $in, '<', 'intermediate_logfile'
-  or die "Unable to open intermediate_logfile for reading: $!";
+  or my_die "Unable to open intermediate_logfile for reading: $!";
 my @in = <$in>;
 close $in;
 
 open my $in_unsure, '<', 'xlogfile.unsure'
-  or die "Unable to open xlogfile.unsure for reading: $!";
+  or my_die "Unable to open xlogfile.unsure for reading: $!";
 my @unsure = <$in_unsure>;
 close $in_unsure;
 # }}}
 
 # Open output handles {{{
 open my $out, '>>', 'xlogfile'
-  or die "Unable to open xlogfile for appending: $!";
+  or my_die "Unable to open xlogfile for appending: $!";
 open my $out_unsure, '>', 'xlogfile.unsure'
-  or die "Unable to open xlogfile.unsure for writing: $!";
+  or my_die "Unable to open xlogfile.unsure for writing: $!";
 # }}}
 
 GAME: foreach (@in, @unsure)
@@ -193,7 +203,7 @@ GAME: foreach (@in, @unsure)
 }
 
 open my $out_num, '>', 'num.txt'
-  or die "Unable to open num.txt for writing: $!";
+  or my_die "Unable to open num.txt for writing: $!";
 print {$out_num} $num;
 
 unlink ".lock";
