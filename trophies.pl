@@ -6,6 +6,7 @@ system('touch .trophy_time');
 
 my $devnull = 0;
 
+# Global variables {{{
 my @games;
 my @ascensions;
 my %games_for;
@@ -23,8 +24,9 @@ my %clan_html_output_for;
 my %all_fields;
 my %html_status;
 my %txt_status;
+# }}}
 
-# some constants
+# Constants {{{
 my @points_for_position = (1.00, .60, .30);
 my @roles = qw{Arc Bar Cav Hea Kni Mon Pri Ran Rog Sam Tou Val Wiz};
 my %expand =
@@ -43,8 +45,9 @@ my %expand =
   Val => 'Valkyrie',
   Wiz => 'Wizard',
 );
+# }}}
 
-sub read_clan_info
+sub read_clan_info # {{{
 {
   local @ARGV = @_;
 
@@ -56,9 +59,9 @@ sub read_clan_info
     $clan_roster{$clan}{$nick} = 1;
     $clan_txt_output_for{$clan} = $clan_html_output_for{$clan} = "";
   }
-}
+} # }}}
 
-sub read_xlogfile
+sub read_xlogfile # {{{
 {
   my %seen;
   my %ascstreak_for;
@@ -101,11 +104,11 @@ sub read_xlogfile
     }
 
     ++$games_for{$game{name}};
-    ++$clan_games{$clan_of{$game{name}}} if exists $clan_of{$game{name}};
+    ++$clan_games{ $clan_of{$game{name}} } if exists $clan_of{$game{name}};
 
     if ($game{ascended})
     {
-      ++$clan_ascs{$clan_of{$game{name}}} if exists $clan_of{$game{name}};
+      ++$clan_ascs{ $clan_of{$game{name}} } if exists $clan_of{$game{name}};
       ++$ascensions_for{$game{name}}[0];
       $ascensions_for{$game{name}}[1] = $game{endtime};
 
@@ -126,9 +129,9 @@ sub read_xlogfile
     push @games, \%game;
     push @ascensions, \%game if $game{ascended};
   }
-}
+} # }}}
 
-sub demunge_realtime
+sub demunge_realtime # {{{
 {
   my $seconds = shift;
   my $hours = int($seconds / 3600);
@@ -136,9 +139,9 @@ sub demunge_realtime
   my $minutes = int($seconds / 60);
   $seconds %= 60;
   return sprintf "%d:%02d:%02d", $hours, $minutes, $seconds;
-}
+} # }}}
 
-sub demunge_conduct
+sub demunge_conduct # {{{
 {
   my $conduct = hex(shift);
   my @achieved;
@@ -163,9 +166,9 @@ sub demunge_conduct
   }
 
   return @achieved;
-}
+} # }}}
 
-sub display_trophy
+sub display_trophy # {{{
 {
   my %player_info;
 
@@ -401,9 +404,9 @@ EOH5
        }eg;
     }
   }
-}
+} # }}}
 
-sub write_pages
+sub write_pages # {{{
 {
   my $directory = 'player';
   my $extension = 'txt';
@@ -484,9 +487,9 @@ sub write_pages
     print {$handle} $output, $post;
     close $handle;
   }
-}
+} # }}}
 
-sub b13_for
+sub b13_for # {{{
 {
   my $games_ref = shift;
   my $best = 0;
@@ -553,16 +556,16 @@ sub b13_for
     $txt_status{b13}{$name} =~ s/<<CURRENT_B13>>/$ascs/g;
   }
   return ($best, $best_end);
-}
+} # }}}
 
-sub best_of_13
+sub best_of_13 # {{{
 {
   my %games_for;
 
   # we want all the games of only people who've ascended
   foreach (@games)
   {
-    push @{$games_for{$_->{name}}}, $_ if exists($ascensions_for{$_->{name}});
+    push @{ $games_for{$_->{name}} }, $_ if exists($ascensions_for{$_->{name}});
   }
 
   my @best_of_13;
@@ -572,7 +575,7 @@ sub best_of_13
   }
 
   return \@best_of_13;
-}
+} # }}}
 
 # entry point
 
@@ -583,7 +586,7 @@ read_xlogfile("xlogfile");
 
 # read_xlogfile populates %txt_output_for's keys with each player
 # so we put any initial text for each player's page here
-foreach my $name (keys %txt_output_for)
+foreach my $name (keys %txt_output_for) # {{{
 {
   my $asc = exists($ascensions_for{$name}) ? $ascensions_for{$name}[0] : 0;
   my $clan_info = "Clan: none!\n";
@@ -647,21 +650,21 @@ EOH2
   {
     # might add a "join a clan, doofus!" message
   }
-}
+} # }}}
 
 # read_clan_info populates %clan_txt_output_for's keys with each clan
 # so we put any initial text for each clan's page here
-foreach my $clan (keys %clan_txt_output_for)
+foreach my $clan (keys %clan_txt_output_for) # {{{
 {
   my $roster = join '',
                map { "  $_<<CLAN_POINTS:$_>>\n" }
                sort
                keys %{$clan_roster{$clan}};
   $clan_txt_output_for{$clan} = sprintf "Clan: %s\nAscensions: %d/%d (%.2f%%)\n\nRoster:\n%s\n", $clan, $clan_ascs{$clan} || 0, $clan_games{$clan} || 0, $clan_games{$clan} ? 100*$clan_ascs{$clan}/$clan_games{$clan} : 0, $roster;
-}
+} # }}}
 
 # prefer data structures to code
-my @trophies =
+my @trophies = # {{{
 (
   {
     name             => "Best of 13",
@@ -765,7 +768,7 @@ foreach my $role (@roles)
     grep_callback    => sub {grep {$_->{role} eq $role} @_},
     display_callback => sub {my $g = shift; $|++; sprintf "{{%s}} - %d point%s", $g->{name}, $g->{points}, $g->{points} == 1 ? "" : "s"}
   };
-}
+} # }}}
 
 foreach my $trophy_ref (@trophies)
 {
@@ -776,7 +779,7 @@ foreach my $trophy_ref (@trophies)
 print "Printing player and clan pages\n";
 write_pages();
 
-# print player.html, player.txt
+# print player.html, player.txt # {{{
 {
   open(my $player_html, '>', 'players.html') or die "Unable to open players.html for writing: $!";
   open(my $player_txt, '>', 'players.txt') or die "Unable to open players.txt for writing: $!";
@@ -811,4 +814,5 @@ EOH6
     </body>
   </html>
 EOH7
-}
+} # }}}
+
