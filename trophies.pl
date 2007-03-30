@@ -383,7 +383,7 @@ EOH5
     }
 
     $html_output_for{$name} .= "    </ol>\n";
-    if (!exists($player_info{$name}))
+    if (!exists($player_info{$name}) && $name ne '')
     {
       $txt_output_for{$name} .= "$indent  (No eligible games for $name)\n";
       $html_output_for{$name} .= "    <div class=\"nogames\">(No eligible games for $name)</div>\n";
@@ -685,6 +685,8 @@ EOH2
                  keys %{$clan_roster{$clan}};
     $clan_txt_output_for{$clan} = sprintf "Clan: %s\nAscensions: %d/%d (%.2f%%)\n\nRoster:\n%s\n", $clan, $clan_ascs{$clan} || 0, $clan_games{$clan} || 0, $clan_games{$clan} ? 100*$clan_ascs{$clan}/$clan_games{$clan} : 0, $roster;
   } # }}}
+
+  $txt_output_for{''} = $html_output_for{''} = '';
 
 # prefer data structures to code
   my @trophies = # {{{
