@@ -91,12 +91,7 @@ sub read_xlogfile # {{{
 
     next if $game{death} eq "a trickery";
 
-    # add a few more fields
-    $game{ascended} = $game{death} eq 'ascended' ? 1 : 0;
-    $game{conducts} = scalar demunge_conduct($game{conduct});
-    $game{num}      = $num;
-    $game{endtime}  = $game{num} unless exists $game{endtime};
-    $game{crga0}    = join ' ', @game{qw/role race gender0 align0/};
+    $game{num} = $num;
 
     foreach (keys %game)
     {
