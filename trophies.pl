@@ -56,7 +56,18 @@ sub my_die # {{{
   open my $handle, '>', '.lock'
     or die "Unable to open .lock file for writing: $!",
            "propagated by $text";
-  printf {$handle} "time: %s\nreason: ", scalar localtime, $text;
+  printf {$handle} "time: %s\nreason: %s\nstacktrace:\n", scalar localtime, $text;
+
+  my $i = 1;
+  while (1)
+  {
+    my ($package, $filename, $line, $subroutine, $hasargs,
+        $wantarray, $evaltext, $is_require, $hints, $bitmask)
+          = caller($i++) or last;
+
+    printf {$handle} "  from %s, function %s (line %d)\n", $filename, $subroutine, $line;
+  }
+
   die $text;
 } # }}}
 
