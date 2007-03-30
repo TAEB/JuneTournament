@@ -115,6 +115,35 @@ LINE: while (<>)
       try_set($_->[0], $_->[1], 'botl');
     }
   }
+
+  if (/^Killer: (.+)$/)
+  {
+    try_set("ascended", $1 eq 'ascended' ? 1 : 0, 'Killer line');
+    try_set("death",    $1,                       'Killer line');
+  }
+
+  if (/^You were level (\d+) with a maximum of (\d+) hit points? when you/)
+  {
+    for ([xl    => $1],
+         [maxhp => $2])
+    {
+      try_set($_->[0], $_->[1], 'You were level ...');
+    }
+  }
+
+  if (/^and (\d+) pieces? of gold, after (\d+) moves?\.$/)
+  {
+    for ([gold  => $1],
+         [turns => $2])
+    {
+      try_set($_->[0], $_->[1], 'and x gold, after y moves');
+    }
+  }
+
+  if (/^You .+ with (\d+) points?,$/)
+  {
+    try_set("score", $1, 'You blehed with x points');
+  }
 }
 
 print join ':', map {y/:/_/; $_}
