@@ -4,7 +4,7 @@ use warnings;
 
 my %game;
 
-my %compress =
+my %compress = # {{{
 (
   Archeologist => 'Arc',
   Barbarian    => 'Bar',
@@ -38,9 +38,9 @@ foreach my $key (keys %compress)
 {
   next unless $key =~ y/A-Z//;
   $compress{lc $key} = $compress{$key};
-}
+} # }}}
 
-sub try_set
+sub try_set # {{{
 {
   my ($field, $value, $whence) = @_;
   if (exists $game{$field} && $game{$field} ne $value)
@@ -48,12 +48,41 @@ sub try_set
     die "Trying to re-set \$game{$field} (= $game{$field}) to $value from $whence.";
   }
   $game{$field} = $value;
+} # }}}
+
+sub munge_conducts
+{
+  my $result = 0;
+
+  my %hex_for =
+  (
+    foodless     => 0x0001,
+    vegan        => 0x0002,
+    vegetarian   => 0x0004,
+    atheist      => 0x0008,
+    weaponless   => 0x0010,
+    pacifist     => 0x0020,
+    illiterate   => 0x0040,
+    polyitemless => 0x0080,
+    polyselfless => 0x0100,
+    wishless     => 0x0200,
+    artiwishless => 0x0400,
+    genoless     => 0x0800,
+  );
+
+  foreach (@_)
+  {
+    $result |= $hex_for{$_};
+  }
+
+  return $result;
 }
 
 my $in_vanquished = 0;
 my $my_kill_count = 0;
+my @conducts;
 
-LINE: while (<>)
+LINE: while (<>) # {{{
 {
   chomp;
   if ($in_vanquished)
@@ -144,7 +173,23 @@ LINE: while (<>)
   {
     try_set("score", $1, 'You blehed with x points');
   }
-}
+
+  push @conducts, "illiterate" if /^\s*You were illiterate\s*$/;
+  push @conducts, "genoless" if /^\s*You never genocided any monsters\s*$/;
+  push @conducts, "weaponless" if /^\s*You never hit with a wielded weapon\s*$/;
+  push @conducts, "pacifist" if /^\s*You were a pacifist\s*$/;
+  push @conducts, "atheist" if /^\s*You were an atheist\s*$/;
+  push @conducts, "polyitemless" if /^\s*You never polymorphed an object\s*$/;
+  push @conducts, "polyselfless" if /^\s*You never changed form\s*$/;
+  push @conducts, "wishless", "artiwishless" if /^\s*You used no wishes\s*$/;
+  push @conducts, "artiwishless" if /^\s*You did not wish for any artifacts\s*$/;
+  push @conducts, "foodless", "vegan", "vegetarian" if /^\s*You went without food\s*$/;
+  push @conducts, "vegan", "vegetarian" if /^\s*You followed a strict vegan diet\s*$/;
+  push @conducts, "vegetarian" if /^\s*You were a vegetarian\s*$/;
+} # }}}
+
+$game{conduct} = munge_conducts(@conducts);
+$game{conducts} = scalar @conducts;
 
 print join ':', map {y/:/_/; $_}
                 map {"$_=$game{$_}"}
