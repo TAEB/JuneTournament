@@ -50,63 +50,76 @@ sub try_set
   $game{$field} = $value;
 }
 
+my $in_vanquished = 0;
+my $my_kill_count = 0;
+
 LINE: while (<>)
 {
   chomp;
+  if ($in_vanquished)
+  {
+    if (/^  (\d+) creatures? vanquished\.$/)
+    {
+      $in_vanquished = 0;
+      try_set('kills', $1, 'nethack\'s kill count');
+      next LINE;
+    }
+
+    if (/^  (.*)/)
+    {
+      if ($1 =~ /^(\d+)/)
+      {
+        $my_kill_count += $1;
+      }
+      else
+      {
+        ++$my_kill_count;
+      }
+      next LINE;
+    }
+
+    try_set('kills', $my_kill_count, 'my kill count');
+    $in_vanquished = 0;
+  }
+  elsif (/^Vanquished creatures$/)
+  {
+    $in_vanquished = 1;
+  }
+
   if ($. == 1)
   {
-    @game{qw{name align gender race role}} =
-      map {exists $compress{$_} ? $compress{$_} : $_}
-      /^(\w+), (\w+) (\w+) (\w+) (\w+)$/
-        or die "Unable to handle the first line of input, expected 'name, align gender race role' got $_";
+    /^(\w+), (\w+) (\w+) (\w+) (\w+)$/
+      or die "Unable to handle the first line of input, expected 'name, align gender race role' got $_";
+
+    for ([name  => $1],
+         [align => $compress{$2}],
+         [race  => $compress{$3}],
+         [role  => $compress{$4}])
+    {
+      try_set($_->[0], $_->[1], 'first line');
+    }
+
     next LINE;
   }
 
-  if (/^(?:$game{name} the [\w\s]+)?\s*St:(\d+|18\/\d\d|18\/\*\*) Dx:(\d+) Co:(\d+) In:(\d+) Wi:(\d+) Ch:(\d+)(.*)/)
+  if (/^(?:$game{name} the [\w\s]+)?\s*St:(\d+|18\/\d\d|18\/\*\*) Dx:(\d+) Co:(\d+) In:(\d+) Wi:(\d+) Ch:(\d+).*(Lawful|Neutral|Chaotic)/)
   {
-    @game{qw{str dex con int wis cha}} = ($1, $2, $3, $4, $5, $6);
-    my $remaining = $7;
-    if ($remaining =~ /\b(Lawful|Neutral|Chaotic)\b/)
+    for ([str   => $1],
+         [dex   => $2],
+         [con   => $3],
+         [int   => $4],
+         [wis   => $5],
+         [cha   => $6],
+         [align => $compress{$7}])
     {
-      try_set('align', $compress{$1}, 'botl');
-    }
-    if ($remaining =~ /\bS:(-?\d+)/)
-    {
-      try_set('score', $1, 'botl');
+      try_set($_->[0], $_->[1], 'botl');
     }
   }
 
-  if (m{
-         ^
-         (
-           Astral Plane
-         )
-         \s+
-         [\$*]:(\d+)           # shows up as *:130 on rogue level
-         \s+
-         HP:(-?\d+)\(-?\d+\)
-         \s+
-         Pw:(-?\d+)\(-?\d+\)
-         \s+
-         AC:(-?\d+)
-         \s+
-         (                    # affected by showexp
-           Xp:\d+/\d+
-           |
-           Exp:\d+
-         )
-         \s*
-         (?:
-           T:(-?\d+)
-         )?
-         $
-       }x)
-  {
-  }
-#Astral Plane $:0  HP:311(437) Pw:22(109) AC:-37 Xp:16/436138 T:67546
+
 }
 
-print join ':', map {s/:/_/g; $_}
+print join ':', map {y/:/_/; $_}
                 map {"$_=$game{$_}"}
                 keys %game;
 print "\n";
