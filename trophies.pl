@@ -689,8 +689,20 @@ EOH2
       short            => "first",
       clan_points      => 6,
       trophy_stat      => "endtime",
-      display_callback => sub {my $g = shift; my $time = gmtime($g->{endtime} - 8 * 3600); $time =~ s/  / /; sprintf "{{%s}} - #%d (%s)", $g->{name}, $g->{num}, $time}
-    },
+      display_callback => sub
+      {
+        my $g = shift;
+        if ($devnull)
+        {
+          my $time = gmtime($g->{endtime} - 8 * 3600);
+          $time =~ s/  / /;
+          sprintf "{{%s}} - #%d (%s)", $g->{name}, $g->{num}, $time
+        }
+        else
+        {
+          sprintf "{{%s}} - #%d", $g->{name}, $g->{num};
+        }
+      },
     {
       name             => "Fastest ascension",
       short            => "fastest",
