@@ -142,6 +142,15 @@ sub dumplog_matches # {{{
     return 0 if !ref($_) && $game_ref->{$_}      ne $dump_ref->{$_};
   }
 
+  for
+  (
+    qw[kills turns gold conduct conducts],
+  )
+  {
+    $game_ref->{$_->[0]} = $dump_ref->{$_->[1]} if  ref($_);
+    $game_ref->{$_}      = $dump_ref->{$_}      if !ref($_);
+  }
+
   $game_ref->{unsure} = 0;
   return 1;
 } # }}}
