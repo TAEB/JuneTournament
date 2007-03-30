@@ -4,7 +4,7 @@ use warnings;
 use LWP::Simple;
 
 die "$0: I refuse to run, there's a .lock file." if -e ".lock";
-touch ".lock";
+system('touch .lock');
 
 sub demunge_conduct # {{{
 {
