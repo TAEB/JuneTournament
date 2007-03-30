@@ -702,7 +702,22 @@ EOH2
     $clan_txt_output_for{$clan} = sprintf "Clan: %s\nAscensions: %d/%d (%.2f%%)\n\nRoster:\n%s\n", $clan, $clan_ascs{$clan} || 0, $clan_games{$clan} || 0, $clan_games{$clan} ? 100*$clan_ascs{$clan}/$clan_games{$clan} : 0, $roster;
   } # }}}
 
-  $txt_output_for{''} = $html_output_for{''} = '';
+  $txt_output_for{''} = "Current standings:\n";
+  $html_output_for{''} = << 'EOH8';
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+  <title>The 2007 June nethack.alt.org Tournament Scoreboard</title>
+  <link rel="stylesheet" type="text/css" href="player.css" />
+</head>
+<body>
+  <h1>The 2007 June nethack.alt.org Tournament Scoreboard</h1>
+  <ul id="mainlinks">
+    <li><a href="scoreboard.txt">plaintext version</a></li>
+    <li><a href="index.html">main page</a></li>
+    <li><a href="http://alt.org/nethack/">nethack.alt.org</a></li>
+  </ul>
+EOH8
 
 # prefer data structures to code
   my @trophies = # {{{
