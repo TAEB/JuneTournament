@@ -126,11 +126,10 @@ sub dumplog_matches # {{{
   for
   (
     "name", "align", "race", "role",
-
   )
   {
-    return 0 if $game_ref->{$_->[0]} ne $dump_ref->{$_->[1]} if     ref($_);
-    return 0 if $game_ref->{$_}      ne $dump_ref->{$_}      if not ref($_);
+    return 0 if  ref($_) && $game_ref->{$_->[0]} ne $dump_ref->{$_->[1]};
+    return 0 if !ref($_) && $game_ref->{$_}      ne $dump_ref->{$_};
   }
 
   $game_ref->{unsure} = 0;
