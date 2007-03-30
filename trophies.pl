@@ -730,11 +730,10 @@ EOH2
       display_callback => sub {my $g = shift; sprintf "{{%s}} - %d: %s", $g->{name}, $g->{conducts}, (join ', ', demunge_conduct($g->{conduct})) || "(none)"}
     },
     {
-      name             => "Extinctionist",
+      name             => "Most extinctionist ascension",
       short            => "extinctionist",
       clan_points      => 5,
       trophy_stat      => "kills",
-      list             => \@games,
       display_callback => sub {my $g = shift; sprintf "{{%s}} - %d kill%s", $g->{name}, $g->{kills}, $g->{kills} == 1 ? "" : "s"}
     },
     {
