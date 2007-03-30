@@ -161,6 +161,10 @@ open my $out_unsure, '>', 'xlogfile.unsure'
 GAME: foreach (@in, @unsure)
 {
   my $game_ref = demunge_logline($_);
+
+  next unless $game_ref->{birthdate} =~ /^200704/ &&
+              $game_ref->{deathdate} =~ /^200704/;
+
   if (!$game_ref->{unsure})
   {
     $game_ref->{num} = ++$num;
