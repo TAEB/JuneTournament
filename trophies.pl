@@ -326,7 +326,7 @@ EOH5
     }
 
     # stop when we get to the lowest ranked player
-    pop @nums while $nums[-1] >= @sorted;
+    pop @nums while @nums && $nums[-1] >= @sorted;
 
     # add trophy name to output, with a placeholder for clan points
     $txt_output_for{$name} .= $display_name . "<<TROPHY_CLAN_POINTS>>:\n";
