@@ -50,7 +50,7 @@ sub try_set # {{{
   $game{$field} = $value;
 } # }}}
 
-sub munge_conducts
+sub munge_conducts # {{{
 {
   my $result = 0;
 
@@ -76,7 +76,7 @@ sub munge_conducts
   }
 
   return $result;
-}
+} # }}}
 
 my $in_vanquished = 0;
 my $my_kill_count = 0;
