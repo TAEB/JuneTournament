@@ -2,6 +2,9 @@
 use strict;
 use warnings;
 
+die "$0: I refuse to run, there's a .lock file." if -e ".lock";
+system('touch .lock');
+
 system('touch .trophy_time');
 
 my $devnull = 0;
@@ -821,4 +824,6 @@ EOH7
 } # }}}
 
 main();
+
+unlink ".lock";
 
