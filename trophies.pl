@@ -254,7 +254,7 @@ sub display_trophy # {{{
     <ul id="mainlinks">
       <li><a href="$short.txt">plaintext version</a></li>
       <li><a href="../index.html">main page</a></li>
-      <li><a href="../winners.html">all trophy winners</a></li>
+      <li><a href="../scoreboard.html">scoreboard</a></li>
       <li><a href="http://alt.org/nethack/">nethack.alt.org</a></li>
     </ul>
     <hr />
@@ -375,7 +375,14 @@ EOH5
         }
         else
         {
-          $callback_html =~ s!{{.*}}!<a href="$scorer.html">$scorer</a>!g;
+          if ($name eq '')
+          {
+            $callback_html =~ s!{{.*}}!<a href="player/$scorer.html">$scorer</a>!g;
+          }
+          else
+          {
+            $callback_html =~ s!{{.*}}!<a href="$scorer.html">$scorer</a>!g;
+          }
         }
 
         $txt_output_for{$name} .= sprintf "%s%s %d: %s\n", $indent, $my_score ? "*" : " ", $n+1, $callback_txt;
@@ -507,6 +514,9 @@ sub write_pages # {{{
     if ($name eq '')
     {
       open($handle, ">", "scoreboard.$extension") or warn "Unable to open scoreboard.$extension: $!";
+      $output =~ s{../trophy}{trophy}g;
+      $output =~ s{../player}{player}g;
+      $output =~ s{../clan}  {clan}g;
     }
     else
     {
@@ -648,7 +658,7 @@ sub main # {{{
       <ul id="mainlinks">
         <li><a href="%s.txt">plaintext version</a></li>
         <li><a href="../index.html">main page</a></li>
-        <li><a href="../winners.html">trophy winners</a></li>
+        <li><a href="../scoreboard.html">scoreboard</a></li>
         <li><a href="http://alt.org/nethack/">nethack.alt.org</a></li>
       </ul>
 EOH
@@ -846,7 +856,7 @@ EOH2
         <ul id="mainlinks">
           <li><a href="players.txt">plaintext version</a></li>
           <li><a href="index.html">main page</a></li>
-          <li><a href="winners.html">all trophy winners</a></li>
+          <li><a href="scoreboard.html">scoreboard</a></li>
           <li><a href="http://alt.org/nethack/">nethack.alt.org</a></li>
         </ul>
         <hr />
