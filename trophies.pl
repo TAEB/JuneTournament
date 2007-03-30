@@ -384,7 +384,12 @@ EOH5
     }
 
     $html_output_for{$name} .= "    </ol>\n";
-    if (!exists($player_info{$name}) && $name ne '')
+    if (@sorted == 0)
+    {
+      $txt_output_for{$name} .= "$indent  (No current winner)\n";
+      $html_output_for{$name} .= "    <div class=\"nogames\">(No current winner)</div>\n";
+    }
+    elsif (!exists($player_info{$name}) && $name ne '')
     {
       $txt_output_for{$name} .= "$indent  (No eligible games for $name)\n";
       $html_output_for{$name} .= "    <div class=\"nogames\">(No eligible games for $name)</div>\n";
