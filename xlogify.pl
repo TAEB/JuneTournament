@@ -156,7 +156,7 @@ sub dumplog_matches # {{{
 } # }}}
 
 # Read all input {{{
-my $num = do {local @ARGV = "num.txt"; <>};
+my $num = do {local @ARGV = "num.txt"; <>} || 0;
 
 open my $in, '<', 'intermediate_logfile'
   or my_die "Unable to open intermediate_logfile for reading: $!";
