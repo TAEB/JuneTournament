@@ -2,6 +2,8 @@
 use strict;
 use warnings;
 
+die "$0: I refuse to run, there's a .lock file." if -e ".lock";
+
 my $input = 'http://alt.org/nethack/logfile';
 my $output = 'intermediate_logfile';
 
