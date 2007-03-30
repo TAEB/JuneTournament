@@ -115,8 +115,6 @@ LINE: while (<>)
       try_set($_->[0], $_->[1], 'botl');
     }
   }
-
-
 }
 
 print join ':', map {y/:/_/; $_}
