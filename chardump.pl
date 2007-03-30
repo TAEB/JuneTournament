@@ -143,12 +143,15 @@ LINE: while (<>) # {{{
     {
       try_set($_->[0], $_->[1], 'botl');
     }
+
+    next LINE;
   }
 
   if (/^Killer: (.+)$/)
   {
     try_set("ascended", $1 eq 'ascended' ? 1 : 0, 'Killer line');
     try_set("death",    $1,                       'Killer line');
+    next LINE;
   }
 
   if (/^You were level (\d+) with a maximum of (\d+) hit points? when you/)
@@ -158,6 +161,8 @@ LINE: while (<>) # {{{
     {
       try_set($_->[0], $_->[1], 'You were level ...');
     }
+
+    next LINE;
   }
 
   if (/^and (\d+) pieces? of gold, after (\d+) moves?\.$/)
@@ -167,11 +172,14 @@ LINE: while (<>) # {{{
     {
       try_set($_->[0], $_->[1], 'and x gold, after y moves');
     }
+
+    next LINE;
   }
 
   if (/^You .+ with (\d+) points?,$/)
   {
     try_set("score", $1, 'You blehed with x points');
+    next LINE;
   }
 
   push @conducts, "illiterate" if /^\s*You were illiterate\s*$/;
