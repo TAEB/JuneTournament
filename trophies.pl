@@ -517,7 +517,7 @@ sub b13_for
   $cur_start = 0 if $cur_start < 0;
 
   my @type = ([$last_start, "Best"], [$cur_start, "Current"]);
- 
+
   foreach (@type)
   {
     my $ascs = 0;
