@@ -191,7 +191,7 @@ GAME: foreach (@in, @unsure)
 
   if (!$game_ref->{ascended})
   {
-    print {$out} xlogify($game_ref);
+    print {$out} xlogify($game_ref), "\n";
     next GAME;
   }
 
@@ -199,7 +199,7 @@ GAME: foreach (@in, @unsure)
   my $last_dump = get("http://alt.org/nethack/dumplog/$game_ref->{name}.lastgame.txt");
   if (dumplog_matches($last_dump, $game_ref))
   {
-    print {$out} xlogify($game_ref);
+    print {$out} xlogify($game_ref), "\n";
     next GAME;
   }
 
@@ -215,18 +215,20 @@ GAME: foreach (@in, @unsure)
     my $dumplog = get("http://alt.org/nethack/chardump/$game_ref->{name}/$1");
     if (dumplog_matches($dumplog, $game_ref))
     {
-      print {$out} xlogify($game_ref);
+      print {$out} xlogify($game_ref), "\n";
       next GAME;
     }
   }
 
   $game_ref->{unsure} = 1;
-  print {$out_unsure} xlogify($game_ref);
+  print {$out_unsure} xlogify($game_ref), "\n";
 }
 
 open my $out_num, '>', 'num.txt'
   or my_die "Unable to open num.txt for writing: $!";
-print {$out_num} $num;
+print {$out_num} $num, "\n";
+
+unlink "intermediate_logfile";
 
 unlink ".lock";
 
