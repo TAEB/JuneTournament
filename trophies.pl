@@ -187,7 +187,7 @@ sub display_trophy # {{{
 {
   my %player_info;
 
-  # read arguments; tread lightly if you change this code
+  # read arguments; tread lightly if you change this code {{{
   my $args = shift;
 
   my $display_name = $args->{name};
@@ -213,10 +213,9 @@ sub display_trophy # {{{
   {
     my $g = shift;
     sprintf "{{%s}} - %s", $g->{name}, $g->{$trophy_stat};
-  };
+  }; # }}}
 
-  # how are we sorting? we need to maintain stability, so simple "reverse sort"
-  # won't work
+  # how are we sorting? we need to maintain stability {{{
   if (!defined($sorter))
   {
     if ($reverse)
@@ -227,14 +226,15 @@ sub display_trophy # {{{
     {
       $sorter = sub {$a->{$trophy_stat} <=> $b->{$trophy_stat}};
     }
-  }
+  } # }}}
 
-  # actually do the sorting, after we narrow down the list we want
+  # actually do the sorting, after we narrow down the list we want {{{
   my @sorted = @{$list};
   @sorted = $grep->(@sorted) if defined $grep;
   @sorted = sort $sorter @sorted;
+  # }}}
 
-  # print all output for this trophy
+  # print all output for this trophy {{{
   {
     open(my $txt_handle, '>', "trophy/$short.txt") or my_die "Unable to open trophy/$short.txt: $!";
     open(my $html_handle, '>', "trophy/$short.html") or my_die "Unable to open trophy/$short.html: $!";
@@ -281,17 +281,16 @@ EOH4
   </body>
 </html>
 EOH5
+  } # }}}
 
-  }
-
-  # go from index-by-gamenum to index-by-playername
+  # go from index-by-gamenum to index-by-playername {{{
   foreach my $n (0..$#sorted)
   {
     my $name = $get_name->($sorted[$n]);
     push @{$player_info{$name}}, {num => $n, rank => $n};
-  }
+  } # }}}
 
-  # build up output for each player
+  # build up output for each player {{{
   foreach my $name (keys %txt_output_for)
   {
     my $num;
@@ -418,7 +417,7 @@ EOH5
          }
        }eg;
     }
-  }
+  } # }}}
 } # }}}
 
 sub write_pages # {{{
