@@ -65,7 +65,7 @@ You bet!
   <dt>Clan: Most Ascensions</dt>
     <dd>Awarded to the clan that ascends the most. Pretty simple.</dd>
   <dt>Clan: Highest Ascension Ratio</dt>
-    <dd>Awarded to the clan with the highest ascension ratio over all its members. So yell at any clanmates who are startscumming! As usual, in the event of a tie, the clan whose last ascension came earliest wins.</dd>
+    <dd>Awarded to the clan with the highest ascension ratio over all its members. So yell at any clanmates who are startscumming! For tie breaks (say two clans both have a 100% ratio), the clan with the most ascensions gets it. If there's still a tie, the clan whose last ascension came earliest wins.</dd>
 </dl>
 ---
 Did I hear you say clan trophies?
