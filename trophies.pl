@@ -758,7 +758,14 @@ EOH2
       trophy_stat      => "points",
       need_reverse     => 1,
       display_callback => sub {my $g = shift; sprintf "{{%s}} - %d point%s", $g->{name}, $g->{points}, $g->{points} == 1 ? "" : "s"}
-    }
+    },
+    {
+      name             => "Richest ascension",
+      short            => "richest",
+      clan_points      => 5,
+      trophy_stat      => "gold",
+      display_callback => sub {my $g = shift; sprintf "{{%s}} - \$%d", $g->{name}, $g->{gold}}
+    },
   );
 
   foreach my $role (@roles)
