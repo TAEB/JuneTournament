@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use LWP::Simple;
 
-die "I refuse to run, there's a .lock file." if -e ".lock";
+die "$0: I refuse to run, there's a .lock file." if -e ".lock";
 touch ".lock";
 
 sub demunge_conduct # {{{
