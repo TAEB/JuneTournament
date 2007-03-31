@@ -14,6 +14,7 @@ my @games;
 my @ascensions;
 my %games_for;
 my %ascensions_for;
+my %unsure_for;
 my %clan_games;
 my %clan_ascs;
 my %best_ascstreak_for;
@@ -119,6 +120,7 @@ sub read_xlogfile # {{{
       $all_fields{$_} = 1;
     }
 
+    ++$unsure_for{$game{name}} if $game{unsure};
     ++$games_for{$game{name}};
     ++$clan_games{ $clan_of{$game{name}} } if exists $clan_of{$game{name}};
 
@@ -641,10 +643,21 @@ sub main # {{{
     }
 
     $txt_output_for{$name}  = sprintf "Player: %s\nAscensions: %d/%d (%.2f%%)\n%s\n", $name, $asc, $games_for{$name}, 100*$asc/$games_for{$name}, $clan_info;
+    $txt_output_for{$name} .= sprintf "Ascensions without dumplogs: %d\n  Email Eidolos if this persists for more than 24 hours.\n", $unsure_for{$name} if exists($unsure_for{$name}) && $unsure_for{$name};
 
     # html output
     $clan_info = exists $clan_of{$name} ? "<h2>Clan: $clan_of{$name}<<CLAN_POINTS:$name>></h2>\n"
                                         : "<h2>Clan: <em>none!</em></h2>\n";
+
+    my $unsure_info = "";
+    if (exists $unsure_for{$name} && $unsure_for{$name})
+    {
+      $unsure_info = sprintf '      <h2>Ascensions without dumplogs: %d</h2>%s',
+                     $unsure_for{$name},
+                     "\n";
+      $unsure_info .= "      <h2>Email Eidolos if this persists for more than 24 hours.</h2>\n";
+    }
+
     my $format_string = << "EOH";
   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
   <html>
@@ -655,7 +668,7 @@ sub main # {{{
     <body>
       <h1>The 2007 June nethack.alt.org Tournament - %s</h1>
       <h2>Ascensions: %d/%d (%.2f%%)</h2>
-      %s
+      %s%s
       <ul id="mainlinks">
         <li><a href="%s.txt">plaintext version</a></li>
         <li><a href="../index.html">main page</a></li>
@@ -664,7 +677,7 @@ sub main # {{{
       </ul>
 EOH
 
-    $html_output_for{$name} = sprintf $format_string, $name, $name, $asc, $games_for{$name}, 100*$asc/$games_for{$name}, $clan_info, $name;
+    $html_output_for{$name} = sprintf $format_string, $name, $name, $asc, $games_for{$name}, 100*$asc/$games_for{$name}, $unsure_info, $clan_info, $name;
 
     if (exists $clan_of{$name})
     {
