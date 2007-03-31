@@ -168,6 +168,38 @@ sub dumplog_matches # {{{
   return 1;
 } # }}}
 
+if (@ARGV) # {{{
+{
+  open my $in_unsure, '<', 'xlogfile.unsure'
+    or my_die "Unable to open xlogfile.unsure for reading: $!";
+  my @unsure = <$in_unsure>;
+  close $in_unsure;
+
+  open my $out, '>>', 'xlogfile'
+    or my_die "Unable to open xlogfile for appending: $!";
+  open my $out_unsure, '>', 'xlogfile.unsure'
+    or my_die "Unable to open xlogfile.unsure for writing: $!";
+
+  ARG: foreach my $dumploc (@ARGV)
+  {
+    foreach (@unsure)
+    {
+      my $game_ref = demunge_xlogline($_);
+      if (dumplog_matches('', $game_ref, $dumploc))
+      {
+        print "I found a match for $dumploc!\n";
+        print {$out} xlogify($game_ref), "\n";
+        next ARG;
+      }
+      print {$out_unsure} xlogify($game_ref), "\n";
+    }
+  }
+
+  exit 0;
+}
+# }}}
+
+# usual main {{{
 # Read all input {{{
 my $num = do {local @ARGV = "num.txt"; <>} || 0;
 
