@@ -82,8 +82,8 @@ sub demunge_logline # {{{
 
   my %game;
 
-  @game{'version', 'points', 'deathdnum', 'deathlev', 'maxlvl', 'hp', 'maxhp', 
-        'deaths', 'deathdate', 'birthdate', 'uid', 'role', 'race', 'gender', 
+  @game{'version', 'points', 'deathdnum', 'deathlev', 'maxlvl', 'hp', 'maxhp',
+        'deaths', 'deathdate', 'birthdate', 'uid', 'role', 'race', 'gender',
         'align', 'name', 'death'} = @captures;
 
   $game{ascended}   = $game{death} eq 'ascended' ? 1 : 0;
@@ -145,8 +145,11 @@ sub dumplog_matches # {{{
     [points => 'score'],
   )
   {
-    return 0 if  ref($_) && $game_ref->{$_->[0]} ne $dump_ref->{$_->[1]};
-    return 0 if !ref($_) && $game_ref->{$_}      ne $dump_ref->{$_};
+    my $a = ref($_) ? $_->[0] : $_;
+    my $b = ref($_) ? $_->[1] : $_;
+
+    return 0 unless defined $dump_ref->{$b};
+    return 0 if $game_ref->{$a} ne $dump_ref->{$b};
   }
 
   for
@@ -154,8 +157,11 @@ sub dumplog_matches # {{{
     qw[kills turns gold conduct conducts],
   )
   {
-    $game_ref->{$_->[0]} = $dump_ref->{$_->[1]} if  ref($_);
-    $game_ref->{$_}      = $dump_ref->{$_}      if !ref($_);
+    my $a = ref($_) ? $_->[0] : $_;
+    my $b = ref($_) ? $_->[1] : $_;
+
+    next unless defined $dump_ref->{$b};
+    $game_ref->{$a} = $dump_ref->{$b};
   }
 
   $game_ref->{unsure} = 0;
