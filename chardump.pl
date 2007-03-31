@@ -127,10 +127,11 @@ LINE: while (<>) # {{{
     /^(\w+), (\w+) (\w+) (\w+) (\w+)$/
       or die "Unable to handle the first line of input, expected 'name, align gender race role' got $_";
 
-    for ([name  => $1],
-         [align => $compress{$2}],
-         [race  => $compress{$3}],
-         [role  => $compress{$4}])
+    for ([name   => $1],
+         [align  => $compress{$2}],
+         [gender => $compress{$3}],
+         [race   => $compress{$4}],
+         [role   => $compress{$5}])
     {
       try_set($_->[0], $_->[1], 'first line');
     }
@@ -172,7 +173,7 @@ LINE: while (<>) # {{{
     next LINE;
   }
 
-  if (/^and (\d+) pieces? of gold, after (\d+) moves?\.$/)
+  if (/^and (\d+) pieces? of gold, after ([\d-]+) moves?\.$/)
   {
     for ([gold  => $1],
          [turns => $2])
@@ -183,9 +184,9 @@ LINE: while (<>) # {{{
     next LINE;
   }
 
-  if (/^You .+ with (\d+) points?,$/)
+  if (/^(?:You )?went to your reward with (\d+) points?,$/)
   {
-    try_set("score", $1, 'You blehed with x points');
+    try_set("score", $1, 'You went to your reward with x points');
     next LINE;
   }
 
