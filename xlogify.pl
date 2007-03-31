@@ -279,4 +279,5 @@ print {$out_num} $num, "\n";
 unlink "intermediate_logfile";
 
 unlink ".lock";
+# }}}
 
