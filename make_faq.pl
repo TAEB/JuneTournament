@@ -7,19 +7,26 @@ my @faq = map {chomp; $_} <>;
 my @questions;
 my $question = '';
 my $answer = '';
+my $anchor = '';
 
 for (@faq, '---')
 {
   if ($_ eq '---')
   {
-    push @questions, [$question, $answer];
+    push @questions, [$question, $answer, $anchor];
     $question = '';
     $answer = '';
+    $anchor = '';
   }
   else
   {
     if ($question eq '')
     {
+      if ($anchor eq '' && /^#\s*(\w+)\s*$/) # is it an anchor?
+      {
+        $anchor = $1;
+        next;
+      }
       $question = $_;
     }
     else
@@ -50,18 +57,21 @@ EOH
 foreach my $num (1..@questions)
 {
   my $question = $questions[$num-1][0];
-  print "      <li><a href=\"#q$num\">$question</a></li>\n";
+  my $anchor = $questions[$num-1][2] || "q$num";
+  print "      <li><a href=\"#$anchor\">$question</a></li>\n";
 }
 
 print "    </ol>\n";
 
 foreach my $num (1..@questions)
 {
-  my ($question, $answer) = @{$questions[$num-1]};
+  my ($question, $answer, $anchor) = @{$questions[$num-1]};
   chomp $answer;
+  $anchor ||= "q$num";
+
   print << "EOH2";
     <hr />
-    <h2 id="q$num">$num. $question</h2>
+    <h2 id="$anchor">$num. $question</h2>
 $answer
 EOH2
 }

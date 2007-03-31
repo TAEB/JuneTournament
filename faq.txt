@@ -1,12 +1,16 @@
+#november
 Wait! Isn't the NetHack tournament in <em>November</em>?
 Why yes, <a href="http://nethack.devnull.net/">the devnull tournament</a> is in November. One tournament a year is too few. And competition makes all participants better, right? That is, competition between tournaments <em>and</em> players in each tournament.
 ---
+#host
 Who is running this?
 Eidolos of irc.freenode.org #nethack. Posts on rec.games.roguelike.nethack as Shawn M Moore. In general a wonky guy. You can contact him at <a href="mailto:sartNetak@gmHackail.com">sartNetak@gmHackail.com</a> (but do remove the name of the game we play)
 ---
+#participation
 How do I participate?
 Just play as you would normally on <a href="http://alt.org/nethack/">nethack.alt.org</a>. See? Easy!
 ---
+#devnull_trophies
 What devnull trophies from last June's tournament will be awarded?
 <ul>
   <li>Best of 13</li>
@@ -29,6 +33,7 @@ What devnull trophies from last June's tournament will be awarded?
 </ul>
 Descriptions for each of these trophies can be found <a href="http://nethack.devnull.net/tournament/trophies.shtml">on the devnull site</a>.
 ---
+#june_trophies
 What original trophies from last June's tournament will be awarded?
 <dl>
   <dt>Longest Ascension Streak</dt>
@@ -37,10 +42,11 @@ What original trophies from last June's tournament will be awarded?
     <dd>Awarded to the player who ascends with the most zorkmids in his inventory. Some or all of the gold can be in a container. Note that the gold from artifacts, gems, and amulets is <em>not</em> considered. This is intentional.</dd>
 </dl>
 ---
+#trashed_trophies
 What original trophies from last June's tournament will be burned and forgotten?
 <dl>
   <dt>Highest-Scored Non-Ascension</dt>
-    <dd>This is excluded because I'm trying to phase out the use of just score as a measure of ability. We have <em>plenty</em> of score trophies as it is, anyway.</dd>
+    <dd>This is excluded because I am trying to phase out the use of just score as a measure of ability. We have <em>plenty</em> of score trophies as it is, anyway.</dd>
   <dt>Lowest HP Ascension</dt>
     <dd>This one wasn't very interesting last year. Frown (aka Duke-) ended up with max 1 HP pretty easily. If I recall correctly, the trick is to polymorph yourself.</dd>
   <dt>Lowest Average Dungeon Level</dt>
@@ -51,6 +57,7 @@ What original trophies from last June's tournament will be burned and forgotten?
     <dd>Definitely excluded. Damn you, black puddings!</dd>
 </dl>
 ---
+#new_trophies
 Are there going to be any other trophies?
 You bet!
 <dl>
@@ -68,6 +75,7 @@ You bet!
     <dd>Awarded to the clan with the highest ascension ratio over all its members. So yell at any clanmates who are startscumming! For tie breaks (say two clans both have a 100% ratio), the clan with the most ascensions gets it. If there's still a tie, the clan whose last ascension came earliest wins.</dd>
 </dl>
 ---
+#clan_setup
 Did I hear you say clan trophies?
 Yes! Clans are supported this year. The processes for setting up and joining a clan will be fleshed out soon. At the moment it looks like it will be the following:
 <ol>
@@ -78,6 +86,7 @@ Yes! Clans are supported this year. The processes for setting up and joining a c
 </ol>
 Note that the leader can allow other people to confirm new members, just include that in an email.
 ---
+#newness
 Any other new things?
 Of course! Each player, clan, and trophy has its own status page. You can access your player page by finding it in the <a href="player">player</a> subdirectory. You can access your clan page by navigating there from your player page, or by finding it in the <a href="clan">clan</a> subdirectory. Finally, you can access a trophy page by navigating there from either of the above pages, or by finding it in the <a href="trophy">trophy</a> subdirectory.
 We're really proud of this feature. Gotta keep devnull on its toes!
@@ -86,20 +95,25 @@ I don't have a player page!
 It's probably because you haven't played any games yet.
 However, if you have finished at least one game and have waited an hour, it's definitely a bug. Please contact me immediately.
 ---
+#tiebreak
 How do tie-breaks work?
 For single-game trophies, it's simply determined by which game came first in the logfile. This is the simplest and arguably most fair way to do it.
 For multiple-game trophies, ties are broken by the final game's position in the logfile. So if player A ascends three times in the first week, and then again on June 30th, he'll be beaten by a player who ascends four times in the second week.
 This also helps maintain the integrity of clan points. One of the problems in devnull is if multiple people tie for first, each player is awarded the full point value of the trophy. This is bad because if a lot of those players are in the same clan, then one of those clanmembers scoring better on that trophy (say, by ascending again, in the case of Most Ascensions) would hurt the clan. But this isn't a problem in the June tournament because I break ties the simple way.
 ---
+#frequency
 How often will the tourney stats be generated?
 Every ten minutes. Last year was every thirty minutes, but people like seeing their ascensions update the scoreboard quickly. So it's every ten minutes now. It might even be kicked down to every five minutes!
 ---
+#start_end
 When exactly will this tournament start and end?
 00:00:00 June 1st, 2007 to 23:59:59 June 30th, 2007. These times are UTC, which is what nethack.alt.org uses. So only games with a start and end date of "200706__" will be included. devnull uses US pacific coast time, so don't get burned by the different start time!
 ---
+#me_participating
 Will you be participating?
 Of course! I don't run the server (or have any write access to it) so there's no risk of tampering. No tourney script is run on the NAO server; it's all done here on katron.org.
 ---
+#cheating
 What about cheating?
 If you mean cheating as in abusing game mechanics, there's not much we can do about that. Pudding farming, the polyself bug, the Astral call bug, artifact naming, etc. are all fair game. Of course, these are frowned upon in varying degrees. I'll certainly look the other way with respect to abuse of game mechanics.
 If you mean cheating as in collusion (multiple players playing under a single nickname), that's also allowed. Not only is it impossible to detect, but I don't foresee it as being much of a problem.
