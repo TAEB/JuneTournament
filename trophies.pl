@@ -274,7 +274,7 @@ EOH4
       my $callback_txt = $callback_html;
       $callback_txt =~ s/{{|}}//g;
       $callback_html =~ s!{{(.*)}}!<a href="../player/$1.html">$1</a>!g;
-      my $clan_points = int($args->{clan_points} * $points_for_position[$n]) if $n < @points_for_position;
+      my $clan_points = $n < @points_for_position ? int($args->{clan_points} * $points_for_position[$n]) : 0;
       $clan_points = $clan_points ? sprintf(' (%d point%s)', $clan_points, $clan_points == 1 ? '': 's') : '';
       printf {$txt_handle} "%d: %s%s\n", $n+1, $callback_txt, $clan_points;
       printf {$html_handle} "      <li>%s%s</li>\n", $callback_html, $clan_points;;
