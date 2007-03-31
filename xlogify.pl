@@ -255,7 +255,10 @@ GAME: foreach (@in, @unsure)
     next unless m{<a href="(\w+.(\d{8})-\d+.txt)">};
 
     # note that this won't work very well across month boundaries, but that's ok
-    next unless abs($2 - $game_ref->{deathdate}) <= 1;
+    # next unless abs($2 - $game_ref->{deathdate}) <= 1;
+
+    # try to keep server smacks to a minimum
+    next unless $2 == $game_ref->{deathdate};
 
     my $dumplog = get("http://alt.org/nethack/chardump/$game_ref->{name}/$1");
     if (dumplog_matches($dumplog, $game_ref))
