@@ -2,7 +2,13 @@
 use strict;
 use warnings;
 
-if ((stat "trophies.pl")[9] > (stat ".trophy_time")[9])
+die "$0: I refuse to run, there's a .lock file." if -e ".lock";
+
+my $trophies = (stat "trophies.pl") [9];
+my $logfile  = (stat "xlogfile")    [9];
+my $last     = (stat ".trophy_time")[9];
+
+if ($logfile > $last || $trophies > $last)
 {
   system("time perl trophies.pl");
 }
