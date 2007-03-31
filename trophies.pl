@@ -232,6 +232,7 @@ sub display_trophy # {{{
   # actually do the sorting, after we narrow down the list we want {{{
   my @sorted = @{$list};
   @sorted = $grep->(@sorted) if defined $grep;
+  @sorted = grep { exists($_->{$trophy_stat}) } @sorted if $trophy_stat ne '';
   @sorted = sort $sorter @sorted;
   # }}}
 
