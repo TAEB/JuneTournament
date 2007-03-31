@@ -48,11 +48,11 @@ What original trophies from last June's tournament will be burned and forgotten?
   <dt>Highest-Scored Non-Ascension</dt>
     <dd>This is excluded because I am trying to phase out the use of just score as a measure of ability. We have <em>plenty</em> of score trophies as it is, anyway.</dd>
   <dt>Lowest HP Ascension</dt>
-    <dd>This one wasn't very interesting last year. Frown (aka Duke-) ended up with max 1 HP pretty easily. If I recall correctly, the trick is to polymorph yourself.</dd>
+    <dd>This one was not very interesting last year. Frown (aka Duke-) ended up with max 1 HP pretty easily. If I recall correctly, the trick is to polymorph yourself.</dd>
   <dt>Lowest Average Dungeon Level</dt>
-    <dd>This was won last year by Mekkis, who played exactly one game. So out it goes. I don't want to discourage anyone from playing, which this trophy did.</dd>
+    <dd>This was won last year by Mekkis, who played exactly one game. So out it goes. I do not want to discourage anyone from playing, which this trophy did.</dd>
   <dt>Most Lifesaved Ascension</dt>
-    <dd>This might be included this year, I'm still not sure how I feel about it. It'll probably just go to a pudding farmer.</dd>
+    <dd>This might be included this year, I am still not sure how I feel about it. It will probably just go to a pudding farmer.</dd>
   <dt>Most Efficient Ascension</dt>
     <dd>Definitely excluded. Damn you, black puddings!</dd>
 </dl>
@@ -64,15 +64,15 @@ You bet!
   <dt>Truest Pacifist Ascension</dt>
     <dd>Awarded to the player who has the fewest "vanquished creatures" in his dumplog. This probably will not go to a pacifist since pet kills are included.</dd>
   <dt>Most Extinctionist Ascension</dt>
-    <dd>Awarded to the player who has the most "vanquished creatures" in his dumplog. Thankfully NetHack stops counting kills of a species after 255, so it won't necessarily go to a pudding farmer!</dd>
+    <dd>Awarded to the player who has the most "vanquished creatures" in his dumplog. Thankfully NetHack stops counting kills of a species after 255, so it will not necessarily go to a pudding farmer!</dd>
   <dt>Fastest Ascension: Realtime</dt>
-    <dd>Awarded to the player who ascends in the shortest wallclock time. This is calculated by timing your ttyrecs, thanks to the efforts of jsn-. Note that (unlike devnull) long pauses are truncated to ten seconds, so you don't have to save and reload if you intend to wander away from the computer.</dd>
+    <dd>Awarded to the player who ascends in the shortest wallclock time. This is calculated by timing your ttyrecs, thanks to the efforts of jsn-. Note that (unlike devnull) long pauses are truncated to ten seconds, so you do not have to save and reload if you intend to wander away from the computer.</dd>
   <dt>Clan: Best in Show</dt>
     <dd>Awarded to the clan which earns the most clan points. Clan points are awarded based on trophies and achievements. Trophy clan points are weighted by how difficult the trophy is to achieve (so best of 13 is worth a lot more than highest scoring ascension). Unlike devnull, some points are awarded to the second and third place finishers of a trophy (60% and 30% respectively), even if the same player places more than once.</dd>
   <dt>Clan: Most Ascensions</dt>
     <dd>Awarded to the clan that ascends the most. Pretty simple.</dd>
   <dt>Clan: Highest Ascension Ratio</dt>
-    <dd>Awarded to the clan with the highest ascension ratio over all its members. So yell at any clanmates who are startscumming! For tie breaks (say two clans both have a 100% ratio), the clan with the most ascensions gets it. If there's still a tie, the clan whose last ascension came earliest wins.</dd>
+    <dd>Awarded to the clan with the highest ascension ratio over all its members. So yell at any clanmates who are startscumming! For tie breaks (say two clans both have a 100% ratio), the clan with the most ascensions gets it. If there is still a tie, the clan whose last ascension came earliest wins.</dd>
 </dl>
 ---
 #clan_setup
@@ -80,38 +80,39 @@ Did I hear you say clan trophies?
 Yes! Clans are supported this year. The processes for setting up and joining a clan will be fleshed out soon. At the moment it looks like it will be the following:
 <ol>
   <li>Clan leader emails me his clan name, and a list of players who he wants in.</li>
-  <li>If needed, I'll ask that the clan leader puts "# I really intend to start {clan name} with {player list}" in his nethackrc (since it's easy to pretend to be someone else).</li>
+  <li>If needed, I will ask that the clan leader puts "# I really intend to start {clan name} with {player list}" in his nethackrc (since it is easy to pretend to be someone else).</li>
   <li>Each player puts "# I intend to join {clan name}" in his nethackrc.</li>
-  <li>If a player wants to join a clan and isn't in the original list, the same process is followed. I'll need some kind of confirmation from the leader.</li>
+  <li>If a player wants to join a clan and is not in the original list, the same process is followed. I will need some kind of confirmation from the leader.</li>
 </ol>
 Note that the leader can allow other people to confirm new members, just include that in an email.
 ---
 #newness
 Any other new things?
 Of course! Each player, clan, and trophy has its own status page. You can access your player page by finding it in the <a href="player">player</a> subdirectory. You can access your clan page by navigating there from your player page, or by finding it in the <a href="clan">clan</a> subdirectory. Finally, you can access a trophy page by navigating there from either of the above pages, or by finding it in the <a href="trophy">trophy</a> subdirectory.
-We're really proud of this feature. Gotta keep devnull on its toes!
+We are really proud of this feature. Gotta keep devnull on its toes!
 ---
-I don't have a player page!
-It's probably because you haven't played any games yet.
-However, if you have finished at least one game and have waited an hour, it's definitely a bug. Please contact me immediately.
+#no_player_page
+I do not have a player page!
+It is probably because you have not played any games yet.
+However, if you have finished at least one game and have waited an hour, it is definitely a bug. Please contact me immediately.
 ---
 #tiebreak
 How do tie-breaks work?
-For single-game trophies, it's simply determined by which game came first in the logfile. This is the simplest and arguably most fair way to do it.
-For multiple-game trophies, ties are broken by the final game's position in the logfile. So if player A ascends three times in the first week, and then again on June 30th, he'll be beaten by a player who ascends four times in the second week.
-This also helps maintain the integrity of clan points. One of the problems in devnull is if multiple people tie for first, each player is awarded the full point value of the trophy. This is bad because if a lot of those players are in the same clan, then one of those clanmembers scoring better on that trophy (say, by ascending again, in the case of Most Ascensions) would hurt the clan. But this isn't a problem in the June tournament because I break ties the simple way.
+For single-game trophies, it is simply determined by which game came first in the logfile. This is the simplest and arguably most fair way to do it.
+For multiple-game trophies, ties are broken by the final game's position in the logfile. So if player A ascends three times in the first week, and then again on June 30th, he will be beaten by a player who ascends four times in the second week.
+This also helps maintain the integrity of clan points. One of the problems in devnull is if multiple people tie for first, each player is awarded the full point value of the trophy. This is bad because if a lot of those players are in the same clan, then one of those clanmembers scoring better on that trophy (say, by ascending again, in the case of Most Ascensions) would hurt the clan. But this is not a problem in the June tournament because I break ties the simple way.
 ---
 #frequency
 How often will the tourney stats be generated?
-Every ten minutes. Last year was every thirty minutes, but people like seeing their ascensions update the scoreboard quickly. So it's every ten minutes now. It might even be kicked down to every five minutes!
+Every ten minutes. Last year was every thirty minutes, but people like seeing their ascensions update the scoreboard quickly. So it is every ten minutes now. It might even be kicked down to every five minutes!
 ---
 #start_end
 When exactly will this tournament start and end?
-00:00:00 June 1st, 2007 to 23:59:59 June 30th, 2007. These times are UTC, which is what nethack.alt.org uses. So only games with a start and end date of "200706__" will be included. devnull uses US pacific coast time, so don't get burned by the different start time!
+00:00:00 June 1st, 2007 to 23:59:59 June 30th, 2007. These times are UTC, which is what nethack.alt.org uses. So only games with a start and end date of "200706__" will be included. devnull uses US pacific coast time, so do not get burned by the different start time!
 ---
 #me_participating
 Will you be participating?
-Of course! I don't run the server (or have any write access to it) so there's no risk of tampering. No tourney script is run on the NAO server; it's all done here on katron.org.
+Of course! I do not run the server (or have any write access to it) so there is no risk of tampering. No tourney script is run on the NAO server; it is all done here on katron.org.
 ---
 #cheating
 What about cheating?
