@@ -25,7 +25,6 @@ my %txt_output_for;
 my %html_output_for;
 my %clan_txt_output_for;
 my %clan_html_output_for;
-my %all_fields;
 my %html_status;
 my %txt_status;
 # }}}
@@ -115,11 +114,6 @@ sub read_xlogfile # {{{
 
     next if $game{death} eq "a trickery";
 
-    foreach (keys %game)
-    {
-      $all_fields{$_} = 1;
-    }
-
     ++$unsure_for{$game{name}} if $game{unsure};
     ++$games_for{$game{name}};
     ++$clan_games{ $clan_of{$game{name}} } if exists $clan_of{$game{name}};
@@ -204,12 +198,6 @@ sub display_trophy # {{{
   my $grep        = $args->{grep_callback} || undef;
   my $sorter      = $args->{sorter}        || undef;
   my $short       = $args->{short}         || $display_name;
-
-  if ($trophy_stat ne "" && !exists($all_fields{$trophy_stat}))
-  {
-    warn "I want to award the '$display_name' trophy based on the '$trophy_stat' field, but I've never heard of it. Aborting this trophy.\n";
-    return;
-  }
 
   my $display_callback = $args->{display_callback} ||
   sub
