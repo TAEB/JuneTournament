@@ -810,6 +810,7 @@ EOH8
       short            => "extinctionist",
       clan_points      => 5,
       trophy_stat      => "kills",
+      need_reverse     => 1,
       display_callback => sub {my $g = shift; sprintf "{{%s}} - %d kill%s", $g->{name}, $g->{kills}, $g->{kills} == 1 ? "" : "s"}
     },
     {
@@ -819,6 +820,14 @@ EOH8
       trophy_stat      => "kills",
       needs_reverse    => 1,
       display_callback => sub {my $g = shift; sprintf "{{%s}} - %d kill%s", $g->{name}, $g->{kills}, $g->{kills} == 1 ? "" : "s"}
+    },
+    {
+      name             => "Richest ascension",
+      short            => "richest",
+      clan_points      => 5,
+      trophy_stat      => "gold",
+      need_reverse     => 1,
+      display_callback => sub {my $g = shift; sprintf "{{%s}} - \$%d", $g->{name}, $g->{gold}}
     },
     {
       name             => "Low-scoring ascension",
@@ -834,13 +843,6 @@ EOH8
       trophy_stat      => "points",
       need_reverse     => 1,
       display_callback => sub {my $g = shift; sprintf "{{%s}} - %d point%s", $g->{name}, $g->{points}, $g->{points} == 1 ? "" : "s"}
-    },
-    {
-      name             => "Richest ascension",
-      short            => "richest",
-      clan_points      => 5,
-      trophy_stat      => "gold",
-      display_callback => sub {my $g = shift; sprintf "{{%s}} - \$%d", $g->{name}, $g->{gold}}
     },
   );
 
