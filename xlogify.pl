@@ -123,14 +123,20 @@ sub xlogify # {{{
 
 sub dumplog_matches # {{{
 {
-  my ($dumplog, $game_ref) = @_;
+  my ($dumplog, $game_ref, $dumploc) = @_;
 
-  open my $out, '>', 'chardump.txt'
-    or my_die "Unable to open chardump.txt for writing: $!";
-  print {$out} $dumplog;
-  close $out;
+  if (not defined $dumploc)
+  {
+    $dumploc = 'chardump.txt';
+    return 0 unless defined($dumplog) && $dumplog ne '';
 
-  my $xlogline = `./chardump.pl chardump.txt`;
+    open my $out, '>', $dumploc
+      or my_die "Unable to open $dumploc for writing: $!";
+    print {$out} $dumplog;
+    close $out;
+  }
+
+  my $xlogline = `./chardump.pl $dumploc`;
   my $dump_ref = demunge_xlogline($xlogline);
 
   for
