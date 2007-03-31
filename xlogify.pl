@@ -141,7 +141,8 @@ sub dumplog_matches # {{{
 
   for
   (
-    qw[name align race role],
+    qw[ascended name align race role maxhp],
+    [points => 'score'],
   )
   {
     return 0 if  ref($_) && $game_ref->{$_->[0]} ne $dump_ref->{$_->[1]};
