@@ -116,6 +116,30 @@ Of course! I do not run the server (or have any write access to it) so there is 
 ---
 #cheating
 What about cheating?
-If you mean cheating as in abusing game mechanics, there's not much we can do about that. Pudding farming, the polyself bug, the Astral call bug, artifact naming, etc. are all fair game. Of course, these are frowned upon in varying degrees. I'll certainly look the other way with respect to abuse of game mechanics.
-If you mean cheating as in collusion (multiple players playing under a single nickname), that's also allowed. Not only is it impossible to detect, but I don't foresee it as being much of a problem.
-If you mean cheating as in intentionally fooling the trophy scripts, that will be dealt with on a case-by-case basis. I reserve the right to ignore any and all games from a player if he is cheating. Of course, I'll probably just patch the trophy scripts to fix the abuse instead, because I don't like pissing people off.
+If you mean cheating as in abusing game mechanics, there is not much we can do about that. Pudding farming, the polyself bug, the Astral call bug, artifact naming, etc. are all fair game. Of course, these are frowned upon in varying degrees. I will certainly look the other way with respect to abuse of game mechanics.
+If you mean cheating as in collusion (multiple players playing under a single nickname), that is also allowed. Not only is it impossible to detect, but I do not foresee it as being much of a problem.
+If you mean cheating as in intentionally fooling the trophy scripts, that will be dealt with on a case-by-case basis. I reserve the right to ignore any and all games from a player if he is cheating. Of course, I will probably just patch the trophy scripts to fix the abuse instead, because I do not like pissing people off.
+---
+#limitations
+<strong>What are the limitations of the June tourney?</strong>
+The tournament scripts do not run on the nethack.alt.org server. Furthermore, the binaries (dgamelaunch and nethack) have not been updated in literally <em>years</em>. These are bound to cause some problems. See the discussions about <a href="#long_nicks">long nicknames</a> and <a href="#post_ascension">what to do after an ascension</a>.
+---
+#long_nicks
+My nickname is ten or more characters..
+Oh no! Please consider using a shorter nickname for the June tournament. This limitation is entirely dgamelaunch's fault. Essentially, the problem is dgamelaunch lets you have up to 20 characters in your nick, while nethack allows no more than 10. The logfile (written by NetHack) uses the first ten characters of your nick, while the dumplog mover (dgamelaunch) uses all twenty characters. There is no easy way to extrapolate the remaining characters. There are a few other related problems.
+If you are dead set on using your >9 character nick, then go for it. But there <strong>are</strong> going to be problems.
+---
+#post_ascension
+I just ascended. Now what?
+Wait five minutes before you resume playing. This is so the dumplog archival script (running on NAO) can archive your dumplog for posterity. If http://alt.org/nethack/chardump/YOURNAME/YOURNAME.lastgame.txt contains your most recent ascension, then you can safely resume playing.
+If you forget to wait, that is okay too. The worst that could happen is no dumplog is saved and Eidolos (manually! grumble!) looks at your ttyrecs to fill in the fields normally found in the dumplog. It is also only an issue if you end a game before the five minute grace period. It is okay if you start a game. Hell, if you start a game, die in ten seconds, and wait at the end of game sequence for five minutes, then your dumplog will probably be saved.
+---
+#unsure
+What is this about "Ascensions without dumplogs"?
+Unfortunately, a few stats that we like to rank people by (most importantly turns) are not kept in the logfile. So the scripts have to sift through dumplogs to find the desired stats. The scripts use some heuristics to determine which dumplogs match which games. Sometimes it does not work though, and Eidolos has to go and fix it himself. Here are some reasons why things get broken:
+<ol>
+  <li>Your name is 10 more more characters (see <a href="#long_nicks">this question</a>)</li>
+  <li>The dumplog archival script running on NAO missed your ascension because you did not give it five minutes to run -- Eidolos can still look at your ttyrecs though</li>
+  <li>The local chardump parser is not reading your dumplog correctly</li>
+</ol>
+Please give Eidolos twenty-four hours to check things out before you email him. As stated, there is no irrecoverable data because the ttyrecs see all. So sit tight, and keep playing!
