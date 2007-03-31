@@ -254,6 +254,7 @@ sub display_trophy # {{{
   <body>
     <h1>The 2007 June nethack.alt.org Tournament</h1>
     <h2>$display_name</h2>
+    <h3>{{LASTTIME}}</h3>
     <ul id="mainlinks">
       <li><a href="$short.txt">plaintext version</a></li>
       <li><a href="../index.html">main page</a></li>
@@ -333,7 +334,7 @@ EOH5
 
     # add trophy name to output, with a placeholder for clan points
     $txt_output_for{$name} .= $display_name . "<<TROPHY_CLAN_POINTS>>:\n";
-    $html_output_for{$name} .= "    <hr />\n    <h3><a href=\"../trophy/$short.html\">$display_name</a><<TROPHY_CLAN_POINTS>></h3>\n";
+    $html_output_for{$name} .= "    <hr />\n    <h3><a href=\"../trophy/$short.html\">$display_name</a><<TROPHY_CLAN_POINTS>></h3><!-- type:$short -->\n";
 
     if (exists $txt_status{$short}{$name})
     {
@@ -462,7 +463,7 @@ sub write_pages # {{{
       if ($next_set)
       {
         $extension = 'html';
-        $post = "  </body>\n</html>\n";
+        $post = "  </body><!-- type:post -->\n</html>\n";
       }
     }
 
@@ -644,6 +645,7 @@ sub main # {{{
 
     $txt_output_for{$name}  = sprintf "Player: %s\nAscensions: %d/%d (%.2f%%)\n%s\n", $name, $asc, $games_for{$name}, 100*$asc/$games_for{$name}, $clan_info;
     $txt_output_for{$name} .= sprintf "Ascensions without dumplogs: %d\n  Email Eidolos if this persists for more than 24 hours.\n", $unsure_for{$name} if exists($unsure_for{$name}) && $unsure_for{$name};
+    $txt_output_for{$name} .= "{{LASTTIME}}\n";
 
     # html output
     $clan_info = exists $clan_of{$name} ? "<h2>Clan: $clan_of{$name}<<CLAN_POINTS:$name>></h2>\n"
@@ -669,6 +671,7 @@ sub main # {{{
       <h1>The 2007 June nethack.alt.org Tournament - %s</h1>
       <h2>Ascensions: %d/%d (%.2f%%)</h2>
       %s%s
+      <h3>{{LASTTIME}}</h3>
       <ul id="mainlinks">
         <li><a href="%s.txt">plaintext version</a></li>
         <li><a href="../index.html">main page</a></li>
@@ -726,6 +729,7 @@ EOH2
 </head>
 <body>
   <h1>The 2007 June nethack.alt.org Tournament Scoreboard</h1>
+  <h3>{{LASTTIME}}</h3>
   <ul id="mainlinks">
     <li><a href="scoreboard.txt">plaintext version</a></li>
     <li><a href="index.html">main page</a></li>
@@ -884,6 +888,7 @@ EOH8
       </head>
       <body>
         <h1>The 2007 June nethack.alt.org Tournament Players</h1>
+        <h3>{{LASTTIME}}</h3>
         <ul id="mainlinks">
           <li><a href="players.txt">plaintext version</a></li>
           <li><a href="index.html">main page</a></li>
