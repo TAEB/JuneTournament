@@ -180,6 +180,38 @@ sub demunge_conduct # {{{
   return @achieved;
 } # }}}
 
+sub trophy_output_begin # {{{
+{
+  my ($display, $short) = @_;
+
+  open(my $txt_handle, '>', "trophy/$short.txt") or my_die "Unable to open trophy/$short.txt: $!";
+  open(my $html_handle, '>', "trophy/$short.html") or my_die "Unable to open trophy/$short.html: $!";
+
+  print {$txt_handle} $display, "\n";
+  print {$html_handle} << "EOH4";
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <title>The 2007 June nethack.alt.org Tournament - $display</title>
+    <link rel="stylesheet" type="text/css" href="../trophy.css" />
+  </head>
+  <body>
+    <h1>The 2007 June nethack.alt.org Tournament</h1>
+    <h2>$display</h2>
+    <h3>{{LASTTIME}}</h3>
+    <ul id="mainlinks">
+      <li><a href="$short.txt">plaintext version</a></li>
+      <li><a href="../index.html">main page</a></li>
+      <li><a href="../scoreboard.html">scoreboard</a></li>
+      <li><a href="http://alt.org/nethack/">nethack.alt.org</a></li>
+    </ul>
+    <hr />
+    <ol>
+EOH4
+
+  return ($txt_handle, $html_handle);
+} # }}}
+
 sub calc_generic_trophy # {{{
 {
   my %player_info;
@@ -228,30 +260,7 @@ sub calc_generic_trophy # {{{
 
   # print all output for this trophy {{{
   {
-    open(my $txt_handle, '>', "trophy/$short.txt") or my_die "Unable to open trophy/$short.txt: $!";
-    open(my $html_handle, '>', "trophy/$short.html") or my_die "Unable to open trophy/$short.html: $!";
-
-    print {$txt_handle} $display_name, "\n";
-    print {$html_handle} << "EOH4";
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html>
-  <head>
-    <title>The 2007 June nethack.alt.org Tournament - $display_name</title>
-    <link rel="stylesheet" type="text/css" href="../trophy.css" />
-  </head>
-  <body>
-    <h1>The 2007 June nethack.alt.org Tournament</h1>
-    <h2>$display_name</h2>
-    <h3>{{LASTTIME}}</h3>
-    <ul id="mainlinks">
-      <li><a href="$short.txt">plaintext version</a></li>
-      <li><a href="../index.html">main page</a></li>
-      <li><a href="../scoreboard.html">scoreboard</a></li>
-      <li><a href="http://alt.org/nethack/">nethack.alt.org</a></li>
-    </ul>
-    <hr />
-    <ol>
-EOH4
+    my ($txt_handle, $html_handle) = trophy_output_begin($display_name, $short);
 
     foreach my $n (0..$#sorted)
     {
