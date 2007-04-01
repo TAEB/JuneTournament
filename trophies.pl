@@ -15,6 +15,8 @@ my @ascensions;
 my %games_for;
 my %ascensions_for;
 my %unsure_for;
+my %achievements;
+my %achievement_for;
 my %clan_games;
 my %clan_ascs;
 my %best_ascstreak_for;
@@ -32,6 +34,17 @@ my %txt_status;
 # Constants {{{
 my @points_for_position = (1.00, .60, .30);
 my @roles = qw{Arc Bar Cav Hea Kni Mon Pri Ran Rog Sam Tou Val Wiz};
+my %achievement_trophies =
+(
+  fullmonty => 'The Full Monty',
+  grandslam => 'The Grand Slam',
+  hattrick => 'The Hat Trick',
+  doubletop => 'The Double Top',
+  birdie => 'The Birdie',
+  dilithium => 'The Dilithium Star',
+  platinum => 'The Platinum Star',
+  gold => 'The Gold Star',
+);
 my %expand =
 (
   Arc => 'Archeologist',
@@ -434,6 +447,43 @@ EOH5
   } # }}}
 } # }}}
 
+sub calc_achievement_trophies # {{{
+{
+  foreach my $player (keys %txt_output_for)
+  {
+    next if $player eq '';
+    my ($bells, $nobells) = achievements_for($player);
+    $achievement_for{$player} = [$bells, $nobells];
+    push @{$achievements{$bells}}, "$player (with bells on)"
+      if $bells;
+    push @{$achievements{$nobells}}, $player
+      if $bells ne $nobells;
+  }
+
+  foreach my $trophy (keys %achievement_trophies)
+  {
+    my ($txt_handle, $html_handle) = trophy_output_begin($achievement_trophies{$trophy}, $trophy);
+
+    if (exists $achievements{$trophy})
+    {
+      foreach my $player (sort {($a =~ / bells /) <=> ($b =~ / bells /)
+                                                  ||
+                                           lc($a) cmp lc($b)}
+                               @{$achievements{$trophy}})
+      {
+        printf {$txt_handle} "%s\n", $player;
+        printf {$html_handle} "      <li><a href=\"..player/%s.html\">%s</a></li>\n", $player, $player;
+      }
+      }
+
+    print {$html_handle} << "EOH9";
+    </ol>
+  </body>
+</html>
+EOH9
+  }
+} # }}}
+
 sub write_pages # {{{
 {
   my $directory = 'player';
@@ -527,6 +577,14 @@ sub write_pages # {{{
     print {$handle} $output, $post;
     close $handle;
   }
+} # }}}
+
+sub achievements_for # {{{
+{
+  my $player = shift;
+  my ($bells, $nobells) = ('hattrick', 'grandslam');
+
+  return ($bells, $nobells);
 } # }}}
 
 sub b13_for # {{{
@@ -867,6 +925,9 @@ EOH8
     print "Processing $trophy_ref->{name}\n";
     calc_generic_trophy($trophy_ref);
   }
+
+  print "Processing achievement trophies\n";
+  calc_achievement_trophies();
 
   print "Printing player and clan pages\n";
   write_pages();
