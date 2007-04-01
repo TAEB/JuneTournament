@@ -157,7 +157,6 @@ LINE: while (<>) # {{{
 
   if (/^Killer: (.+)$/)
   {
-    try_set("ascended", $1 eq 'ascended' ? 1 : 0, 'Killer line');
     try_set("death",    $1,                       'Killer line');
     next LINE;
   }
@@ -184,8 +183,9 @@ LINE: while (<>) # {{{
     next LINE;
   }
 
-  if (/^(?:You )?went to your reward with (\d+) points?,$/)
+  if (/^(?:You )?went to your reward with (-?\d+) points?,$/)
   {
+    try_set("ascended", 1, 'Killer line');
     try_set("score", $1, 'You went to your reward with x points');
     next LINE;
   }
