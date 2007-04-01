@@ -82,7 +82,7 @@ sub munge_conducts # {{{
     $result |= $hex_for{$_};
   }
 
-  return $result;
+  return sprintf '%x', $result;
 } # }}}
 
 my $in_vanquished = 0;
