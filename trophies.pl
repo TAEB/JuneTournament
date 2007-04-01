@@ -180,7 +180,7 @@ sub demunge_conduct # {{{
   return @achieved;
 } # }}}
 
-sub display_trophy # {{{
+sub calc_generic_trophy # {{{
 {
   my %player_info;
 
@@ -856,7 +856,7 @@ EOH8
   foreach my $trophy_ref (@trophies)
   {
     print "Processing $trophy_ref->{name}\n";
-    display_trophy($trophy_ref);
+    calc_generic_trophy($trophy_ref);
   }
 
   print "Printing player and clan pages\n";
