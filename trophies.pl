@@ -34,16 +34,28 @@ my %txt_status;
 # Constants {{{
 my @points_for_position = (1.00, .60, .30);
 my @roles = qw{Arc Bar Cav Hea Kni Mon Pri Ran Rog Sam Tou Val Wiz};
+my @achievement_trophies =
+qw(
+  none
+  gold
+  platinum
+  dilithium
+  birdie
+  doubletop
+  hattrick
+  grandslam
+  fullmonty
+);
 my %achievement_trophies =
 (
-  fullmonty => 'The Full Monty',
-  grandslam => 'The Grand Slam',
-  hattrick => 'The Hat Trick',
-  doubletop => 'The Double Top',
-  birdie => 'The Birdie',
+  gold      => 'The Gold Star',
+  platinum  => 'The Platinum Star',
   dilithium => 'The Dilithium Star',
-  platinum => 'The Platinum Star',
-  gold => 'The Gold Star',
+  birdie    => 'The Birdie',
+  doubletop => 'The Double Top',
+  hattrick  => 'The Hat Trick',
+  grandslam => 'The Grand Slam',
+  fullmonty => 'The Full Monty',
 );
 my %expand =
 (
