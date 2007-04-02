@@ -749,9 +749,36 @@ sub achievements_for # {{{
      $best = 8;
   }}
 
-  for (4..$best)
+  for (4..8)
   {
     $bestbell = $_ if earned_bell($player, $_);
+  }
+  for (4..$bestbell)
+  {
+    delete $txt_status{ $achievement_trophies[$_] }{$player};
+  }
+
+  my @full = (undef, undef, undef, undef,
+              {Mal => 1, Fem => 1},
+              {Cha => 1, Neu => 1, Law => 1},
+              {Hum => 1, Orc => 1, Elf => 1, Dwa => 1, Gno => 1},
+              { map { $_ => 1 } @roles },
+              { map { $_ => 1 } @conducts });
+
+  my @best_fields = (undef, undef, undef, undef, \%genders, \%aligns, \%races, \%roles, \%conducts);
+
+  for my $t ($best+1..8) { delete $full[$t]{$_} for (keys %{$best_fields[$t]}) }
+
+  for my $b ($best+1..8)
+  {
+    my $short = $achievement_trophies[$b];
+
+    $txt_status{$short}{$player} .= "  Need to ascend:\n" ;
+    for ($best+1..$b)
+    {
+      my $x = join ', ', sort keys %{$full[$_]};
+      $txt_status{$short}{$player} .= "    $x\n" if $x;
+    }
   }
 
   return ($best, $bestbell);
