@@ -495,7 +495,14 @@ sub calc_achievement_trophies # {{{
                                @{$achievements{$trophy}})
       {
         printf {$txt_handle} "%s\n", $player;
-        printf {$html_handle} "      <li><a href=\"..player/%s.html\">%s</a></li>\n", $player, $player;
+        if ($player =~ s/ \(with bells on\)//)
+        {
+          printf {$html_handle} "      <li><a href=\"..player/%s.html\">%s (with bells on)</a></li>\n", $player, $player;
+        }
+        else
+        {
+          printf {$html_handle} "      <li><a href=\"..player/%s.html\">%s</a></li>\n", $player, $player;
+        }
       }
       }
 
