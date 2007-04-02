@@ -115,6 +115,7 @@ sub read_xlogfile # {{{
 {
   my %seen;
   my %ascstreak_for;
+  my $num = 0;
 
   local @ARGV = @_;
 
@@ -138,6 +139,14 @@ sub read_xlogfile # {{{
     }
 
     next if $game{death} eq "a trickery";
+
+    if ($devnull)
+    {
+      $game{ascended}   = $game{death} eq 'ascended' ? 1 : 0;
+      $game{crga0}      = join ' ', @game{qw/role race gender0 align0/};
+      $game{num}        = ++$num;
+      $game{conducts}   = scalar demunge_conduct($game{conduct});
+    }
 
     ++$unsure_for{$game{name}} if $game{unsure};
     ++$games_for{$game{name}};
