@@ -473,12 +473,14 @@ sub calc_achievement_trophies # {{{
   foreach my $player (keys %txt_output_for)
   {
     next if $player eq '';
-    my ($bells, $nobells) = achievements_for($player);
-    $achievement_for{$player} = [$bells, $nobells];
-    push @{$achievements{$bells}}, "$player (with bells on)"
-      if $bells;
-    push @{$achievements{$nobells}}, $player
-      if $bells ne $nobells;
+    my ($best, $bestbell) = achievements_for($player);
+    $achievement_for{$player} = [$best, $bestbell];
+    push @{$achievements{$achievement_trophies[$bestbell]}},
+      "$player (with bells on)"
+        if $bestbell;
+    push @{$achievements{$achievement_trophies[$best]}},
+      $player
+        if $best > $bestbell;
   }
 
   foreach my $trophy (keys %achievement_trophies)
@@ -600,12 +602,101 @@ sub write_pages # {{{
   }
 } # }}}
 
+sub earned_bell # {{{
+{
+  my $player  = shift;
+  my $bell    = shift;
+  my $succeed = 0;
+  my %roles;
+  my %races;
+  my %genders;
+  my %aligns;
+  my %conducts;
+
+  foreach my $game_ref (@{$games_for{$player}})
+  {
+    goto clear unless $game_ref->{ascended};
+    goto clear if $genders{$game_ref->{gender0}}++ && $bell == 4;
+    goto clear if $aligns{$game_ref->{align0}}++   && $bell == 5;
+    goto clear if $races{$game_ref->{race}}++      && $bell == 6;
+    goto clear if $roles{$game_ref->{role}}++      && $bell == 7;
+
+    my $newconduct = 0;
+    foreach my $conduct (demunge_conduct($game_ref->{conduct}))
+    {
+      ++$newconduct unless $conducts{$conduct}++;
+    }
+    goto clear if !$newconduct && $bell == 8;
+
+    # Our game counts toward the current bell, let's see if we succeeded in getting it.
+    {{
+       last if keys(%genders)  < 2  && $bell >= 4;
+       last if keys(%aligns)   < 3  && $bell >= 5;
+       last if keys(%races)    < 5  && $bell >= 6;
+       last if keys(%roles)    < 13 && $bell >= 7;
+       last if keys(%conducts) < 12 && $bell >= 8;
+       return 1;
+    }}
+
+    # We didn't succeed in getting the bell, but we're also okay as far as duplicated effort is concerned.
+    next;
+
+    clear: # Our game didn't count for the current bell.
+    %roles = %races = %genders = %aligns = %conducts = ();
+
+    # but it may count for the next attempt!
+    next unless $game_ref->{ascended};
+    ++$roles{$game_ref->{role}};
+    ++$races{$game_ref->{race}};
+    ++$genders{$game_ref->{gender0}};
+    ++$aligns{$game_ref->{align0}};
+    ++$conducts{$_} for (demunge_conduct($game_ref->{conduct}));
+  }
+
+  return 0;
+} # }}}
+
 sub achievements_for # {{{
 {
   my $player = shift;
-  my ($bells, $nobells) = ('hattrick', 'grandslam');
+  my ($best, $bestbell) = (0, 0);
 
-  return ($bells, $nobells);
+  my %roles;
+  my %races;
+  my %genders;
+  my %aligns;
+  my %conducts;
+
+  for my $game_ref (@{$games_for{$player}})
+  {
+    $best = 1 if $game_ref->{deathlev} < 0 && $game_ref->{deathlev} > -6 && $best < 1;
+    $best = 2 if $game_ref->{deathlev} == -5 && $best < 2;
+    next unless $game_ref->{ascended};
+    $best = 3;
+
+    ++$roles{$game_ref->{role}};
+    ++$races{$game_ref->{race}};
+    ++$genders{$game_ref->{gender0}};
+    ++$aligns{$game_ref->{align0}};
+    ++$conducts{$_} for demunge_conduct($game_ref->{conduct});
+  }
+
+  if ($best == 3)
+  {{
+                last if keys(%genders)  < 2;
+     $best = 4, last if keys(%aligns)   < 3;
+     $best = 5, last if keys(%races)    < 5;
+     $best = 6, last if keys(%roles)    < 13;
+     $best = 7, last if keys(%conducts) < 12;
+     $best = 8;
+  }}
+
+  for (4..$best)
+  {
+    $bestbell = $_ if earned_bell($player, $_);
+  }
+
+  return ($best, $bestbell);
 } # }}}
 
 sub b13_for # {{{
