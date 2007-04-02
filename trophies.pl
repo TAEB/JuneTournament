@@ -702,6 +702,10 @@ sub earned_bell # {{{
   my @best_fields = (undef, undef, undef, undef, \%genders, \%aligns, \%races, \%roles, \%conducts);
 
   for my $t (4..$bell) { delete $full[$t]{$_} for (keys %{$best_fields[$t]}) }
+  delete $full[8]{vegan} if exists $full[8]{foodless};
+  delete $full[8]{vegetarian} if exists $full[8]{foodless} || exists $full[8]{vegan};
+  delete $full[8]{artiwishless} if exists $full[8]{wishless};
+
   my $short = $achievement_trophies[$bell];
 
   $txt_status{$short}{$player} = "  For bells, need to ascend:\n" ;
@@ -768,6 +772,9 @@ sub achievements_for # {{{
   my @best_fields = (undef, undef, undef, undef, \%genders, \%aligns, \%races, \%roles, \%conducts);
 
   for my $t ($best+1..8) { delete $full[$t]{$_} for (keys %{$best_fields[$t]}) }
+  delete $full[8]{vegan} if exists $full[8]{foodless};
+  delete $full[8]{vegetarian} if exists $full[8]{foodless} || exists $full[8]{vegan};
+  delete $full[8]{artiwishless} if exists $full[8]{wishless};
 
   for my $b ($best+1..8)
   {
