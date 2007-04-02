@@ -489,7 +489,7 @@ sub calc_achievement_trophies # {{{
 
     if (exists $achievements{$trophy})
     {
-      foreach my $player (sort {($a =~ / bells /) <=> ($b =~ / bells /)
+      foreach my $player (sort {($b =~ / bells /) <=> ($a =~ / bells /)
                                                   ||
                                            lc($a) cmp lc($b)}
                                @{$achievements{$trophy}})
