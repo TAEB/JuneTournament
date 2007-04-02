@@ -514,7 +514,45 @@ sub calc_achievement_trophies # {{{
   </body>
 </html>
 EOH9
-  }
+  } # }}}
+
+  # add each trophy to each player's output {{{
+  foreach my $name (keys %txt_output_for)
+  {
+    my ($best, $bestbell) = exists $achievement_for{$name} ? @{ $achievement_for{$name} } : (0, 0);
+    foreach (reverse (1..$#achievement_trophies))
+    {
+      my $indent = '';
+      my $short = $achievement_trophies[$_];
+      my $display_name = $achievement_trophies{$short};
+
+      $txt_output_for{$name} .= "$display_name:\n";
+
+      if (exists $txt_status{$short}{$name})
+      {
+        $txt_output_for{$name} .= $txt_status{$short}{$name};
+        $txt_output_for{$name} .= "  Winners\n";
+        $indent = '  ';
+      }
+
+      if (!exists $achievements{$short} || !@{$achievements{$short}})
+      {
+        $txt_output_for{$name} .= "$indent  (No current winner)\n\n";
+        next;
+      }
+
+      foreach my $output (sort {($b =~ / bells /) <=> ($a =~ / bells /)
+                                                  ||
+                                           lc($a) cmp lc($b)}
+                               @{$achievements{$short}})
+      {
+        (my $player = $output) =~ s/ \(with bells on\)$//;
+        $txt_output_for{$name} .= sprintf "%s%s %s\n", $indent, $player eq $name ? "*" : " ", $output;
+      }
+
+      $txt_output_for{$name} .= "\n";
+    }
+  } # }}}
 } # }}}
 
 sub write_pages # {{{
