@@ -149,7 +149,7 @@ sub read_xlogfile # {{{
     }
 
     ++$unsure_for{$game{name}} if $game{unsure};
-    ++$games_for{$game{name}};
+    push @{ $games_for{$game{name}} }, \%game;
     ++$clan_games{ $clan_of{$game{name}} } if exists $clan_of{$game{name}};
 
     if ($game{ascended})
@@ -610,21 +610,20 @@ sub achievements_for # {{{
 
 sub b13_for # {{{
 {
-  my $games_ref = shift;
+  my $player = shift;
   my $best = 0;
   my $best_end = 0;
   my $last = 0;
   my $last_start = 0;
-  my $name = $games_ref->[0]{name};
 
-  foreach my $start (0..$#{$games_ref})
+  foreach my $start (0..$#{$games_for{$player}})
   {
     my $cur = 0;
     my $end = 0;
     my %seen = ();
-    for (my $num = $start; $num < $start + 13 && $num < @{$games_ref}; ++$num)
+    for (my $num = $start; $num < $start + 13 && $num < @{$games_for{$player}}; ++$num)
     {
-      my $game_ref = $games_ref->[$num];
+      my $game_ref = $games_for{$player}[$num];
       last unless defined $game_ref;
       next unless $game_ref->{ascended};
       last if $seen{$game_ref->{crga0}}++;
@@ -635,7 +634,7 @@ sub b13_for # {{{
     ($last, $last_start) = ($cur, $start) if $cur > $last;
   }
 
-  my $cur_start = @{$games_ref} - 13;
+  my $cur_start = @{$games_for{$player}} - 13;
   $cur_start = 0 if $cur_start < 0;
 
   my @type = ([$last_start, "Best"], [$cur_start, "Current"]);
@@ -643,57 +642,43 @@ sub b13_for # {{{
   foreach (@type)
   {
     my $ascs = 0;
-    $html_status{b13}{$name} .= "      <h4>$_->[1] (<<CURRENT_B13>>)</h4>\n";
-    $html_status{b13}{$name} .= "      <ol>\n";
-    $txt_status{b13}{$name} .= "  $_->[1] (<<CURRENT_B13>>)\n";
+    $html_status{b13}{$player} .= "      <h4>$_->[1] (<<CURRENT_B13>>)</h4>\n";
+    $html_status{b13}{$player} .= "      <ol>\n";
+    $txt_status{b13}{$player} .= "  $_->[1] (<<CURRENT_B13>>)\n";
 
     my %seen;
     for my $num ($_->[0]..$_->[0]+12)
     {
-      my $game_ref = $games_ref->[$num];
+      my $game_ref = $games_for{$player}[$num];
       last unless defined $game_ref;
       if (!$game_ref->{ascended})
       {
-        $html_status{b13}{$name} .= "        <li class=\"b13 death\">died</li>\n";
-        $txt_status{b13}{$name} .= sprintf "    %d. %s\n", 1+$num-$_->[0], "died";
+        $html_status{b13}{$player} .= "        <li class=\"b13 death\">died</li>\n";
+        $txt_status{b13}{$player} .= sprintf "    %d. %s\n", 1+$num-$_->[0], "died";
         next;
       }
       if ($seen{$game_ref->{crga0}}++)
       {
-        $html_status{b13}{$name} .= "        <li class=\"b13 repeat\">$game_ref->{crga0} (repeated)</li>\n";
-        $txt_status{b13}{$name} .= sprintf "    %d. %s (repeated)\n", 1+$num-$_->[0], $game_ref->{crga0};
+        $html_status{b13}{$player} .= "        <li class=\"b13 repeat\">$game_ref->{crga0} (repeated)</li>\n";
+        $txt_status{b13}{$player} .= sprintf "    %d. %s (repeated)\n", 1+$num-$_->[0], $game_ref->{crga0};
         last;
       }
       ++$ascs;
-      $html_status{b13}{$name} .= "        <li class=\"b13 ascend\">$game_ref->{crga0}</li>\n";
-      $txt_status{b13}{$name} .= sprintf "    %d. %s\n", 1+$num-$_->[0], $game_ref->{crga0};
+      $html_status{b13}{$player} .= "        <li class=\"b13 ascend\">$game_ref->{crga0}</li>\n";
+      $txt_status{b13}{$player} .= sprintf "    %d. %s\n", 1+$num-$_->[0], $game_ref->{crga0};
     }
 
-    $html_status{b13}{$name} .= "      </ol>\n";
-    $txt_status{b13}{$name} .= "\n";
-    $html_status{b13}{$name} =~ s/<<CURRENT_B13>>/$ascs/g;
-    $txt_status{b13}{$name} =~ s/<<CURRENT_B13>>/$ascs/g;
+    $html_status{b13}{$player} .= "      </ol>\n";
+    $txt_status{b13}{$player} .= "\n";
+    $html_status{b13}{$player} =~ s/<<CURRENT_B13>>/$ascs/g;
+    $txt_status{b13}{$player} =~ s/<<CURRENT_B13>>/$ascs/g;
   }
   return ($best, $best_end);
 } # }}}
 
 sub best_of_13 # {{{
 {
-  my %games_for;
-
-  # we want all the games of only people who've ascended
-  foreach (@games)
-  {
-    push @{ $games_for{$_->{name}} }, $_ if exists($ascensions_for{$_->{name}});
-  }
-
-  my @best_of_13;
-  foreach my $player (keys %ascensions_for)
-  {
-    push @best_of_13, [$player, b13_for($games_for{$player})];
-  }
-
-  return \@best_of_13;
+  [ map { [ $_, b13_for($_) ] } keys %ascensions_for ]
 } # }}}
 
 sub main # {{{
@@ -719,7 +704,7 @@ sub main # {{{
                    keys %{$clan_roster{ $clan_of{$name} }};
     }
 
-    $txt_output_for{$name}  = sprintf "Player: %s\nAscensions: %d/%d (%.2f%%)\n%s\n", $name, $asc, $games_for{$name}, 100*$asc/$games_for{$name}, $clan_info;
+    $txt_output_for{$name}  = sprintf "Player: %s\nAscensions: %d/%d (%.2f%%)\n%s\n", $name, $asc, scalar @{$games_for{$name}}, 100*$asc/@{$games_for{$name}}, $clan_info;
     $txt_output_for{$name} .= sprintf "Ascensions without dumplogs: %d\n  Email Eidolos if this persists for more than 24 hours.\n", $unsure_for{$name} if exists($unsure_for{$name}) && $unsure_for{$name};
     $txt_output_for{$name} .= "{{LASTTIME}}\n";
 
@@ -756,7 +741,7 @@ sub main # {{{
       </ul>
 EOH
 
-    $html_output_for{$name} = sprintf $format_string, $name, $name, $asc, $games_for{$name}, 100*$asc/$games_for{$name}, $unsure_info, $clan_info, $name;
+    $html_output_for{$name} = sprintf $format_string, $name, $name, $asc, scalar @{$games_for{$name}}, 100*$asc/@{$games_for{$name}}, $unsure_info, $clan_info, $name;
 
     if (exists $clan_of{$name})
     {
