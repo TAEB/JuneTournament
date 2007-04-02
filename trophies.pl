@@ -34,6 +34,7 @@ my %txt_status;
 # Constants {{{
 my @points_for_position = (1.00, .60, .30);
 my @roles = qw{Arc Bar Cav Hea Kni Mon Pri Ran Rog Sam Tou Val Wiz};
+my @conducts = qw{foodless vegan vegetarian atheist weaponless pacifist illiterate polyitemless polyselfless wishless artiwishless genoless};
 my @achievement_trophies =
 qw(
   none
