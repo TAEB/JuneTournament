@@ -471,6 +471,7 @@ EOH5
 
 sub calc_achievement_trophies # {{{
 {
+  # calculate achievement trophies {{{
   foreach my $player (keys %txt_output_for)
   {
     next if $player eq '';
@@ -482,8 +483,9 @@ sub calc_achievement_trophies # {{{
     push @{$achievements{$achievement_trophies[$best]}},
       $player
         if $best > $bestbell;
-  }
+  } # }}}
 
+  # print each trophy {{{
   foreach my $trophy (keys %achievement_trophies)
   {
     my ($txt_handle, $html_handle) = trophy_output_begin($achievement_trophies{$trophy}, $trophy);
@@ -505,7 +507,7 @@ sub calc_achievement_trophies # {{{
           printf {$html_handle} "      <li><a href=\"..player/%s.html\">%s</a></li>\n", $player, $player;
         }
       }
-      }
+    }
 
     print {$html_handle} << "EOH9";
     </ol>
