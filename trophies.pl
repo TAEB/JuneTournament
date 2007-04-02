@@ -661,44 +661,54 @@ sub earned_bell # {{{
   my %aligns;
   my %conducts;
 
-  foreach my $game_ref (@{$games_for{$player}})
+  START: foreach my $start (0..$#{$games_for{$player}})
   {
-    goto clear unless $game_ref->{ascended};
-    goto clear if $genders{$game_ref->{gender0}}++ && $bell == 4;
-    goto clear if $aligns{$game_ref->{align0}}++   && $bell == 5;
-    goto clear if $races{$game_ref->{race}}++      && $bell == 6;
-    goto clear if $roles{$game_ref->{role}}++      && $bell == 7;
-
-    my $newconduct = 0;
-    foreach my $conduct (demunge_conduct($game_ref->{conduct}))
-    {
-      ++$newconduct unless $conducts{$conduct}++;
-    }
-    goto clear if !$newconduct && $bell == 8;
-
-    # Our game counts toward the current bell, let's see if we succeeded in getting it.
-    {{
-       last if keys(%genders)  < 2  && $bell >= 4;
-       last if keys(%aligns)   < 3  && $bell >= 5;
-       last if keys(%races)    < 5  && $bell >= 6;
-       last if keys(%roles)    < 13 && $bell >= 7;
-       last if keys(%conducts) < 12 && $bell >= 8;
-       return 1;
-    }}
-
-    # We didn't succeed in getting the bell, but we're also okay as far as duplicated effort is concerned.
-    next;
-
-    clear: # Our game didn't count for the current bell.
     %roles = %races = %genders = %aligns = %conducts = ();
+    next unless $games_for{$player}[$start]{ascended};
 
-    # but it may count for the next attempt!
-    next unless $game_ref->{ascended};
-    ++$roles{$game_ref->{role}};
-    ++$races{$game_ref->{race}};
-    ++$genders{$game_ref->{gender0}};
-    ++$aligns{$game_ref->{align0}};
-    ++$conducts{$_} for (demunge_conduct($game_ref->{conduct}));
+    foreach my $num ($start..$#{$games_for{$player}})
+    {
+      my $game_ref = $games_for{$player}[$num];
+      next START unless $game_ref->{ascended};
+      next START if $genders{$game_ref->{gender0}}++ && $bell == 4;
+      next START if $aligns{$game_ref->{align0}}++   && $bell == 5;
+      next START if $races{$game_ref->{race}}++      && $bell == 6;
+      next START if $roles{$game_ref->{role}}++      && $bell == 7;
+
+      my $newconduct = 0;
+      foreach my $conduct (demunge_conduct($game_ref->{conduct}))
+      {
+        ++$newconduct unless $conducts{$conduct}++;
+      }
+      next START if !$newconduct && $bell == 8;
+
+      # Our game counts toward the current bell, let's see if we succeeded in getting it.
+      next if $bell >= 4 && keys(%genders)  < 2;
+      next if $bell >= 5 && keys(%aligns)   < 3;
+      next if $bell >= 6 && keys(%races)    < 5;
+      next if $bell >= 7 && keys(%roles)    < 13;
+      next if $bell >= 8 && keys(%conducts) < 12;
+      return 1;
+    }
+  }
+
+  my @full = (undef, undef, undef, undef,
+              {Mal => 1, Fem => 1},
+              {Cha => 1, Neu => 1, Law => 1},
+              {Hum => 1, Orc => 1, Elf => 1, Dwa => 1, Gno => 1},
+              { map { $_ => 1 } @roles },
+              { map { $_ => 1 } @conducts });
+
+  my @best_fields = (undef, undef, undef, undef, \%genders, \%aligns, \%races, \%roles, \%conducts);
+
+  for my $t (4..$bell) { delete $full[$t]{$_} for (keys %{$best_fields[$t]}) }
+  my $short = $achievement_trophies[$bell];
+
+  $txt_status{$short}{$player} = "  For bells, need to ascend:\n" ;
+  for (4..$bell)
+  {
+    my $x = join ', ', sort keys %{$full[$_]};
+    $txt_status{$short}{$player} .= "    $x\n" if $x;
   }
 
   return 0;
