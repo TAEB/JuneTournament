@@ -315,7 +315,8 @@ sub demunge_conduct # {{{
 sub generic_trophy # {{{
 {
   # this too-large function calculates all the information for the given trophy
-  # arguments: a hash ref containing a few fields, most of which are optional:
+  # arguments: a hash ref containing some of these fields; most are optional
+  # (comment) fields for hash ref argument {{{
   #   name: the full name of the trophy ("Best of 13")
   #   short: the "short" name of the trophy ("b13" to "Best of 13")
   #   list: an arrayref of hashrefs containing game information (default: list
@@ -335,10 +336,9 @@ sub generic_trophy # {{{
   #   display_callback: a coderef that is used to stringify one game for the
   #                     trophy (so Fastest Asc might display turns, but Richest
   #                     wouldn't)
+  # }}}
 
-  my %player_info;
-
-  # read arguments {{{
+  # process arguments {{{
   my $args = shift;
 
   my $display_name = $args->{name};
@@ -410,6 +410,7 @@ EOH5
   } # }}}
 
   # go from index-by-gamenum to index-by-playername {{{
+  my %player_info;
   foreach my $n (0..$#sorted)
   {
     my $name = $get_name->($sorted[$n]);
@@ -825,7 +826,7 @@ sub achievements_for # {{{
 
 sub b13_for # {{{
 {
-  # calculates the best of 13 for a single player
+  # calculates the best of 13 score for a single player
   # argument: player name
   # returns: the number of ascensions, game number of last ascension (for ties)
 
@@ -909,7 +910,7 @@ sub b13_for # {{{
 
 sub read_clan_info # {{{
 {
-  # sets up clans given by files
+  # sets up clans given by contents of files passed to it
   # argument(s): clan info file(s)
 
   local @ARGV = @_;
@@ -1039,7 +1040,9 @@ EOH4
 
 sub initial_player_text # {{{
 {
-# generate initial text for each player's page
+  # generate initial text for each player's page
+  # arguments: none
+
   foreach my $name (keys %txt_output_for)
   {
     my $asc = exists($ascensions_for{$name}) ? $ascensions_for{$name}[0] : 0;
@@ -1122,7 +1125,9 @@ EOH2
 
 sub initial_clan_text # {{{
 {
-# generate initial text for each clan's page
+  # generate initial text for each clan's page
+  # arguments: none
+
   foreach my $clan (keys %clan_txt_output_for)
   {
     my $roster = join '',
@@ -1136,6 +1141,8 @@ sub initial_clan_text # {{{
 sub initial_scoreboard_text # {{{
 {
   # generate initial text for the scoreboard
+  # arguments: none
+
   $txt_output_for{''} = "Current standings:\n";
   $html_output_for{''} = << 'EOH8';
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -1255,7 +1262,9 @@ sub write_pages # {{{
 
 sub write_player_list # {{{
 {
-# print list of players to player.html, player.txt
+  # print list of players to player.html, player.txt
+  # arguments: none
+
   open(my $player_html, '>', 'players.html') or my_die "Unable to open players.html for writing: $!";
   open(my $player_txt, '>', 'players.txt') or my_die "Unable to open players.txt for writing: $!";
 
