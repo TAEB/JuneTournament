@@ -273,7 +273,6 @@ sub generic_trophy # {{{
   #   short: the "short" name of the trophy ("b13" to "Best of 13")
   #   list: an arrayref of hashrefs containing game information (default: list
   #         of ascensions)
-  #   list_sub: a coderef that, when called, will produce list
   #   grep: use this to filter just the games you want (such as only wizards for
   #         "high scoring wizard" trophy)
   #   sorter: a coderef that is used to sort games to determine who's winning
@@ -296,7 +295,6 @@ sub generic_trophy # {{{
 
   my $reverse     = defined($args->{need_reverse}) ? $args->{need_reverse}  : 0;
   my $list        = defined($args->{list})         ? $args->{list} : \@ascensions;
-  $list = $args->{list_sub}() if defined($args->{list_sub});
 
   my $trophy_stat = $args->{trophy_stat}   || "";
   my $get_name    = $args->{get_name}      || sub {$_[0]{name}};
@@ -1101,7 +1099,7 @@ EOH8
       name             => "Best of 13",
       short            => "b13",
       clan_points      => 10,
-      list_sub         => \&best_of_13,
+      list             => best_of_13(),
       sorter           => sub { $b->[1] <=> $a->[1] || $a->[2] <=> $b->[2]},
       get_name         => sub { $_[0][0] },
       display_callback => sub {my $b13 = shift; sprintf "{{%s}} - %d", $b13->[0], $b13->[1]}
@@ -1110,7 +1108,7 @@ EOH8
       name             => "Most ascensions",
       short            => "mostascs",
       clan_points      => 9,
-      list_sub         => sub {[map {[$_, @{$ascensions_for{$_}}]} keys %ascensions_for]},
+      list             => [map {[$_, @{$ascensions_for{$_}}]} keys %ascensions_for],
       sorter           => sub { $b->[1] <=> $a->[1] || $a->[2] <=> $b->[2]},
       get_name         => sub { $_[0][0] },
       display_callback => sub {my $ma = shift; sprintf "{{%s}} - %d", $ma->[0], $ma->[1]}
@@ -1119,7 +1117,7 @@ EOH8
       name             => "Longest ascension streak",
       short            => "ascstreak",
       clan_points      => 9,
-      list_sub         => sub {[map {[$_, @{$best_ascstreak_for{$_}}]} keys %best_ascstreak_for]},
+      list             => [map {[$_, @{$best_ascstreak_for{$_}}]} keys %best_ascstreak_for],
       sorter           => sub { $b->[1] <=> $a->[1] || $a->[2] <=> $b->[2]},
       get_name         => sub { $_[0][0] },
       display_callback => sub {my $ma = shift; sprintf "{{%s}} - %d", $ma->[0], $ma->[1]}
