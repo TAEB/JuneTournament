@@ -981,7 +981,7 @@ sub main # {{{
   print "Reading clan_info\n";
   read_clan_info("clan_info");
   print "Reading xlogfile\n";
-  read_xlogfile("xlogfile", "xlogfile.unsure");
+  read_xlogfile($devnull ? "xlogfile.devnull" : ("xlogfile","xlogfile.unsure"));
   # }}}
 
 # generate initial text for each player's page {{{
