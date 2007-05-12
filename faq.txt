@@ -65,8 +65,6 @@ You bet!
     <dd>Awarded to the player who has the fewest "vanquished creatures" in his dumplog. This probably will not go to a pacifist since pet kills are included.</dd>
   <dt>Most Extinctionist Ascension</dt>
     <dd>Awarded to the player who has the most "vanquished creatures" in his dumplog. Thankfully NetHack stops counting kills of a species after 255, so it will not necessarily go to a pudding farmer!</dd>
-  <dt>Fastest Ascension: Realtime</dt>
-    <dd>Awarded to the player who ascends in the shortest wallclock time. This is calculated by timing your ttyrecs, thanks to the efforts of jsn-. Note that (unlike devnull) long pauses are truncated to ten seconds, so you do not have to save and reload if you intend to wander away from the computer.</dd>
   <dt>Clan: Best in Show</dt>
     <dd>Awarded to the clan which earns the most clan points. Clan points are awarded based on trophies and achievements. Trophy clan points are weighted by how difficult the trophy is to achieve (so best of 13 is worth a lot more than highest scoring ascension). Unlike devnull, some points are awarded to the second and third place finishers of a trophy (60% and 30% respectively), even if the same player places more than once.</dd>
   <dt>Clan: Most Ascensions</dt>
