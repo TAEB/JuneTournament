@@ -167,5 +167,7 @@ sub paging {
     }
 }
 
+template '/salutation' => sub {};
+
 1;
 
