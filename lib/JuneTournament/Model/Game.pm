@@ -184,6 +184,13 @@ sub before_create {
     my $self = shift;
     my $args = shift;
 
+    if (my $prefix = Jifty->config->app('date_prefix')) {
+        for my $field (qw/startdate enddate/) {
+            return (0, "Invalid $field.")
+                if substr($args->{$field}, 0, length($prefix)) ne $prefix;
+        }
+    }
+
     my $name = $args->{player};
     $name = $name->name if ref $name;
 
