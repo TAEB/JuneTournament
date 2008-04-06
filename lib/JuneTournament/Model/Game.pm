@@ -100,5 +100,27 @@ sub current_user_can {
     return $self->current_user->is_superuser;
 }
 
+sub xlogfile_hashmap {
+    my $self = shift;
+    my %in   = @{ shift @_ };
+    my %out;
+
+    my @same = qw/version maxlvl maxhp deaths uid role race gender name death conduct turns realtime starttime endtime gender0 align0/;
+
+    my %map = (
+        points    => 'score',
+        deathdnum => 'branch',
+        deathlev  => 'curlvl',
+        deathdate => 'enddate',
+        birthdate => 'startdate',
+        align     => 'alignment',
+        achieve   => 'achievement',
+    );
+
+    @out{@same} = delete @in{@same};
+    @out{values %map} = delete @in{keys %map};
+    return \%out;
+}
+
 1;
 
