@@ -41,5 +41,18 @@ sub current_user_can {
     return $self->current_user->is_superuser;
 }
 
+=head2 ascensions
+
+Returns the ascensions by the player.
+
+=cut
+
+sub ascensions {
+    my $self = shift;
+    my $games = $self->games;
+    $games->limit(column => 'ascended', value => 1);
+    return $games;
+}
+
 1;
 
