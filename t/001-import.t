@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-use Jifty::Test tests => 19;
+use Jifty::Test tests => 29;
 
 my $xlogline = <<"END";
 version=3.4.3:points=8408:deathdnum=2:deathlev=7:maxlvl=7:hp=-2:maxhp=63:deaths=1:deathdate=20080326:birthdate=20080324:uid=5:role=Wiz:race=Hum:gender=Mal:align=Neu:name=mangotiger:death=killed by a soldier ant:conduct=0xf80:turns=4659:achieve=0x0:realtime=10690:starttime=1206392007:endtime=1206504538:gender0=Mal:align0=Neu
@@ -71,4 +71,16 @@ ok(!$game->ascended, 'ascended flag is off');
 is($game->branch, 'dungeons', "Game ended in the main dungeons");
 is($game->gender, 'Mal', "end gender was Mal");
 is($game->gender0, 'Mal', "start gender defaults to end gender");
+is($game->alignment, 'Law', "end alignment was Law");
+is($game->alignment0, 'Law', "start alignment defaults to end alignment");
 
+$game = JuneTournament::Model::Game->new(current_user => JuneTournament::CurrentUser->superuser);
+($id, $msg) = $game->create_from_xlogline("version=3.4.3:points=6217060:deathdnum=7:deathlev=-5:maxlvl=46:hp=447:maxhp=492:deaths=0:deathdate=20080406:birthdate=20080403:uid=5:role=Pri:race=Hum:gender=Fem:align=Law:name=Thyra:death=ascended:conduct=0xc80:turns=67278:achieve=0xfff:realtime=63071:starttime=1207247398:endtime=1207444839:gender0=Mal:align0=Neu");
+ok($id, "Game was created");
+is($game->death, 'ascended', "Death reason");
+ok($game->ascended, 'ascended flag is on');
+is($game->branch, 'planes', "Game ended in the planes");
+is($game->gender, 'Fem', "end gender was Fem");
+is($game->gender0, 'Mal', "start gender was Mal");
+is($game->alignment, 'Law', "end alignment was Law");
+is($game->alignment0, 'Neu', "start alignment was Neu");
