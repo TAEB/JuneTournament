@@ -55,7 +55,7 @@ template games => sub {
             for (@$games) {
                 li { show game => $_ }
             }
-        }
+        };
         if ($games->pager->previous_page) {
             hyperlink(
                 label => "prev",
