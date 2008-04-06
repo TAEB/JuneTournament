@@ -56,3 +56,5 @@ framework:
     ServeStaticFiles: 1
     StaticRoot: share/web/static
     TemplateRoot: share/web/templates
+application:
+    date_prefix: 200804
