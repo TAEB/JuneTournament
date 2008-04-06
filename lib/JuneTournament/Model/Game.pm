@@ -101,7 +101,7 @@ sub current_user_can {
     return $self->current_user->is_superuser;
 }
 
-sub xlogfile_hashmap {
+sub xlogline_hashmap {
     my $self = shift;
     my %in   = @{ shift @_ };
     my %out;
@@ -123,12 +123,12 @@ sub xlogfile_hashmap {
     return \%out;
 }
 
-sub hash_from_xlogfile {
+sub hash_from_xlogline {
     my $self = shift;
     my $line = shift;
 
     my $game = parse_xlogline($line);
-    return $self->xlogfile_hashmap($game);
+    return $self->xlogline_hashmap($game);
 }
 
 1;
