@@ -33,7 +33,7 @@ template '/player' => page {
     my $name = get('name') || redirect('/errors/404');
     my $player = JuneTournament->player($name) || redirect('/errors/404');
 
-    h1 { $name }
+    h1 { $name };
 
     if ($player->ascensions->count) {
         h3 { "Recent Ascensions" };
