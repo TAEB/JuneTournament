@@ -31,7 +31,7 @@ my $expected = {
     starttime   => 1206392007,
     endtime     => 1206504538,
     gender0     => 'Mal',
-    align0      => 'Neu',
+    alignment0  => 'Neu',
 };
 
 is_deeply($args, $expected, "parsed the game to the correct hash");

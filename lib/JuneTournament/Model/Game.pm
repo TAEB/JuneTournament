@@ -86,7 +86,7 @@ use JuneTournament::Record schema {
         default is 0;
     column gender0 =>
         type is 'text';
-    column align0 =>
+    column alignment0 =>
         type is 'text';
 };
 
@@ -116,7 +116,7 @@ sub xlogline_hashmap {
     my %in   = %{ shift @_ };
     my %out;
 
-    my @same = qw/version maxlvl maxhp deaths race gender death conduct turns realtime starttime endtime gender0 align0/;
+    my @same = qw/version maxlvl maxhp deaths race gender death conduct turns realtime starttime endtime gender0/;
 
     my %map = (
         points    => 'score',
@@ -128,6 +128,7 @@ sub xlogline_hashmap {
         birthdate => 'startdate',
         role      => 'class',
         align     => 'alignment',
+        align0    => 'alignment0',
         name      => 'player',
         achieve   => 'achievement',
     );
