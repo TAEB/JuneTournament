@@ -1,0 +1,59 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use IO::Socket::INET;
+
+my $logfile = 'logfile';
+
+sub initialize_connection {
+    my $listener = IO::Socket::INET->new(
+        LocalPort => 9010,
+    );
+    my $socket = $listener->accept;
+    close $listener;
+
+    my $start = '';
+    until ($start =~ /^\d+\n/) {
+        my $buf;
+        $socket->recv($buf);
+        $start .= $buf;
+   }
+
+   return ($socket, $start);
+}
+
+sub tail {
+    my $out   = shift;
+    my $start = shift;
+
+    open my $loghandle, '<', $logfile
+        or die "Unable to open $logfile for reading: $!";
+
+    my $curpos = 0;
+    my $curline = 0;
+
+    while (1) {
+        my $line = <$loghandle>;
+        if (!$line) {
+            seek $loghandle, $curpos, 0;
+            sleep 1;
+            next;
+        }
+
+        $curpos = tell($loghandle);
+        ++$curline;
+
+        next if $curline < $start;
+
+        my $ok = print { $out } $line;
+        next if $ok;
+
+        return;
+    }
+}
+
+while (1) {
+    tail(initialize_connection());
+}
+
+
