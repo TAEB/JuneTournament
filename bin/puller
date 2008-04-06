@@ -8,20 +8,24 @@ my $logfile = 'xlogfile';
 while (1) {
     eval {
         local $SIG{PIPE} = sub { die "Pipe broken" };
+        warn "Counting lines in $logfile..";
         open my $loghandle, '>>', $logfile
             or die "Unable to open $logfile for appending: $!";
 
         my ($lines) = `wc -l $logfile` =~ /(\d+)/;
         ++$lines;
         my $socket;
+        warn "Next line in $logfile is $lines..";
 
         until ($socket) {
+            warn "Connecting to alt.org:9010..";
             $socket = IO::Socket::INET->new(
                 PeerAddr => 'alt.org',
                 PeerPort => 9010,
             );
             sleep 1 if !$socket;
         }
+        warn "Connected to alt.org:9010!";
 
         $socket->print("$lines\n");
 
@@ -29,6 +33,7 @@ while (1) {
             print { $loghandle } $_;
             $loghandle->flush;
         }
+        warn "Read from socket returned false";
     };
     warn $@ if $@;
     sleep 1;

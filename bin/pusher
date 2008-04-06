@@ -6,25 +6,31 @@ use IO::Socket::INET;
 my $logfile = '/opt/nethack/nethack.alt.org/nh343/var/xlogfile';
 
 sub initialize_connection {
+    warn "Initializing a listener..";
     my $listener = IO::Socket::INET->new(
         LocalPort => 9010,
         Reuse     => 1,
         Listen    => 5,
     );
     do { warn $!; return } if !$listener;
+    warn "Awaiting connection..";
     my $socket = $listener->accept;
     do { warn $!; return } if !$socket;
+    warn "Got connection!";
 
     close $listener;
 
     my $start = '';
+    warn "Awaiting start line..";
     until ($start =~ /^\d+\n/) {
         my $buf;
         $socket->recv($buf, 50);
+        warn "Read '$buf'";
         $start .= $buf;
-   }
+    }
+    warn "Starting at $start..";
 
-   return ($socket, $start);
+    return ($socket, $start);
 }
 
 sub tail {
@@ -52,6 +58,7 @@ sub tail {
         next if $curline < $start;
 
         my $ok = print { $out } $line;
+        warn "Print failed: $!";
         next if $ok;
 
         return;
@@ -59,6 +66,7 @@ sub tail {
 }
 
 while (1) {
+    warn "Starting up..";
     eval {
         local $SIG{PIPE} = sub { die "Pipe broken" };
         tail(initialize_connection())
@@ -67,5 +75,4 @@ while (1) {
 
     sleep 1;
 }
-
 
