@@ -32,6 +32,7 @@ template '/' => page {
 template '/player' => page {
     my $name = get('name') || redirect('/errors/404');
     my $player = JuneTournament->player($name) || redirect('/errors/404');
+    $name = $player->name;
 
     h1 { $name };
 
