@@ -97,7 +97,7 @@ sub games {
                 li { game($_) }
             }
         };
-        paging($games->pager);
+        paging($games);
     }
 }
 
@@ -131,6 +131,7 @@ sub game {
 
 sub paging {
     my $pager = shift;
+    $pager = $pager->pager if $pager->isa('Jifty::Collection');
 
     if ($pager->previous_page) {
         hyperlink(
