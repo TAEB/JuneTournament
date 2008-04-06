@@ -228,5 +228,16 @@ sub role {
     $self->class(@_);
 }
 
+=head2 crga
+
+Returns the role race gender alignment of the game.
+
+=cut
+
+sub crga {
+    my $self = shift;
+    return join ' ', $self->role, $self->race, $self->gender, $self->alignment;
+}
+
 1;
 
