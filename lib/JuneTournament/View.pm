@@ -14,6 +14,19 @@ template '/' => page {
         );
         outs ".";
     }
+
+    h3 { "Recent Ascensions" }
+    render_region(
+        path => 'recent-ascensions',
+        name => 'recent-ascensions',
+    );
+
+    h3 { "Recent Games" }
+    render_region(
+        path => 'recent-games',
+        name => 'recent-games',
+    );
+
 };
 
 template 'recent-ascensions' => sub {
