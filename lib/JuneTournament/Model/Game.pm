@@ -246,5 +246,21 @@ sub crga {
     return join ' ', $self->role, $self->race, $self->gender, $self->alignment;
 }
 
+=head2 dumplog_url
+
+Returns the URL to the game's dumplog. Assumes the tournament is being run on
+NAO. If no starttime is in the game, then returns undef, because we won't be
+able to find the url.
+
+=cut
+
+sub dumplog_url {
+    my $self = shift;
+    return unless $self->starttime;
+    return sprintf 'http://alt.org/nethack/userdata/%s/dumplog/%d.nh343.txt',
+                   $self->player->name,
+                   $self->startttime;
+}
+
 1;
 
