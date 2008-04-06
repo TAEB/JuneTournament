@@ -117,8 +117,9 @@ sub game {
 
         if (my $url = $game->dumplog_url) {
             hyperlink(
-                url   => $url,
-                label => $game->death,
+                url    => $url,
+                label  => $game->death,
+                target => "_blank",
             );
         }
         else {
