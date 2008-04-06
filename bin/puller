@@ -6,27 +6,30 @@ use IO::Socket::INET;
 my $logfile = 'logfile.out';
 
 while (1) {
-    open my $loghandle, '>>', $logfile
-        or die "Unable to open $logfile for appending: $!";
+    eval {
+        open my $loghandle, '>>', $logfile
+            or die "Unable to open $logfile for appending: $!";
 
-    my ($lines) = `wc -l $logfile` =~ /(\d+)/;
-    ++$lines;
-    my $socket;
+        my ($lines) = `wc -l $logfile` =~ /(\d+)/;
+        ++$lines;
+        my $socket;
 
-    until ($socket) {
-        $socket = IO::Socket::INET->new(
-            PeerAddr => 'localhost',
-            PeerPort => 9010,
-        );
-        sleep 1 if !$socket;
-    }
+        until ($socket) {
+            $socket = IO::Socket::INET->new(
+                PeerAddr => 'localhost',
+                PeerPort => 9010,
+            );
+            sleep 1 if !$socket;
+        }
 
-    $socket->print("$lines\n");
+        $socket->print("$lines\n");
 
-    while (<$socket>) {
-        print { $loghandle } $_;
-        $loghandle->flush;
-    }
+        while (<$socket>) {
+            print { $loghandle } $_;
+            $loghandle->flush;
+        }
+    };
+    warn $@ if $@;
     sleep 1;
 }
 

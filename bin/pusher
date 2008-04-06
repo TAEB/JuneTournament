@@ -59,7 +59,9 @@ sub tail {
 }
 
 while (1) {
-    tail(initialize_connection());
+    eval { tail(initialize_connection()) };
+    warn $@ if $@;
+
     sleep 1;
 }
 
