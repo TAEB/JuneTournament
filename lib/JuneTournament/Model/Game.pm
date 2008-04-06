@@ -40,10 +40,10 @@ use JuneTournament::Record schema {
     column startdate =>
         type is 'text',
         is mandatory;
-    column uid =>
+    column userid =>
         type is 'int',
         is mandatory;
-    column role =>
+    column class =>
         type is 'text',
         valid_values are qw(Arc Bar Cav Hea Kni Mon Pri Ran Rog Sam Tou Val Wiz),
         is mandatory;
@@ -106,15 +106,17 @@ sub xlogline_hashmap {
     my %in   = %{ shift @_ };
     my %out;
 
-    my @same = qw/version maxlvl maxhp deaths uid role race gender name death conduct turns realtime starttime endtime gender0 align0/;
+    my @same = qw/version maxlvl maxhp deaths race gender name death conduct turns realtime starttime endtime gender0 align0/;
 
     my %map = (
         points    => 'score',
         deathdnum => 'branch',
         deathlev  => 'curlvl',
         hp        => 'curhp',
+        uid       => 'userid',
         deathdate => 'enddate',
         birthdate => 'startdate',
+        role      => 'class',
         align     => 'alignment',
         achieve   => 'achievement',
     );
