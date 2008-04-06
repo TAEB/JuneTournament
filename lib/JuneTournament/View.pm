@@ -29,6 +29,16 @@ template '/' => page {
     );
 };
 
+template '/player' => page {
+    render_region(
+        path => '/player_games',
+        name => 'player_games',
+        arguments => {
+            name => get('name'),
+        },
+    );
+};
+
 template '/recent_ascensions' => sub {
     my $games = JuneTournament::Model::GameCollection->new;
     $games->limit_to_ascensions;
