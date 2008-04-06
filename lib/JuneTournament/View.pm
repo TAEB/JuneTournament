@@ -47,7 +47,7 @@ template games => sub {
     my $self  = shift;
     my $games = shift;
 
-    my $page = get 'page';
+    my $page = (get 'page') || 1;
     $games->set_page_info(per_page => 10, current_page => $page);
 
     div {
@@ -58,7 +58,7 @@ template games => sub {
         };
         if ($games->pager->previous_page) {
             hyperlink(
-                label => "prev",
+                label => " prev ",
                 onclick => {
                     args => {
                         page => $games->pager->previous_page,
@@ -68,7 +68,7 @@ template games => sub {
         }
         if ($games->pager->next_page) {
             hyperlink(
-                label => "next",
+                label => " next ",
                 onclick => {
                     args => {
                         page => $games->pager->next_page,
