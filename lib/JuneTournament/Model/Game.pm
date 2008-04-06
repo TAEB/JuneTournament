@@ -118,6 +118,7 @@ sub xlogline_hashmap {
         birthdate => 'startdate',
         role      => 'class',
         align     => 'alignment',
+        name      => 'player',
         achieve   => 'achievement',
     );
 
