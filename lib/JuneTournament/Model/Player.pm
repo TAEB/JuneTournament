@@ -13,14 +13,17 @@ use JuneTournament::Record schema {
         refers_to JuneTournament::Model::GameCollection by 'player';
 };
 
+=head2 current_user_can
+
+Only root may update players. Any user may read players.
+
+=cut
+
 sub current_user_can {
     my $self  = shift;
     my $right = shift;
 
-    # anyone may read any data on a player
     return 1 if $right eq 'read';
-
-    # only root may update players
     return $self->current_user->is_superuser;
 }
 

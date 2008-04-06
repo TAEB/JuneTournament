@@ -90,16 +90,26 @@ use JuneTournament::Record schema {
         type is 'text';
 };
 
+=head2 current_user_can
+
+Only root may update games. Any user may read games.
+
+=cut
+
 sub current_user_can {
     my $self  = shift;
     my $right = shift;
 
-    # anyone may read any data on a game
     return 1 if $right eq 'read';
-
-    # only root may update game
     return $self->current_user->is_superuser;
 }
+
+=head2 xlogline_hashmap hashref -> hashref
+
+Takes a hashref from parse_xlogline and returns a renamed one suitable for
+passing to the model's create.
+
+=cut
 
 sub xlogline_hashmap {
     my $self = shift;
@@ -132,6 +142,13 @@ sub xlogline_hashmap {
     return \%out;
 }
 
+=head2 hash_from_xlogline line -> hashref
+
+Inflates the logline to a hash and maps the keys from the default xlogfile
+keys to those expected by this model.
+
+=cut
+
 sub hash_from_xlogline {
     my $self = shift;
     my $line = shift;
@@ -139,6 +156,12 @@ sub hash_from_xlogline {
     my $game = parse_xlogline($line);
     return $self->xlogline_hashmap($game);
 }
+
+=head2 new_from_xlogline line -> id, msg
+
+Creates a new Game object from the given xlogline
+
+=cut
 
 sub new_from_xlogline {
     my $self = shift;
