@@ -60,13 +60,23 @@ template game => sub {
     my $self = shift;
     my $game = shift;
 
-    outs sprintf '%d. %s (%s), %d points, %s%s',
+    my $display = sprintf '%d. %s (%s), %d points, %s%s',
         $game->id,
         $game->player->name,
         $game->crga,
         $game->score,
         $game->death,
         $game->endtime ? ' (' . ago(time - $game->endtime, 1) . ')' : '';
+
+    if (my $url = $game->dumplog_url) {
+        hyperlink(
+            url => $url,
+            label => $display,
+        );
+    }
+    else {
+        outs $display;
+    }
 };
 
 1;
