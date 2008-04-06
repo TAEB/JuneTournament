@@ -106,7 +106,7 @@ sub xlogline_hashmap {
     my %in   = %{ shift @_ };
     my %out;
 
-    my @same = qw/version maxlvl maxhp deaths race gender name death conduct turns realtime starttime endtime gender0 align0/;
+    my @same = qw/version maxlvl maxhp deaths race gender death conduct turns realtime starttime endtime gender0 align0/;
 
     my %map = (
         points    => 'score',
