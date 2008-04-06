@@ -89,5 +89,16 @@ use JuneTournament::Record schema {
         type is 'text';
 };
 
+sub current_user_can {
+    my $self  = shift;
+    my $right = shift;
+
+    # anyone may read any data on a game
+    return 1 if $right eq 'read';
+
+    # only root may update game
+    return $self->current_user->is_superuser;
+}
+
 1;
 
