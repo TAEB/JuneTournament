@@ -149,6 +149,8 @@ sub paging {
         outs "prev";
     }
 
+    outs ' / ' if $multipage;
+
     if ($pager->next_page) {
         hyperlink(
             label => "next",
