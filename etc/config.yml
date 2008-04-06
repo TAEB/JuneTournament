@@ -23,29 +23,14 @@ framework:
   MailerArgs: []
 
   Plugins: 
-    - 
-      LetMe: {}
-
-    - 
-      SkeletonApp: {}
-
-    - 
-      REST: {}
-
-    - 
-      Halo: {}
-
-    - 
-      ErrorTemplates: {}
-
-    - 
-      OnlineDocs: {}
-
-    - 
-      CompressedCSSandJS: {}
-
-    - 
-      AdminUI: {}
+    - LetMe: {}
+    - SkeletonApp: {}
+    - REST: {}
+    - Halo: {}
+    - ErrorTemplates: {}
+    - OnlineDocs: {}
+    - CompressedCSSandJS: {}
+    - AdminUI: {}
 
   PubSub: 
     Backend: Memcached
@@ -59,7 +44,7 @@ framework:
       - Jifty::View::Declare::Handler
       - Jifty::View::Mason::Handler
   Web: 
-    BaseURL: http://localhost
+    BaseURL: http://june-tourney.org
     DataDir: var/mason
     Globals: []
 
