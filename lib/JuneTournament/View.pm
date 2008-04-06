@@ -30,11 +30,28 @@ template '/' => page {
 };
 
 template '/player' => page {
+    my $name = get('name') || redirect('/errors/404');
+    my $player = JuneTournament->player($name) || redirect('/errors/404');
+
+    h1 { $name }
+
+    if ($player->ascensions->count) {
+        h3 { "Recent Ascensions" };
+        render_region(
+            path => '/player_ascs',
+            name => 'player_ascs',
+            arguments => {
+                name => $name,
+            },
+        );
+    }
+
+    h3 { "Recent Games" };
     render_region(
         path => '/player_games',
         name => 'player_games',
         arguments => {
-            name => get('name'),
+            name => $name,
         },
     );
 };
