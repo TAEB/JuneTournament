@@ -7,6 +7,7 @@ my $logfile = 'xlogfile';
 
 while (1) {
     eval {
+        local $SIG{PIPE} = sub { die "Pipe broken" };
         open my $loghandle, '>>', $logfile
             or die "Unable to open $logfile for appending: $!";
 

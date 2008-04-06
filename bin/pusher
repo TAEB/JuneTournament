@@ -59,7 +59,10 @@ sub tail {
 }
 
 while (1) {
-    eval { tail(initialize_connection()) };
+    eval {
+        local $SIG{PIPE} = sub { die "Pipe broken" };
+        tail(initialize_connection())
+    };
     warn $@ if $@;
 
     sleep 1;
