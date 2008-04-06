@@ -58,8 +58,8 @@ sub tail {
         next if $curline < $start;
 
         my $ok = print { $out } $line;
-        warn "Print failed: $!";
         next if $ok;
+        warn "Print failed: $!";
 
         return;
     }
