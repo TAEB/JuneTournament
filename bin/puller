@@ -2,6 +2,8 @@
 use strict;
 use warnings;
 use IO::Socket::INET;
+use Jifty;
+BEGIN { Jifty->new }
 
 my $logfile = 'xlogfile';
 
@@ -30,6 +32,7 @@ while (1) {
         $socket->print("$lines\n");
 
         while (<$socket>) {
+            JuneTournament::Model::Game->create_from_xlogline($_);
             print { $loghandle } $_;
             $loghandle->flush;
         }
