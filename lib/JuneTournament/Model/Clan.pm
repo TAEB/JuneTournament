@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-package JuneTournament::Model::Player;
+package JuneTournament::Model::Clan;
 use Jifty::DBI::Schema;
 
 use JuneTournament::Record schema {
@@ -9,15 +9,13 @@ use JuneTournament::Record schema {
         type is 'text',
         is mandatory,
         is distinct;
-    column games =>
-        refers_to JuneTournament::Model::GameCollection by 'player';
-    column clan =>
-        refers_to JuneTournament::Model::Clan by 'name';
+    column players =>
+        refers_to JuneTournament::Model::PlayerCollection by 'clan';
 };
 
 =head2 current_user_can
 
-Only root may update players. Any user may read players.
+Only root may update clans. Any user may read clans.
 
 =cut
 
