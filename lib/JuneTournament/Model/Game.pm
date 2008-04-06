@@ -173,7 +173,8 @@ sub create_from_xlogline {
 
 =head2 before_create
 
-Create the Player record if it doesn't already exist.
+Create the Player record if it doesn't already exist. Also, set the ascended
+flag to whether the player ascended or not.
 
 =cut
 
@@ -188,6 +189,8 @@ sub before_create {
     $player->load_or_create(
         name => $name,
     );
+
+    $args->{ascended} = $args->{death} eq 'ascended';
 
     return 1;
 }
