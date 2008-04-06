@@ -112,6 +112,7 @@ sub xlogline_hashmap {
         points    => 'score',
         deathdnum => 'branch',
         deathlev  => 'curlvl',
+        hp        => 'curhp',
         deathdate => 'enddate',
         birthdate => 'startdate',
         align     => 'alignment',
