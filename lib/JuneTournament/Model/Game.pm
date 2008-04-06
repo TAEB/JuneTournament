@@ -131,5 +131,13 @@ sub hash_from_xlogline {
     return $self->xlogline_hashmap($game);
 }
 
+sub new_from_xlogline {
+    my $self = shift;
+    my $line = shift;
+
+    my $args = $self->hash_from_xlogline($line);
+    $self->create(%$args);
+}
+
 1;
 
