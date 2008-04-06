@@ -2,6 +2,7 @@ use strict;
 use warnings;
 
 package JuneTournament::Model::Game;
+use Text::XLogfile 'parse_xlogline';
 use Jifty::DBI::Schema;
 
 use JuneTournament::Record schema {
@@ -120,6 +121,14 @@ sub xlogfile_hashmap {
     @out{@same} = delete @in{@same};
     @out{values %map} = delete @in{keys %map};
     return \%out;
+}
+
+sub hash_from_xlogfile {
+    my $self = shift;
+    my $line = shift;
+
+    my $game = parse_xlogline($line);
+    return $self->xlogfile_hashmap($game);
 }
 
 1;
