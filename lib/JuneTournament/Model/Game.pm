@@ -120,6 +120,11 @@ sub xlogline_hashmap {
 
     @out{@same} = delete @in{@same};
     @out{values %map} = delete @in{keys %map};
+
+    if (keys %in) {
+        Carp::confess "Unknown keys: " . join(', ', keys %in)
+    }
+
     return \%out;
 }
 
