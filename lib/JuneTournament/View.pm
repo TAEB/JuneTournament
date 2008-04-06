@@ -40,31 +40,38 @@ template '/player' => page {
 };
 
 template '/recent_ascensions' => sub {
-    my $games = JuneTournament::Model::GameCollection->new;
-    $games->limit_to_ascensions;
-    $games->order_by(column => 'id', order => 'desc');
-    games($games);
+    games(ascended => 1);
 };
 
 template '/recent_games' => sub {
-    my $games = JuneTournament::Model::GameCollection->new;
-    $games->unlimit;
-    $games->order_by(column => 'id', order => 'desc');
-    games($games);
+    games();
+};
+
+template '/player_ascs' => sub {
+    games(ascended => 1, player => get('name'));
 };
 
 template '/player_games' => sub {
-    my $name = get('name') || redirect('/errors/404');
-    my $player = JuneTournament->player($name) || redirect('/errors/404');
-    my $games = $player->games;
-    $games->order_by(column => 'id', order => 'desc');
-    games($games);
+    games(player => get('name'));
 };
 
 sub games {
-    my $games = shift;
+    my $games;
+
+    # if they pass in exactly one arg, it's a game object
+    if (@_ == 1) {
+        $games = shift;
+    }
+    else {
+        $games = JuneTournament::Model::GameCollection->new;
+        $games->unlimit if @_ == 0;
+        while (my ($column, $value) = splice @_, 0, 2) {
+            $games->limit(column => $column, value => $value);
+        }
+    }
 
     my $page = (get 'page') || 1;
+    $games->order_by(column => 'id', order => 'desc');
     $games->set_page_info(per_page => 10, current_page => $page);
 
     div {
