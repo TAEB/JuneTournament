@@ -11,13 +11,16 @@ sub initialize_connection {
         Reuse     => 1,
         Listen    => 5,
     );
+    do { warn $!; return } if !$listener;
     my $socket = $listener->accept;
+    do { warn $!; return } if !$socket;
+
     close $listener;
 
     my $start = '';
     until ($start =~ /^\d+\n/) {
         my $buf;
-        $socket->recv($buf);
+        $socket->recv($buf, 50);
         $start .= $buf;
    }
 
@@ -25,6 +28,7 @@ sub initialize_connection {
 }
 
 sub tail {
+    @_ or return;
     my $out   = shift;
     my $start = shift;
 
@@ -56,6 +60,7 @@ sub tail {
 
 while (1) {
     tail(initialize_connection());
+    sleep 1;
 }
 
 
