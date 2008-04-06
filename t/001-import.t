@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-use Jifty::Test tests => 5;
+use Jifty::Test tests => 8;
 
 my $xlogline = <<"END";
 version=3.4.3:points=8408:deathdnum=2:deathlev=7:maxlvl=7:hp=-2:maxhp=63:deaths=1:deathdate=20080326:birthdate=20080324:uid=5:role=Wiz:race=Hum:gender=Mal:align=Neu:name=mangotiger:death=killed by a soldier ant:conduct=0xf80:turns=4659:achieve=0x0:realtime=10690:starttime=1206392007:endtime=1206504538:gender0=Mal:align0=Neu
@@ -51,4 +51,10 @@ ok($id, "Game was created");
 my $players = JuneTournament::Model::PlayerCollection->new(current_user => JuneTournament::CurrentUser->superuser);
 $players->unlimit;
 is($players->count, 1, "only one instance of mangotiger");
+
+$game = JuneTournament::Model::Game->new(current_user => JuneTournament::CurrentUser->superuser);
+($id, $msg) = $game->create_from_xlogline("version=3.4.3:points=1283338:deathdnum=7:deathlev=-5:maxlvl=47:hp=137:maxhp=164:deaths=0:deathdate=20080406:birthdate=20080405:uid=5:role=Pri:race=Elf:gender=Mal:align=Cha:name=squidlarkin:death=ascended:conduct=0x580:turns=26390:achieve=0xfff:realtime=17569:starttime=1207428373:endtime=1207457467:gender0=Mal:align0=Cha");
+ok($id, "Game was created");
+is($game->death, 'ascended', "Game ended in ascension");
+ok($game->ascended, 'ascended flag is on');
 
