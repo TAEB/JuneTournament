@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-use Jifty::Test tests => 13;
+use Jifty::Test tests => 19;
 
 my $xlogline = <<"END";
 version=3.4.3:points=8408:deathdnum=2:deathlev=7:maxlvl=7:hp=-2:maxhp=63:deaths=1:deathdate=20080326:birthdate=20080324:uid=5:role=Wiz:race=Hum:gender=Mal:align=Neu:name=mangotiger:death=killed by a soldier ant:conduct=0xf80:turns=4659:achieve=0x0:realtime=10690:starttime=1206392007:endtime=1206504538:gender0=Mal:align0=Neu
@@ -62,4 +62,13 @@ ok($id, "Game was created");
 is($game->death, 'ascended', "Game ended in ascension");
 ok($game->ascended, 'ascended flag is on');
 is($game->branch, 'planes', "Game ended in the planes");
+
+$game = JuneTournament::Model::Game->new(current_user => JuneTournament::CurrentUser->superuser);
+($id, $msg) = $game->create_from_xlogline("align=Law:birthdate=20011024:death=killed by a brown mold:deathdate=20011024:deathdnum=0:deathlev=2:deaths=1:gender=Mal:hp=-2:maxhp=25:maxlvl=2:name=jkm:points=360:race=Hum:role=Sam:uid=1031:version=3.3.1");
+ok($id, "Game was created");
+is($game->death, 'killed by a brown mold', "Death reason");
+ok(!$game->ascended, 'ascended flag is off');
+is($game->branch, 'dungeons', "Game ended in the main dungeons");
+is($game->gender, 'Mal', "end gender was Mal");
+is($game->gender0, 'Mal', "start gender defaults to end gender");
 
