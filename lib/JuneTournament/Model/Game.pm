@@ -175,7 +175,7 @@ sub create_from_xlogline {
 =head2 before_create
 
 Create the Player record if it doesn't already exist. Also, set the ascended
-flag to whether the player ascended or not.
+flag to whether the player ascended or not. And default gender0 and alignment0.
 
 =cut
 
@@ -191,7 +191,9 @@ sub before_create {
         name => $name,
     );
 
-    $args->{ascended} = $args->{death} eq 'ascended';
+    $args->{ascended}     = $args->{death} eq 'ascended';
+    $args->{gender0}    ||= $args->{gender};
+    $args->{alignment0} ||= $args->{alignment};
 
     return 1;
 }
