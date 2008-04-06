@@ -1,0 +1,16 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
+use Jifty;
+BEGIN { Jifty->new }
+
+# NOTE!
+# this does NOT check to make sure that we haven't already seen these games.
+# there's simply no way to know that
+# you have to solve this problem elsewhere
+
+while (<>) {
+    JuneTournament::Model::Game->new_from_xlogfile($_);
+}
+
