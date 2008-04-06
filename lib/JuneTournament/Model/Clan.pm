@@ -9,9 +9,20 @@ use JuneTournament::Record schema {
         type is 'text',
         is mandatory,
         is distinct;
-    column players =>
-        refers_to JuneTournament::Model::PlayerCollection by 'clan';
 };
+
+=head2 players
+
+Returns the PlayerCollection for this clan
+
+=cut
+
+sub players {
+    my $self = shift;
+    my $players = JuneTournament::Model::PlayerCollection->new;
+    $players->limit(column => 'clan', value => $self->name);
+    return $players;
+}
 
 =head2 current_user_can
 
