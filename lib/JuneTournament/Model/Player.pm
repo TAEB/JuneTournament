@@ -47,12 +47,7 @@ Returns the ascensions by the player.
 
 =cut
 
-sub ascensions {
-    my $self = shift;
-    my $games = $self->games;
-    $games->limit(column => 'ascended', value => 1);
-    return $games;
-}
+sub ascensions { shift->games->limit_to_ascensions }
 
 1;
 
