@@ -100,22 +100,28 @@ sub games {
 sub game {
     my $game = shift;
 
-    my $display = sprintf '%d. %s (%s), %d points, %s%s',
-        $game->id,
-        $game->player->name,
-        $game->crga,
-        $game->score,
-        $game->death,
-        $game->endtime ? ' (' . ago(time - $game->endtime, 1) . ')' : '';
-
-    if (my $url = $game->dumplog_url) {
+    span {
+        outs $game->id . '. ';
         hyperlink(
-            url => $url,
-            label => $display,
+            label => $game->player->name,
+            url => '/player/'.$game->player->name
         );
-    }
-    else {
-        outs $display;
+        outs ' (' . $game->crga . '), ';
+        outs $game->score . ' points, ';
+
+        if (my $url = $game->dumplog_url) {
+            hyperlink(
+                url   => $url,
+                label => $game->death,
+            );
+        }
+        else {
+            outs $game->death;
+        }
+
+        if ($game->endtime) {
+            outs ' (' . ago(time - $game->endtime, 1) . ')';
+        }
     }
 }
 
