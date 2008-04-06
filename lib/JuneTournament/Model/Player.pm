@@ -12,6 +12,7 @@ use JuneTournament::Record schema {
     column games =>
         refers_to JuneTournament::Model::GameCollection by 'player';
     column clan =>
+        type is 'text',
         refers_to JuneTournament::Model::Clan by 'name';
 };
 

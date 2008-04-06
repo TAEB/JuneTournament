@@ -7,6 +7,7 @@ use Jifty::DBI::Schema;
 
 use JuneTournament::Record schema {
     column player =>
+        type is 'text',
         refers_to JuneTournament::Model::Player by 'name',
         is mandatory;
     column version =>
