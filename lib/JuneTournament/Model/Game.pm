@@ -157,13 +157,13 @@ sub hash_from_xlogline {
     return $self->xlogline_hashmap($game);
 }
 
-=head2 new_from_xlogline line -> id, msg
+=head2 create_from_xlogline line -> id, msg
 
 Creates a new Game object from the given xlogline
 
 =cut
 
-sub new_from_xlogline {
+sub create_from_xlogline {
     my $self = shift;
     my $line = shift;
 

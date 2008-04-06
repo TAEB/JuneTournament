@@ -11,6 +11,6 @@ BEGIN { Jifty->new }
 # you have to solve this problem elsewhere
 
 while (<>) {
-    JuneTournament::Model::Game->new_from_xlogfile($_);
+    JuneTournament::Model::Game->create_from_xlogline($_);
 }
 
