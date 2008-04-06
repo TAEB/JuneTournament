@@ -43,6 +43,15 @@ template '/recent_games' => sub {
     games($games);
 };
 
+template '/player_games' => sub {
+    my $name = get('name') || redirect('/errors/404');
+    my $player = JuneTournament::Model::Player->new;
+    $player->load_by_cols(name => $name) || redirect('/errors/404');
+    my $games = $player->games;
+    $games->order_by(column => 'id', order => 'desc');
+    games($games);
+};
+
 sub games {
     my $games = shift;
 
