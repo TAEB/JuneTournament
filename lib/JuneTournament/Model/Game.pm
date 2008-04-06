@@ -195,5 +195,23 @@ sub before_create {
     return 1;
 }
 
+=head2 canonicalize_branch
+
+Turn numeric branch IDs into names.
+
+=cut
+
+sub canonicalize_branch {
+    my $self = shift;
+    my $branch = shift;
+
+    if ($branch =~ m{^\d+$}) {
+        my @branches = qw(dungeons gehennom mines quest sokoban ludios vlad planes);
+        return $branches[$branch];
+    }
+
+    return $branch;
+}
+
 1;
 
