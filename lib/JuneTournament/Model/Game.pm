@@ -263,5 +263,25 @@ sub dumplog_url {
                    $self->startttime;
 }
 
+sub canonicalize_conduct {
+    my $self = shift;
+    my $hex  = shift;
+
+    if ($hex =~ /x/) {
+        return hex $hex;
+    }
+    return $hex;
+}
+
+sub canonicalize_achievement {
+    my $self = shift;
+    my $hex  = shift;
+
+    if ($hex =~ /x/) {
+        return hex $hex;
+    }
+    return $hex;
+}
+
 1;
 
