@@ -8,6 +8,8 @@ my $logfile = 'logfile';
 sub initialize_connection {
     my $listener = IO::Socket::INET->new(
         LocalPort => 9010,
+        Reuse     => 1,
+        Listen    => 5,
     );
     my $socket = $listener->accept;
     close $listener;
