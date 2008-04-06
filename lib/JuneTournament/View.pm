@@ -3,6 +3,7 @@ package JuneTournament::View;
 use strict;
 use warnings;
 use Jifty::View::Declare -base;
+use Time::Duration;
 
 template '/' => page {
     h1 { "The June Tournament" }
@@ -59,12 +60,13 @@ template game => sub {
     my $self = shift;
     my $game = shift;
 
-    outs sprintf '%d. %s (%s), %d points, %s',
+    outs sprintf '%d. %s (%s), %d points, %s%s',
         $game->id,
         $game->player->name,
         $game->crga,
         $game->score,
-        $game->death;
+        $game->death,
+        $game->endtime ? ' (' . ago(time - $game->endtime, 1) . ')' : '';
 };
 
 1;
