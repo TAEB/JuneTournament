@@ -9,12 +9,23 @@ use JuneTournament::Record schema {
         type is 'text',
         is mandatory,
         is distinct;
-    column games =>
-        refers_to JuneTournament::Model::GameCollection by 'player';
     column clan =>
         type is 'text',
         refers_to JuneTournament::Model::Clan by 'name';
 };
+
+=head2 games
+
+Returns the GameCollection for this player
+
+=cut
+
+sub games {
+    my $self = shift;
+    my $games = JuneTournament::Model::GameCollection->new;
+    $games->limit(column => 'player', value => $self->name);
+    return $games;
+}
 
 =head2 current_user_can
 
