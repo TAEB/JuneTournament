@@ -97,26 +97,7 @@ sub games {
                 li { game($_) }
             }
         };
-        if ($games->pager->previous_page) {
-            hyperlink(
-                label => " prev ",
-                onclick => {
-                    args => {
-                        page => $games->pager->previous_page,
-                    }
-                }
-            );
-        }
-        if ($games->pager->next_page) {
-            hyperlink(
-                label => " next ",
-                onclick => {
-                    args => {
-                        page => $games->pager->next_page,
-                    }
-                }
-            );
-        }
+        paging($games->pager);
     }
 }
 
@@ -145,6 +126,32 @@ sub game {
         if ($game->endtime) {
             outs ' (' . ago(time - $game->endtime, 1) . ')';
         }
+    }
+}
+
+sub paging {
+    my $pager = shift;
+
+    if ($pager->previous_page) {
+        hyperlink(
+            label => "prev",
+            onclick => {
+                args => {
+                    page => $pager->previous_page,
+                }
+            }
+        );
+    }
+
+    if ($pager->next_page) {
+        hyperlink(
+            label => "next",
+            onclick => {
+                args => {
+                    page => $pager->next_page,
+                }
+            }
+        );
     }
 }
 
