@@ -16,5 +16,36 @@ template '/' => page {
     }
 };
 
+template 'recent-ascensions' => sub {
+    my $games = JuneTournament::Model::GameCollection->new;
+    $games->limit_to_ascensions;
+    $games->order_by(column => 'id', order => 'desc');
+    $games->set_page_info(per_page => 10);
+    show games => $games;
+};
+
+template games => sub {
+    my $self  = shift;
+    my $games = shift;
+
+    ul {
+        for (@$games) {
+            li { show game => $_ }
+        }
+    }
+};
+
+template game => sub {
+    my $self = shift;
+    my $game = shift;
+
+    outs sprintf '%d. %s (%s), %d points, %s',
+        $game->id,
+        $game->player->name,
+        $game->crga,
+        $game->score,
+        $game->death;
+};
+
 1;
 
