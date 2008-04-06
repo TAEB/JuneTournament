@@ -216,5 +216,16 @@ sub canonicalize_branch {
     return $branch;
 }
 
+=head2 role
+
+Alias for class
+
+=cut
+
+sub role {
+    my $self = shift;
+    $self->class(@_);
+}
+
 1;
 
