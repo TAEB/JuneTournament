@@ -171,5 +171,26 @@ sub new_from_xlogline {
     $self->create(%$args);
 }
 
+=head2 before_create
+
+Create the Player record if it doesn't already exist.
+
+=cut
+
+sub before_create {
+    my $self = shift;
+    my $args = shift;
+
+    my $name = $args->{player};
+    $name = $name->name if ref $name;
+
+    my $player = JuneTournament::Model::Player->new;
+    $player->load_or_create(
+        name => $name,
+    );
+
+    return 1;
+}
+
 1;
 
