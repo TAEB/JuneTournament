@@ -8,7 +8,8 @@ use Time::Duration;
 template '/' => page {
     h1 { "The June Tournament" }
     p {
-        outs "Hi! I'm currently building up the site. In the meantime, you can ";
+        outs "Hi!";
+        outs "I'm currently building up the site using this month's data from NAO. In the meantime, you can ";
         hyperlink(
             label => "browse the source code",
             url => "http://sartak.org/code/index.cgi?r=JuneTournament;a=summary",
