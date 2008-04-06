@@ -260,7 +260,7 @@ sub dumplog_url {
     return unless $self->starttime;
     return sprintf 'http://alt.org/nethack/userdata/%s/dumplog/%d.nh343.txt',
                    $self->player->name,
-                   $self->startttime;
+                   $self->starttime;
 }
 
 sub canonicalize_conduct {
