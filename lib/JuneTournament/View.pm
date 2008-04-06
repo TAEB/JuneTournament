@@ -33,18 +33,17 @@ template 'recent-ascensions' => sub {
     my $games = JuneTournament::Model::GameCollection->new;
     $games->limit_to_ascensions;
     $games->order_by(column => 'id', order => 'desc');
-    show games => $games;
+    games($games);
 };
 
 template 'recent-games' => sub {
     my $games = JuneTournament::Model::GameCollection->new;
     $games->unlimit;
     $games->order_by(column => 'id', order => 'desc');
-    show games => $games;
+    games($games);
 };
 
-template games => sub {
-    my $self  = shift;
+sub games {
     my $games = shift;
 
     my $page = (get 'page') || 1;
@@ -53,7 +52,7 @@ template games => sub {
     div {
         ul {
             for (@$games) {
-                li { show game => $_ }
+                li { game($_) }
             }
         };
         if ($games->pager->previous_page) {
@@ -77,10 +76,9 @@ template games => sub {
             );
         }
     }
-};
+}
 
-template game => sub {
-    my $self = shift;
+sub game {
     my $game = shift;
 
     my $display = sprintf '%d. %s (%s), %d points, %s%s',
@@ -100,7 +98,7 @@ template game => sub {
     else {
         outs $display;
     }
-};
+}
 
 1;
 
