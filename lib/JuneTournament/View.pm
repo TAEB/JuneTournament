@@ -7,8 +7,8 @@ use Time::Duration;
 
 template '/' => page {
     h1 { "The June Tournament" }
+    p { "Hi!" }
     p {
-        outs "Hi!";
         outs "I'm currently building up the site using this month's data from NAO. In the meantime, you can ";
         hyperlink(
             label => "browse the source code",
