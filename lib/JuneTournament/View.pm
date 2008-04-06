@@ -133,6 +133,8 @@ sub paging {
     my $pager = shift;
     $pager = $pager->pager if $pager->isa('Jifty::Collection');
 
+    my $multipage = $pager->last_page > 1;
+
     if ($pager->previous_page) {
         hyperlink(
             label => "prev",
@@ -142,6 +144,9 @@ sub paging {
                 }
             }
         );
+    }
+    elsif ($multipage) {
+        outs "prev";
     }
 
     if ($pager->next_page) {
@@ -153,6 +158,9 @@ sub paging {
                 }
             }
         );
+    }
+    elsif ($multipage) {
+        outs "next";
     }
 }
 
