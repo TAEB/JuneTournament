@@ -18,25 +18,25 @@ template '/' => page {
 
     h3 { "Recent Ascensions" };
     render_region(
-        path => 'recent_ascensions',
+        path => '/recent_ascensions',
         name => 'recent_ascensions',
     );
 
     h3 { "Recent Games" };
     render_region(
-        path => 'recent_games',
+        path => '/recent_games',
         name => 'recent_games',
     );
 };
 
-template 'recent_ascensions' => sub {
+template '/recent_ascensions' => sub {
     my $games = JuneTournament::Model::GameCollection->new;
     $games->limit_to_ascensions;
     $games->order_by(column => 'id', order => 'desc');
     games($games);
 };
 
-template 'recent_games' => sub {
+template '/recent_games' => sub {
     my $games = JuneTournament::Model::GameCollection->new;
     $games->unlimit;
     $games->order_by(column => 'id', order => 'desc');
