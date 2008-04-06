@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-use Jifty::Test tests => 8;
+use Jifty::Test tests => 10;
 
 my $xlogline = <<"END";
 version=3.4.3:points=8408:deathdnum=2:deathlev=7:maxlvl=7:hp=-2:maxhp=63:deaths=1:deathdate=20080326:birthdate=20080324:uid=5:role=Wiz:race=Hum:gender=Mal:align=Neu:name=mangotiger:death=killed by a soldier ant:conduct=0xf80:turns=4659:achieve=0x0:realtime=10690:starttime=1206392007:endtime=1206504538:gender0=Mal:align0=Neu
@@ -39,6 +39,7 @@ is_deeply($args, $expected, "parsed the game to the correct hash");
 my $game = JuneTournament::Model::Game->new(current_user => JuneTournament::CurrentUser->superuser);
 my ($id, $msg) = $game->create(%$args);
 ok($id, "Game was created");
+ok(!$game->ascended, "Game's ascended flag is off");
 
 my $player = JuneTournament::Model::Player->new(current_user => JuneTournament::CurrentUser->superuser);
 $player->load_by_cols(name => 'mangotiger');
@@ -47,6 +48,7 @@ ok($player->id, "player was automatically created by the game");
 $game = JuneTournament::Model::Game->new(current_user => JuneTournament::CurrentUser->superuser);
 ($id, $msg) = $game->create_from_xlogline("version=3.4.3:points=31791:deathdnum=2:deathlev=12:maxlvl=12:hp=-3:maxhp=84:deaths=1:deathdate=20080324:birthdate=20080323:uid=5:role=Wiz:race=Hum:gender=Mal:align=Neu:name=mangotiger:death=killed by a mountain centaur:conduct=0xf80:turns=9606:achieve=0x600:realtime=35547:starttime=1206294411:endtime=1206391854:gender0=Mal:align0=Neu");
 ok($id, "Game was created");
+ok(!$game->ascended, "Game's ascended flag is off");
 
 my $players = JuneTournament::Model::PlayerCollection->new(current_user => JuneTournament::CurrentUser->superuser);
 $players->unlimit;
