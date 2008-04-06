@@ -103,7 +103,7 @@ sub current_user_can {
 
 sub xlogline_hashmap {
     my $self = shift;
-    my %in   = @{ shift @_ };
+    my %in   = %{ shift @_ };
     my %out;
 
     my @same = qw/version maxlvl maxhp deaths uid role race gender name death conduct turns realtime starttime endtime gender0 align0/;
