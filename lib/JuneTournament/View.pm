@@ -24,6 +24,14 @@ template 'recent-ascensions' => sub {
     show games => $games;
 };
 
+template 'recent-games' => sub {
+    my $games = JuneTournament::Model::GameCollection->new;
+    $games->unlimit;
+    $games->order_by(column => 'id', order => 'desc');
+    $games->set_page_info(per_page => 10);
+    show games => $games;
+};
+
 template games => sub {
     my $self  = shift;
     my $games = shift;
