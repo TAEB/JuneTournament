@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use IO::Socket::INET;
 
-my $logfile = 'logfile.out';
+my $logfile = 'xlogfile';
 
 while (1) {
     eval {
