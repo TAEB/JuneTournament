@@ -20,6 +20,21 @@ sub trophies {
 sub incorporate_game_into_trophies {
     my $self = shift;
     my $game = shift;
+
+    for my $trophy (qw/FirstAscension/) {
+        my $class = "JuneTournament::Trophy::$_";
+        my $rank = $class->find_rank($game);
+
+        if (defined $rank) {
+            my $change = JuneTournament::Model::TrophyChange->new(current_user => JuneTournament::CurrentUser->superuser);
+
+            $change->create(
+                game   => $game,
+                rank   => $rank,
+                trophy => $trophy,
+            );
+        }
+    }
 }
 
 1;
