@@ -169,9 +169,13 @@ sub create_from_xlogline {
     my $self = shift;
     my $line = shift;
 
-    $self = $self->new(current_user => JuneTournament::CurrentUser->superuser);
-    my $args = $self->hash_from_xlogline($line);
-    $self->create(%$args);
+    my $new = $self->new(current_user => JuneTournament::CurrentUser->superuser);
+    my $args = $new->hash_from_xlogline($line);
+    my @ret = $new->create(%$args);
+
+    $self->load($new->id);
+
+    return @ret;
 }
 
 =head2 before_create
