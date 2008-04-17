@@ -2,6 +2,7 @@
 package JuneTournament;
 use strict;
 use warnings;
+use JuneTournament::Trophy::FirstAscension;
 
 sub player {
     my $self = shift;
@@ -22,7 +23,7 @@ sub incorporate_game_into_trophies {
     my $game = shift;
 
     for my $trophy (qw/FirstAscension/) {
-        my $class = "JuneTournament::Trophy::$_";
+        my $class = "JuneTournament::Trophy::$trophy";
         my $rank = $class->find_rank($game);
 
         if (defined $rank) {
