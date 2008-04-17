@@ -307,5 +307,32 @@ sub canonicalize_achievement {
     return $hex;
 }
 
+my @conducts = (
+    [foodless     => 0x0001],
+    [vegan        => 0x0002],
+    [vegetarian   => 0x0004],
+    [atheist      => 0x0008],
+    [weaponless   => 0x0010],
+    [pacifist     => 0x0020],
+    [illiterate   => 0x0040],
+    [polyitemless => 0x0080],
+    [polyselfless => 0x0100],
+    [wishless     => 0x0200],
+    [artiwishless => 0x0400],
+    [genoless     => 0x0800],
+);
+
+sub demunge_conduct {
+    my $self    = shift;
+    my $conduct = shift || $self->conduct;
+    my @achieved;
+
+    foreach (@conducts) {
+        push @achieved, $_->[0] if $conduct & $_->[1];
+    }
+
+    return @achieved;
+}
+
 1;
 
