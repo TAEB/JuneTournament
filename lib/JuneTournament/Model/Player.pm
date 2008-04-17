@@ -1,7 +1,7 @@
+package JuneTournament::Model::Player;
 use strict;
 use warnings;
 
-package JuneTournament::Model::Player;
 use Jifty::DBI::Schema;
 
 use JuneTournament::Record schema {

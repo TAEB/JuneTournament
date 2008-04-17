@@ -1,7 +1,7 @@
+package JuneTournament::Model::Game;
 use strict;
 use warnings;
 
-package JuneTournament::Model::Game;
 use Text::XLogfile 'parse_xlogline';
 use Jifty::DBI::Schema;
 
