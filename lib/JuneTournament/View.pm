@@ -74,6 +74,14 @@ template '/player_games' => sub {
     games(player => get('name'));
 };
 
+template '/scums' => sub {
+    games(
+        [column => 'score', value => '1000', operator => '<'],
+        death => 'quit',
+        death => 'escaped',
+    );
+};
+
 sub games {
     my $games;
 
@@ -85,7 +93,13 @@ sub games {
         $games = JuneTournament::Model::GameCollection->new;
         $games->unlimit if @_ == 0;
         while (my ($column, $value) = splice @_, 0, 2) {
-            $games->limit(column => $column, value => $value);
+            if (ref($column) eq 'ARRAY') {
+                $games->limit(@$column);
+                unshift @_, $value;
+            }
+            else {
+                $games->limit(column => $column, value => $value);
+            }
         }
     }
 
