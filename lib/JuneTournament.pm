@@ -2,7 +2,11 @@
 package JuneTournament;
 use strict;
 use warnings;
-use JuneTournament::Trophy::FirstAscension;
+
+our @trophies = qw/FastestAscension FirstAscension/;
+for (@trophies) {
+    require "JuneTournament/Trophy/$_.pm";
+}
 
 sub player {
     my $self = shift;
@@ -13,16 +17,13 @@ sub player {
     return $player->id ? $player : undef;
 }
 
-# good enough for now
-sub trophies {
-    return ("Best of 13", "Most Ascensions", "Fastest Ascension: Turns", "Fastest Ascension: Realtime", "Lowest-Scored Ascension", "Best Behaved Ascension", "First Ascension");
-}
+sub trophies { @trophies }
 
 sub incorporate_game_into_trophies {
     my $self = shift;
     my $game = shift;
 
-    for my $trophy (qw/FirstAscension/) {
+    for my $trophy ($self->trophies) {
         my $class = "JuneTournament::Trophy::$trophy";
         my $rank = $class->find_rank($game);
 
