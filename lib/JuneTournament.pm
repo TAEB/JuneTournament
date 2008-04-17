@@ -17,5 +17,10 @@ sub trophies {
     return ("Best of 13", "Most Ascensions", "Fastest Ascension: Turns", "Fastest Ascension: Realtime", "Lowest-Scored Ascension", "Best Behaved Ascension", "First Ascension");
 }
 
+sub incorporate_game_into_trophies {
+    my $self = shift;
+    my $game = shift;
+}
+
 1;
 
