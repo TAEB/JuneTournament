@@ -211,14 +211,16 @@ sub before_create {
     return 1;
 }
 
-=head2 after_create
+=head2 create
 
-Immediately incorporate this game into trophy calculations.
+Immediately incorporate this game into trophy calculations. We can't use the
+"after_create" trigger because that fires before C<$self> is populated.
 
 =cut
 
-sub after_create {
+sub create {
     my $self = shift;
+    $self->SUPER::create(@_);
 
     JuneTournament->incorporate_game_into_trophies($self);
 
