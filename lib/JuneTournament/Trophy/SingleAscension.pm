@@ -10,6 +10,14 @@ sub game_qualifies {
     return $game->ascended;
 }
 
+sub compare_games {
+    my $self = shift;
+    my ($a, $b) = @_;
+    my $field = $self->rank_by;
+
+    $a->$field <=> $b->$field
+}
+
 sub rank_game {
     my $self = shift;
     my $game = shift;
@@ -18,7 +26,7 @@ sub rank_game {
     my $ascensions = JuneTournament::Model::GameCollection->ascensions;
     $ascensions->order_by(column => $field);
 
-    return $ascensions->binary_search(sub { $game->$field <=> $_->$field });
+    return $ascensions->binary_search(sub { $self->compare_games($game, $_) });
 }
 
 1;
