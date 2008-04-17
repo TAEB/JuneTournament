@@ -70,6 +70,9 @@ use JuneTournament::Record schema {
     column conduct =>
         type is 'int',
         default is 0;
+    column conducts =>
+        type is 'int',
+        default is 0;
     column turns =>
         type is 'int',
         default is 0;
@@ -207,6 +210,7 @@ sub before_create {
     $args->{ascended}     = $args->{death} eq 'ascended';
     $args->{gender0}    ||= $args->{gender};
     $args->{alignment0} ||= $args->{alignment};
+    $args->{conducts}     = $self->demunge_conduct($args->{conduct});
 
     return 1;
 }
