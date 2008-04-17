@@ -12,7 +12,13 @@ ascensions only, was this game an ascension?)
 
 sub game_qualifies { 1 }
 
-=head2 incorporate_game Game -> Maybe[Rank]
+=head2 rank_game Game -> Maybe[Int]
+
+Rank this game. This should be overriden by child classes.
+
+=cut
+
+=head2 find_rank Game -> Maybe[Int]
 
 Add this game to the trophy's standings. This should not be overriden by child
 classes.
@@ -22,7 +28,7 @@ Returns C<undef> if the game does not qualify; otherwise, the rank of the game
 
 =cut
 
-sub incorporate_game {
+sub find_rank {
     my $self = shift;
     my $game = shift;
 
