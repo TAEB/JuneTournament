@@ -207,6 +207,14 @@ sub before_create {
     return 1;
 }
 
+sub after_create {
+    my $self = shift;
+
+    JuneTournament->incorporate_game_into_trophies($self);
+
+    return 1;
+}
+
 =head2 canonicalize_branch
 
 Turn numeric branch IDs into names.
