@@ -3,7 +3,7 @@ package JuneTournament;
 use strict;
 use warnings;
 
-our @trophies = qw/FastestAscension FirstAscension/;
+our @trophies = sort qw/FastestAscension FirstAscension QuickestAscension BestBehavedAscension LowestScoringAscension/;
 for (@trophies) {
     require "JuneTournament/Trophy/$_.pm";
 }
