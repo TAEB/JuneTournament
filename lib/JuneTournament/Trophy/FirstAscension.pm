@@ -15,7 +15,7 @@ sub rank_game {
     my $self = shift;
     my $game = shift;
 
-    my $ascensions = JuneTournament::GameCollection->ascensions;
+    my $ascensions = JuneTournament::Model::GameCollection->ascensions;
     $ascensions->order_by(column => 'endtime');
 
     return $ascensions->binary_search(sub { $game->endtime <=> $_->endtime });
