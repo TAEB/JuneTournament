@@ -207,6 +207,12 @@ sub before_create {
     return 1;
 }
 
+=head2 after_create
+
+Immediately incorporate this game into trophy calculations.
+
+=cut
+
 sub after_create {
     my $self = shift;
 

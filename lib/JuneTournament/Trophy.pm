@@ -12,10 +12,13 @@ ascensions only, was this game an ascension?)
 
 sub game_qualifies { 1 }
 
-=head2 incorporate_game Game
+=head2 incorporate_game Game -> Maybe[Rank]
 
 Add this game to the trophy's standings. This should not be overriden by child
 classes.
+
+Returns C<undef> if the game does not qualify; otherwise, the rank of the game
+(or of the player, for multi-game trophies)
 
 =cut
 
