@@ -285,6 +285,8 @@ sub canonicalize_conduct {
     my $self = shift;
     my $hex  = shift;
 
+    return $hex if !defined($hex);
+
     if ($hex =~ /x/) {
         return hex $hex;
     }
@@ -294,6 +296,8 @@ sub canonicalize_conduct {
 sub canonicalize_achievement {
     my $self = shift;
     my $hex  = shift;
+
+    return $hex if !defined($hex);
 
     if ($hex =~ /x/) {
         return hex $hex;
