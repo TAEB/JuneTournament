@@ -26,6 +26,8 @@ sub incorporate_game {
     my $self = shift;
     my $game = shift;
 
+    return undef unless $self->game_qualifies($game);
+    return $self->rank_game($game);
 }
 
 1;
