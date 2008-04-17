@@ -92,12 +92,14 @@ sub games {
     else {
         $games = JuneTournament::Model::GameCollection->new;
         $games->unlimit if @_ == 0;
-        while (my ($column, $value) = splice @_, 0, 2) {
+
+        while (@_) {
+            my $column = shift;
             if (ref($column) eq 'ARRAY') {
                 $games->limit(@$column);
-                unshift @_, $value;
             }
             else {
+                my $value = shift;
                 $games->limit(column => $column, value => $value);
             }
         }
