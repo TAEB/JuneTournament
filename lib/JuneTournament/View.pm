@@ -107,12 +107,15 @@ template '/region/trophy' => sub {
         trophy => $name,
     );
 
-    if (get 'inline') {
-        h4 { $name }
-        push @args, per_page => 5;
-    }
+    div {
+        if (get 'inline') {
+            attr { class is 'boxed' };
+            h4 { $name }
+            push @args, per_page => 5;
+        }
 
-    games(@args);
+        games(@args);
+    }
 };
 
 template '/region/trophies_summary' => sub {
@@ -136,36 +139,34 @@ template '/region/trophies_summary' => sub {
 template '/region/trophy_summary' => sub {
     my $trophy = get('name') || redirect('/errors/404');
 
-    div {
-        my $class = "JuneTournament::Trophy::$trophy";
-        my $standings = $class->standings;
-        my $game = $standings->first;
+    my $class = "JuneTournament::Trophy::$trophy";
+    my $standings = $class->standings;
+    my $game = $standings->first;
 
-        hyperlink(
-            label => $trophy,
-            onclick => {
-                replace_with => '/region/trophy',
-                arguments => {
-                    name   => $trophy,
-                    inline => 1,
-                }
-            },
-        );
-
-        outs " (";
-        if ($game) {
-            outs "current winner: ";
-            outs player($game->player);
-
-            if ($class->can('extra_info')) {
-                outs " with " . $class->extra_info($game);
+    hyperlink(
+        label => $trophy,
+        onclick => {
+            replace_with => '/region/trophy',
+            arguments => {
+                name   => $trophy,
+                inline => 1,
             }
+        },
+    );
+
+    outs " (";
+    if ($game) {
+        outs "current winner: ";
+        outs player($game->player);
+
+        if ($class->can('extra_info')) {
+            outs " with " . $class->extra_info($game);
         }
-        else {
-            outs "No winner yet! Get cracking!";
-        }
-        outs ")";
     }
+    else {
+        outs "No winner yet! Get cracking!";
+    }
+    outs ")";
 };
 
 sub games {
