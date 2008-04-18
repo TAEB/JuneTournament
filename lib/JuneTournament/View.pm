@@ -103,7 +103,16 @@ template '/region/scums' => sub {
 
 template '/region/trophy' => sub {
     my $name = get('name') || redirect('/errors/404');
-    games(trophy => $name);
+    my @args = (
+        trophy => $name,
+    );
+
+    if (get 'inline') {
+        h4 { $name }
+        push @args, per_page => 5;
+    }
+
+    games(@args);
 };
 
 template '/region/trophy_summary' => sub {
