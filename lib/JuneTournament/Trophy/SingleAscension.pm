@@ -2,6 +2,7 @@
 package JuneTournament::Trophy::SingleAscension;
 use strict;
 use warnings;
+use parent 'JuneTournament::Trophy';
 
 sub game_qualifies {
     my $self = shift;
