@@ -29,15 +29,12 @@ sub rank_game {
     my $game = shift;
 
     my $standings = $self->standings;
+    undef;
 }
 
 sub standings {
     my $self = shift;
     my $ascensions = JuneTournament::Model::GameCollection->ascensions;
-
-    # sort by $field, but break ties with endtime
-    $ascensions->order_by(column => 'endtime');
-    $ascensions->add_order_by($self->order_clause);
 
     return $ascensions;
 }

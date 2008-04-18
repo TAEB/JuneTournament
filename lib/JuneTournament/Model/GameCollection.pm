@@ -24,7 +24,7 @@ sub implicit_clauses {
     my $self = shift;
 
     $self->order_by(column => 'id');
-    $self->add_order_by(column => 'endtime');
+    $self->unshift_order_by(column => 'endtime');
 }
 
 sub ascensions {
