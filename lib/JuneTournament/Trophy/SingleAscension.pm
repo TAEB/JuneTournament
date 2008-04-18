@@ -29,10 +29,6 @@ sub rank_game {
     my $game = shift;
 
     my $standings = $self->standings;
-
-    return $standings->binary_search(sub {
-        $self->compare_games($game, $_);
-    });
 }
 
 sub standings {
