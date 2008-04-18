@@ -46,27 +46,36 @@ for my $trophy (qw/FastestAscension FirstAscension QuickestAscension BestBehaved
 
     my $changes = JuneTournament::Model::TrophyChangeCollection->new;
     $changes->limit(column => 'trophy', value => $trophy);
+    $changes->order_by(column => 'id');
+
     is($changes->count, @games, @games . " changes made to $trophy");
 
     my $first = <$changes>;
     ok($first->id, "$trophy: first change has an ID");
     is($first->rank, 1, "$trophy: first change made someone into a first place winner");
 
-    my @standings = $first;
+    my @standings = $first->game;
 
     while (my $change = <$changes>) {
-        @standings = sort { $trophy_class->compare_games($a->game, $b->game) }
-                     @standings, $change;
+        @standings = sort { $trophy_class->compare_games($a, $b) || $a->endtime <=> $b->endtime } @standings, $change->game;
 
         my $rank;
-        for (@standings) {
-            if ($_->id == $change->id) {
-                $rank = $_->rank;
+        for (0 .. $#standings) {
+            if ($standings[$_]->id == $change->game->id) {
+                $rank = $_ + 1;
                 last;
             }
         }
 
-        ok($rank, "got a rank ($rank)");
+        is($rank, $change->rank, "sorted rank is the same as change's rank");
+
+        for (my $i = 0; $i < @standings - 1; ++$i) {
+            ($a, $b) = @standings[$i, $i+1];
+            my $cmp = $trophy_class->compare_games($a, $b);
+            isnt($cmp, 1, "at least monotonically decreasing comparisons");
+            $cmp ||= $a->endtime <=> $b->endtime;
+            is($cmp, -1, "strictly decreasing comparisons (counting endtime)");
+        }
     }
 }
 
