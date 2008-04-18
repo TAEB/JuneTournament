@@ -110,7 +110,12 @@ template '/region/trophy' => sub {
     div {
         if (get 'inline') {
             attr { class is 'boxed' };
-            h4 { $name }
+            h4 {
+                hyperlink(
+                    label => $name,
+                    url => "/trophy/$name",
+                );
+            }
             push @args, per_page => 5;
         }
 
