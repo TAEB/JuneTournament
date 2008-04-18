@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 use Jifty::Test tests => 74;
 
-my @games = split /\n/, << ".";
+my @games = grep { !/^#/ } split /\n/, << ".";
 version=3.4.3:points=989206:deathdnum=7:deathlev=-5:maxlvl=53:hp=108:maxhp=125:deaths=0:deathdate=20080401:birthdate=20080330:uid=5:role=Rog:race=Hum:gender=Mal:align=Law:name=squidlarkin:death=ascended:conduct=0x480:turns=23377:achieve=0xfff:realtime=18217:starttime=1206887514:endtime=1207009643:gender0=Mal:align0=Cha
 version=3.4.3:points=1333048:deathdnum=7:deathlev=-5:maxlvl=51:hp=120:maxhp=147:deaths=0:deathdate=20080401:birthdate=20080331:uid=5:role=Cav:race=Dwa:gender=Fem:align=Law:name=healthy:death=ascended:conduct=0x700:turns=20704:achieve=0x7ff:realtime=14242:starttime=1206996077:endtime=1207010342:gender0=Fem:align0=Law
 version=3.4.3:points=1436332:deathdnum=7:deathlev=-5:maxlvl=50:hp=106:maxhp=231:deaths=0:deathdate=20080401:birthdate=20080401:uid=5:role=Val:race=Dwa:gender=Fem:align=Cha:name=healthy:death=ascended:conduct=0x500:turns=21124:achieve=0x7ff:realtime=13236:starttime=1207046410:endtime=1207090154:gender0=Fem:align0=Law
