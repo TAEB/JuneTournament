@@ -36,8 +36,8 @@ template '/' => page {
 };
 
 template '/player' => page {
-    my $name = get('name') || redirect('/errors/404');
-    my $player = JuneTournament->player($name) || redirect('/errors/404');
+    my $name = get('name') || redirect('/__jifty/error/404');
+    my $player = JuneTournament->player($name) || redirect('/__jifty/error/404');
     $name = $player->name;
 
     h1 { $name };
@@ -64,7 +64,7 @@ template '/player' => page {
 };
 
 template '/trophy' => page {
-    my $name = get('name') || redirect('/errors/404');
+    my $name = get('name') || redirect('/__jifty/error/404');
     h1 { $name };
 
     h3 { "Winners" };
@@ -102,7 +102,7 @@ template '/region/scums' => sub {
 };
 
 template '/region/trophy' => sub {
-    my $name = get('name') || redirect('/errors/404');
+    my $name = get('name') || redirect('/__jifty/error/404');
     my @args = (
         trophy => $name,
     );
@@ -137,7 +137,7 @@ template '/region/trophies_summary' => sub {
 };
 
 template '/region/trophy_summary' => sub {
-    my $trophy = get('name') || redirect('/errors/404');
+    my $trophy = get('name') || redirect('/__jifty/error/404');
 
     my $class = "JuneTournament::Trophy::$trophy";
     my $standings = $class->standings;
@@ -193,7 +193,7 @@ sub games {
 
                 if ($column eq 'trophy') {
                     my $class = "JuneTournament::Trophy::$value";
-                    $class->can('find_rank') || redirect('/errors/404');
+                    $class->can('find_rank') || redirect('/__jifty/error/404');
                     $games = $class->standings;
                     $extra_display = sub { $class->extra_display($_) }
                         if $class->can('extra_display');
