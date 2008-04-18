@@ -138,6 +138,7 @@ sub games {
     my $games;
     my $extra_display;
     my $position_is_important = 0;
+    my $per_page = 10;
 
     # if they pass in exactly one arg, it's a game object
     if (@_ == 1) {
@@ -163,6 +164,9 @@ sub games {
                         if $class->can('extra_display');
                     $position_is_important = 1;
                 }
+                elsif ($column eq 'per_page') {
+                    $per_page = $value;
+                }
                 else {
                     $games->limit(column => $column, value => $value);
                 }
@@ -174,7 +178,7 @@ sub games {
         unless $position_is_important;
 
     my $page = (get 'page') || 1;
-    $games->set_page_info(per_page => 10, current_page => $page);
+    $games->set_page_info(per_page => $per_page, current_page => $page);
     my $id = $games->pager->first;
 
     div {
