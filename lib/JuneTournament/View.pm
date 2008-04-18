@@ -19,7 +19,7 @@ template '/' => page {
 
     h3 { "Recent Ascensions" };
     render_region(
-        path => '/recent_ascensions',
+        path => '/region/recent_ascensions',
         name => 'recent_ascensions',
     );
 
@@ -58,7 +58,21 @@ template '/player' => page {
     );
 };
 
-template '/recent_ascensions' => sub {
+template '/trophy' => page {
+    my $name = get('name') || redirect('/errors/404');
+    h1 { $name };
+
+    h3 { "Winners" };
+    render_region(
+        path => '/region/trophy',
+        name => 'trophy_games',
+        arguments => {
+            name => $name,
+        },
+    );
+};
+
+template '/region/recent_ascensions' => sub {
     games(ascended => 1);
 };
 
