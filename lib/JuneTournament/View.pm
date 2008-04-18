@@ -25,7 +25,7 @@ template '/' => page {
 
     h3 { "Recent Games" };
     render_region(
-        path => '/recent_games',
+        path => '/region/recent_games',
         name => 'recent_games',
     );
 };
@@ -40,7 +40,7 @@ template '/player' => page {
     if ($player->ascensions->count) {
         h3 { "Recent Ascensions" };
         render_region(
-            path => '/player_ascs',
+            path => '/region/player_ascs',
             name => 'player_ascs',
             arguments => {
                 name => $name,
@@ -50,7 +50,7 @@ template '/player' => page {
 
     h3 { "Recent Games" };
     render_region(
-        path => '/player_games',
+        path => '/region/player_games',
         name => 'player_games',
         arguments => {
             name => $name,
@@ -76,19 +76,19 @@ template '/region/recent_ascensions' => sub {
     games(ascended => 1);
 };
 
-template '/recent_games' => sub {
+template '/region/recent_games' => sub {
     games();
 };
 
-template '/player_ascs' => sub {
+template '/region/player_ascs' => sub {
     games(ascended => 1, player => get('name'));
 };
 
-template '/player_games' => sub {
+template '/region/player_games' => sub {
     games(player => get('name'));
 };
 
-template '/scums' => sub {
+template '/region/scums' => sub {
     games(
         [column => 'score', value => '1000', operator => '<'],
         death => 'quit',
