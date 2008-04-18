@@ -27,7 +27,7 @@ sub binary_search {
     my $lo = 1;
     my $hi = $self->count;
 
-    while ($lo < $hi) {
+    while ($lo <= $hi) {
         my $i = ($hi + $lo) >> 1;
         $self->set_page_info(
             per_page     => 1,
