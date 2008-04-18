@@ -82,6 +82,11 @@ template '/scums' => sub {
     );
 };
 
+template '/region/trophy' => sub {
+    my $name = get('name') || redirect('/errors/404');
+    games(trophy => $name);
+};
+
 sub games {
     my $games;
     my $extra_display;
