@@ -5,6 +5,21 @@ use warnings;
 use parent 'JuneTournament::Collection';
 use Scalar::Util 'blessed';
 
+sub unshift_order_by {
+    my $self = shift;
+    return if $self->derived;
+    if (@_) {
+        my @args = @_;
+
+        unless ( UNIVERSAL::isa( $args[0], 'HASH' ) ) {
+            @args = {@args};
+        }
+        unshift @{ $self->{'order_by'} ||= [] }, @args;
+        $self->redo_search();
+    }
+    return ( $self->{'order_by'} || [] );
+}
+
 sub implicit_clauses {
     my $self = shift;
 
