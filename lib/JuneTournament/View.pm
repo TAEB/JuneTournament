@@ -137,6 +137,9 @@ sub games {
         }
     }
 
+    $games->order_by(column => 'id', order => 'desc')
+        unless $position_is_important;
+
     my $page = (get 'page') || 1;
     $games->set_page_info(per_page => 10, current_page => $page);
     my $id = $games->pager->first;
