@@ -114,11 +114,21 @@ for my $trophy (qw/FastestAscension FirstAscension QuickestAscension BestBehaved
 
     my $trophy_class = "JuneTournament::Trophy::$trophy";
     my $cmp = $trophy_class->compare_games($first->game, $second->game);
+    my $ok;
+
     if ($cmp <= 0) {
-        is($second->rank, 2, "$trophy: change made Thyra into the second place runner-up");
+        $ok = is($second->rank, 2, "$trophy: change made Thyra into the second place runner-up");
     }
     else {
-        is($second->rank, 1, "$trophy: change made Thyra into the new first-place winner");
+        $ok = is($second->rank, 1, "$trophy: change made Thyra into the new first-place winner");
+    }
+
+    if (!$ok) {
+        if ($trophy_class->can('rank_by')) {
+            my $field = $trophy_class->rank_by;
+            diag "1st game's $field: " . $first->game->$field;
+            diag "2nd game's $field: " . $second->game->$field;
+        }
     }
 }
 
