@@ -35,6 +35,7 @@ sub rank_game {
 sub standings {
     my $self = shift;
     my $ascensions = JuneTournament::Model::GameCollection->ascensions;
+    $ascensions->unshift_order_by($self->order_clause);
 
     return $ascensions;
 }
