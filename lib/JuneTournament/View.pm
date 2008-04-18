@@ -104,6 +104,7 @@ template '/region/trophy' => sub {
 sub games {
     my $games;
     my $extra_display;
+    my $position_is_important = 0;
 
     # if they pass in exactly one arg, it's a game object
     if (@_ == 1) {
@@ -127,6 +128,7 @@ sub games {
                     $games = $class->standings;
                     $extra_display = sub { $class->extra_display($_) }
                         if $class->can('extra_display');
+                    $position_is_important = 1;
                 }
                 else {
                     $games->limit(column => $column, value => $value);
@@ -137,12 +139,13 @@ sub games {
 
     my $page = (get 'page') || 1;
     $games->set_page_info(per_page => 10, current_page => $page);
+    my $id = $games->pager->first;
 
     div {
         ul {
             for (@$games) {
                 li {
-                    outs game($_);
+                    outs game($_, $position_is_important ? $id++ : undef);
                     outs ' - ' . $extra_display->() if $extra_display;
                 }
             }
@@ -153,9 +156,10 @@ sub games {
 
 sub game {
     my $game = shift;
+    my $id = defined($_[0]) ? shift : $game->id;
 
     span {
-        outs $game->id . '. ';
+        outs $id . '. ';
         hyperlink(
             label => $game->player->name,
             url => '/player/'.$game->player->name
