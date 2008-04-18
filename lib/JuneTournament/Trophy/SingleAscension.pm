@@ -16,7 +16,7 @@ sub compare_games {
     my ($a, $b) = @_;
     my $field = $self->rank_by;
 
-    $a->$field <=> $b->$field
+    return $a->$field <=> $b->$field || $a->endtime <=> $b->endtime;
 }
 
 sub order_clause {

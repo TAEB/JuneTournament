@@ -10,12 +10,12 @@ sub compare_games {
     my $self = shift;
     my ($a, $b) = @_;
 
-    $b->conducts <=> $a->conducts
+    return $b->conducts <=> $a->conducts || $a->endtime <=> $b->endtime;
 }
 
 sub order_clause {
     my $self = shift;
-    return (column => $self->rank_by, order => 'descending');
+    return (column => 'conducts', order => 'descending');
 }
 
 1;
