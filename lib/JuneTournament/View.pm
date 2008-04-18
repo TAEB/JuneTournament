@@ -124,7 +124,17 @@ template '/region/trophy_summary' => sub {
             my $game = $standings->first;
 
             li {
-                outs $trophy;
+                hyperlink(
+                    label => $trophy,
+                    onclick => {
+                        replace_with => '/region/trophy',
+                        arguments => {
+                            name   => $trophy,
+                            inline => 1,
+                        }
+                    },
+                );
+
                 outs " (";
                 if ($game) {
                     outs "current winner: ";
