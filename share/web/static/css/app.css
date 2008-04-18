@@ -4,3 +4,10 @@
     margin-bottom: 1em;
 }
 
+#jifty-wait-message {
+    color: #000000;
+    background: #FFFFFF;
+    font-size: 1em;
+    bottom: 10px;
+}
+
