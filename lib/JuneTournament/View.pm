@@ -117,13 +117,15 @@ sub games {
     }
 
     my $page = (get 'page') || 1;
-    $games->order_by(column => 'id', order => 'desc');
     $games->set_page_info(per_page => 10, current_page => $page);
 
     div {
         ul {
             for (@$games) {
-                li { game($_) }
+                li {
+                    outs game($_);
+                    outs ' - ' . $extra_display->() if $extra_display;
+                }
             }
         };
         paging($games);
