@@ -3,6 +3,8 @@ use strict;
 use warnings;
 
 use Text::XLogfile 'parse_xlogline';
+use Scalar::Util 'blessed';
+
 use Jifty::DBI::Schema;
 
 use JuneTournament::Record schema {
@@ -176,7 +178,8 @@ sub create_from_xlogline {
     my $args = $new->hash_from_xlogline($line);
     my @ret = $new->create(%$args);
 
-    $self->load($new->id);
+    $self->load($new->id)
+        if blessed $self;
 
     return @ret;
 }
