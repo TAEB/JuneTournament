@@ -15,7 +15,12 @@ template '/' => page {
             url => "http://sartak.org/code/index.cgi?r=JuneTournament;a=summary",
         );
         outs ".";
-    }
+    };
+
+    render_region(
+        path => '/region/trophy_summary',
+        name => 'trophy_summary',
+    );
 
     h3 { "Recent Ascensions" };
     render_region(
