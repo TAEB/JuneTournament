@@ -84,6 +84,7 @@ template '/scums' => sub {
 
 sub games {
     my $games;
+    my $extra_display;
 
     # if they pass in exactly one arg, it's a game object
     if (@_ == 1) {
@@ -100,7 +101,17 @@ sub games {
             }
             else {
                 my $value = shift;
-                $games->limit(column => $column, value => $value);
+
+                if ($column eq 'trophy') {
+                    my $class = "JuneTournament::Trophy::$value";
+                    $class->can('find_rank') || redirect('/errors/404');
+                    $games = $class->standings;
+                    $extra_display = sub { $class->extra_display($_) }
+                        if $class->can('extra_display');
+                }
+                else {
+                    $games->limit(column => $column, value => $value);
+                }
             }
         }
     }
