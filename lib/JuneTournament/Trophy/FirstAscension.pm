@@ -5,6 +5,7 @@ use warnings;
 use parent 'JuneTournament::Trophy::SingleAscension';
 
 sub rank_by { 'endtime' }
+sub extra_display { $_->endtime }
 
 1;
 

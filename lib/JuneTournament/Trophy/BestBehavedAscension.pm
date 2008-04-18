@@ -5,6 +5,13 @@ use warnings;
 use parent 'JuneTournament::Trophy::SingleAscension';
 
 sub rank_by { 'conducts' }
+sub extra_display {
+    my @conducts = $_->conducts;
+    if (@conducts) {
+        return @conducts . ': ' . join ' ', $_->conducts;
+    }
+    return '(none)';
+}
 
 sub compare_games {
     my $self = shift;
