@@ -5,6 +5,5 @@
 }
 
 #jifty-wait-message {
-    display: none;
+    height: 0;
 }
-
