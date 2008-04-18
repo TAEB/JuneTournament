@@ -19,16 +19,20 @@ sub compare_games {
     $a->$field <=> $b->$field
 }
 
+sub order_clause {
+    my $self = shift;
+    return (column => $self->rank_by);
+}
+
 sub rank_game {
     my $self = shift;
     my $game = shift;
-    my $field = $self->rank_by;
 
     my $ascensions = JuneTournament::Model::GameCollection->ascensions;
 
     # sort by $field, but break ties with endtime
     $ascensions->order_by(column => 'endtime');
-    $ascensions->add_order_by(column => $field);
+    $ascensions->add_order_by($self->order_clause);
 
     return $ascensions->binary_search(sub { $self->compare_games($game, $_) });
 }

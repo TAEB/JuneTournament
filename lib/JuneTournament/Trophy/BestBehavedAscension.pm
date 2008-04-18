@@ -13,5 +13,10 @@ sub compare_games {
     $b->conducts <=> $a->conducts
 }
 
+sub order_clause {
+    my $self = shift;
+    return (column => $self->rank_by, order => 'descending');
+}
+
 1;
 
