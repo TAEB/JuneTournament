@@ -28,13 +28,22 @@ sub rank_game {
     my $self = shift;
     my $game = shift;
 
+    my $standings = $self->standings;
+
+    return $standings->binary_search(sub {
+        $self->compare_games($game, $_);
+    });
+}
+
+sub standings {
+    my $self = shift;
     my $ascensions = JuneTournament::Model::GameCollection->ascensions;
 
     # sort by $field, but break ties with endtime
     $ascensions->order_by(column => 'endtime');
     $ascensions->add_order_by($self->order_clause);
 
-    return $ascensions->binary_search(sub { $self->compare_games($game, $_) });
+    return $ascensions;
 }
 
 1;
