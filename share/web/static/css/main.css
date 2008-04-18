@@ -1,7 +1,6 @@
 .boxed {
-    border: 1px solid #000000;
-    padding-top: 0;
-    margin-top: 1em;
+    border-left: 2px solid #000000;
+    padding-left: 2em;
     margin-bottom: 1em;
 }
 
