@@ -157,16 +157,21 @@ sub games {
     }
 }
 
+sub player {
+    my $player = shift;
+    hyperlink(
+        label => $player->name,
+        url   => '/player/' . $player->name,
+    );
+}
+
 sub game {
     my $game = shift;
     my $id = defined($_[0]) ? shift : $game->id;
 
     span {
         outs $id . '. ';
-        hyperlink(
-            label => $game->player->name,
-            url => '/player/'.$game->player->name
-        );
+        outs player($game->player);
         outs ' (' . $game->crga . '), ';
         outs $game->score . ' points, ';
 
