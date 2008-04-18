@@ -18,8 +18,8 @@ template '/' => page {
     };
 
     render_region(
-        path => '/region/trophy_summary',
-        name => 'trophy_summary',
+        path => '/region/trophies_summary',
+        name => 'trophies_summary',
     );
 
     h3 { "Recent Ascensions" };
@@ -115,41 +115,56 @@ template '/region/trophy' => sub {
     games(@args);
 };
 
-template '/region/trophy_summary' => sub {
+template '/region/trophies_summary' => sub {
     h3 { "Trophies" };
     ol {
         for my $trophy (JuneTournament->trophies) {
-            my $class = "JuneTournament::Trophy::$trophy";
-            my $standings = $class->standings;
-            my $game = $standings->first;
-
             li {
-                hyperlink(
-                    label => $trophy,
-                    onclick => {
-                        replace_with => '/region/trophy',
-                        arguments => {
-                            name   => $trophy,
-                            inline => 1,
-                        }
+                render_region(
+                    path => '/region/trophy_summary',
+                    name => "${trophy}_summary",
+                    arguments => {
+                        name => $trophy,
                     },
                 );
 
-                outs " (";
-                if ($game) {
-                    outs "current winner: ";
-                    outs player($game->player);
-
-                    if ($class->can('extra_info')) {
-                        outs " with " . $class->extra_info($game);
-                    }
-                }
-                else {
-                    outs "No winner yet! Get cracking!";
-                }
-                outs ")";
             }
         }
+    }
+};
+
+template '/region/trophy_summary' => sub {
+    my $trophy = get('name') || redirect('/errors/404');
+
+    div {
+        my $class = "JuneTournament::Trophy::$trophy";
+        my $standings = $class->standings;
+        my $game = $standings->first;
+
+        hyperlink(
+            label => $trophy,
+            onclick => {
+                replace_with => '/region/trophy',
+                arguments => {
+                    name   => $trophy,
+                    inline => 1,
+                }
+            },
+        );
+
+        outs " (";
+        if ($game) {
+            outs "current winner: ";
+            outs player($game->player);
+
+            if ($class->can('extra_info')) {
+                outs " with " . $class->extra_info($game);
+            }
+        }
+        else {
+            outs "No winner yet! Get cracking!";
+        }
+        outs ")";
     }
 };
 
