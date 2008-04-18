@@ -25,7 +25,10 @@ sub rank_game {
     my $field = $self->rank_by;
 
     my $ascensions = JuneTournament::Model::GameCollection->ascensions;
-    $ascensions->order_by(column => $field);
+
+    # sort by $field, but break ties with endtime
+    $ascensions->order_by(column => 'endtime');
+    $ascensions->add_order_by(column => $field);
 
     return $ascensions->binary_search(sub { $self->compare_games($game, $_) });
 }
