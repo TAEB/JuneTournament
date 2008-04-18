@@ -344,5 +344,7 @@ sub demunge_conduct {
     return @achieved;
 }
 
+sub conducts { shift->demunge_conduct }
+
 1;
 
