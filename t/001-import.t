@@ -98,37 +98,3 @@ $player->load_by_cols(name => 'mangotiger');
 is($player->games->count, 2, "two games by mangotiger");
 is($player->ascensions->count, 0, "no ascensions by mangotiger");
 
-for my $trophy (qw/FastestAscension FirstAscension QuickestAscension BestBehavedAscension LowestScoringAscension/) {
-    my $changes = JuneTournament::Model::TrophyChangeCollection->new;
-    $changes->limit(column => 'trophy', value => $trophy);
-    is($changes->count, 2, "two changes made to $trophy");
-
-    my $first = <$changes>;
-    ok($first->id, "$trophy: first change has an ID");
-    is($first->rank, 1, "$trophy: first change made someone into a first place winner");
-    is($first->game->player->name, 'squidlarkin', "$trophy: player of the first game");
-
-    my $second = <$changes>;
-    ok($second->id, "$trophy: second change has an ID");
-    is($second->game->player->name, 'Thyra', "$trophy: player of the second game");
-
-    my $trophy_class = "JuneTournament::Trophy::$trophy";
-    my $cmp = $trophy_class->compare_games($first->game, $second->game);
-    my $ok;
-
-    if ($cmp <= 0) {
-        $ok = is($second->rank, 2, "$trophy: change made Thyra into the second place runner-up");
-    }
-    else {
-        $ok = is($second->rank, 1, "$trophy: change made Thyra into the new first-place winner");
-    }
-
-    if (!$ok) {
-        if ($trophy_class->can('rank_by')) {
-            my $field = $trophy_class->rank_by;
-            diag "1st game's $field: " . $first->game->$field;
-            diag "2nd game's $field: " . $second->game->$field;
-        }
-    }
-}
-
