@@ -101,6 +101,34 @@ template '/region/trophy' => sub {
     games(trophy => $name);
 };
 
+template '/region/trophy_summary' => sub {
+    h3 { "Trophies" };
+    ol {
+        for my $trophy (JuneTournament->trophies) {
+            my $class = "JuneTournament::Trophy::$trophy";
+            my $standings = $class->standings;
+            my $game = $standings->first;
+
+            li {
+                outs $trophy;
+                outs " (";
+                if ($game) {
+                    outs "current winner: ";
+                    outs player($game->player);
+
+                    if ($class->can('extra_info')) {
+                        outs " with " . $class->extra_info($game);
+                    }
+                }
+                else {
+                    outs "No winner yet! Get cracking!";
+                }
+                outs ")";
+            }
+        }
+    }
+};
+
 sub games {
     my $games;
     my $extra_display;
