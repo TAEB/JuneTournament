@@ -67,7 +67,7 @@ template '/trophy' => page {
     my $name = get('name') || redirect('/__jifty/error/404');
     h1 { $name };
 
-    h3 { "Winners" };
+    h3 { "Standings" };
     render_region(
         path => '/region/trophy',
         name => 'trophy_games',
