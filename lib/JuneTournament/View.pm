@@ -160,7 +160,8 @@ template '/region/trophy_summary' => sub {
         outs player($game->player);
 
         if ($class->can('extra_display')) {
-            outs " with " . $class->extra_display($game);
+            local $_ = $game;
+            outs " with " . $class->extra_display;
         }
     }
     else {
