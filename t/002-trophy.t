@@ -67,14 +67,14 @@ for my $trophy (qw/FastestAscension FirstAscension QuickestAscension BestBehaved
             }
         }
 
-        is($rank, $change->rank, "sorted rank is the same as change's rank");
+        is($rank, $change->rank, "$trophy: sorted rank is the same as change's rank");
 
         for (my $i = 0; $i < @standings - 1; ++$i) {
             ($a, $b) = @standings[$i, $i+1];
             my $cmp = $trophy_class->compare_games($a, $b);
-            isnt($cmp, 1, "at least monotonically decreasing comparisons");
+            isnt($cmp, 1, "$trophy: at least monotonically decreasing comparisons");
             $cmp ||= $a->endtime <=> $b->endtime;
-            is($cmp, -1, "strictly decreasing comparisons (counting endtime)");
+            is($cmp, -1, "$trophy: strictly decreasing comparisons (counting endtime)");
         }
     }
 }
