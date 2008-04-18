@@ -210,7 +210,10 @@ sub before_create {
     $args->{ascended}     = $args->{death} eq 'ascended';
     $args->{gender0}    ||= $args->{gender};
     $args->{alignment0} ||= $args->{alignment};
-    $args->{conducts}     = $self->demunge_conduct($args->{conduct});
+
+    $args->{conducts}     = $args->{conduct}
+                          ? $self->demunge_conduct($args->{conduct})
+                          : 0;
 
     return 1;
 }
