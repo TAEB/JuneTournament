@@ -22,6 +22,12 @@ template '/' => page {
         name => 'trophies_summary',
     );
 
+    h3 { "Trophy Changes" };
+    render_region(
+        path => '/region/trophy_changes',
+        name => 'trophy_changes',
+    );
+
     h3 { "Recent Ascensions" };
     render_region(
         path => '/region/recent_ascensions',
@@ -168,6 +174,48 @@ template '/region/trophy_summary' => sub {
     }
     outs ")";
 };
+
+my @ranks = qw(zeroth? first second third 4th 5th);
+
+template '/region/trophy_changes' => sub {
+    my $page = (get 'page') || 1;
+
+    my $changes = JuneTournament::Model::TrophyChangeCollection->new;
+    $changes->limit(
+        column => 'rank',
+        value => 5,
+        operator => '<=',
+    );
+    $changes->order_by(
+        column => 'endtime',
+        order => 'descending',
+    );
+    $changes->set_page_info(
+        current_page => $page,
+        per_page => 10,
+    );
+
+    ul {
+        for my $change (@$changes) {
+            li {
+                change($change);
+            }
+        }
+    };
+
+    paging($changes);
+};
+
+sub change {
+    my $change = shift;
+    my $trophy_class = "JuneTournament::Trophy::" . $change->trophy;
+
+    outs player($change->game->player);
+    outs " is now " . $ranks[$change->rank] . " for " . $change->trophy;
+
+    $trophy_class->extra_display($change->game),
+    ago(time - $change->endtime, 1);
+}
 
 sub games {
     my $games;
