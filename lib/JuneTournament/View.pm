@@ -48,6 +48,17 @@ template '/player' => page {
 
     h1 { $name };
 
+    if ($player->trophy_changes->count) {
+        h3 { "Trophy Changes" };
+        render_region(
+            path => '/region/player_trophy_changes',
+            name => 'player_trophy_changes',
+            arguments => {
+                name => $name,
+            },
+        );
+    }
+
     if ($player->ascensions->count) {
         h3 { "Recent Ascensions" };
         render_region(
@@ -190,6 +201,28 @@ template '/region/trophy_changes' => sub {
         column => 'endtime',
         order => 'descending',
     );
+
+    ul {
+        for my $change (@$changes) {
+            li {
+                change($change);
+            }
+        }
+    };
+
+    paging($changes);
+};
+
+template '/region/player_trophy_changes' => sub {
+    my $page = (get 'page') || 1;
+    my $name = (get 'name') || redirect('/__jifty/error/404');
+
+    my $player = JuneTournament::Model::Player->new;
+    $player->load_by_cols(name => $name);
+    $player->id || redirect('/__jifty/error/404');
+
+    my $changes = $player->trophy_changes;
+    $changes->limit_to_rank(5);
     $changes->set_page_info(
         current_page => $page,
         per_page => 10,
