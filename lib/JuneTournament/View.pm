@@ -209,12 +209,30 @@ template '/region/trophy_changes' => sub {
 sub change {
     my $change = shift;
     my $trophy_class = "JuneTournament::Trophy::" . $change->trophy;
+    my $rank = $change->rank;
+    my $game = $change->game;
 
-    outs player($change->game->player);
-    outs " is now " . $ranks[$change->rank] . " for " . $change->trophy;
+    outs player($game->player);
+    outs " wins ";
 
-    $trophy_class->extra_display($change->game),
-    ago(time - $change->endtime, 1);
+    if ($rank == 1) {
+        strong { "first" }
+    }
+    else {
+        outs $ranks[$rank];
+    }
+
+    outs " for ";
+    trophy($change->trophy);
+    outs " with ";
+
+    hyperlink(
+        label  => $trophy_class->extra_display($game),
+        url    => $game->dumplog_url,
+        target => "_blank",
+    );
+
+    outs " (" . ago(time - $change->endtime, 1) . ")";
 }
 
 sub games {
