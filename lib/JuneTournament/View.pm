@@ -110,12 +110,7 @@ template '/region/trophy' => sub {
     div {
         if (get 'inline') {
             attr { class is 'boxed' };
-            h4 {
-                hyperlink(
-                    label => $name,
-                    url => "/trophy/$name",
-                );
-            }
+            h4 { trophy($name) }
             push @args, per_page => 5;
         }
 
@@ -304,6 +299,14 @@ sub paging {
     elsif ($multipage) {
         outs "next";
     }
+}
+
+sub trophy {
+    my $name = shift;
+    hyperlink(
+        label => $name,
+        url => "/trophy/$name",
+    );
 }
 
 template '/salutation' => sub {};
