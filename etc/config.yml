@@ -30,6 +30,7 @@ framework:
     - OnlineDocs: {}
     - CompressedCSSandJS: {}
     - AdminUI: {}
+    - SQLQueries: {}
 
   PubSub: 
     Backend: Memcached
