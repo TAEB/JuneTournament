@@ -165,8 +165,7 @@ template '/region/trophy_summary' => sub {
         outs player($game->player);
 
         if ($class->can('extra_display')) {
-            local $_ = $game;
-            outs " with " . $class->extra_display;
+            outs " with " . $class->extra_display($game);
         }
     }
     else {
@@ -201,7 +200,7 @@ sub games {
                     my $class = "JuneTournament::Trophy::$value";
                     $class->can('find_rank') || redirect('/__jifty/error/404');
                     $games = $class->standings;
-                    $extra_display = sub { $class->extra_display($_) }
+                    $extra_display = sub { $class->extra_display(shift) }
                         if $class->can('extra_display');
                     $position_is_important = 1;
                 }
@@ -227,7 +226,7 @@ sub games {
             for (@$games) {
                 li {
                     outs game($_, $position_is_important ? $id++ : undef);
-                    outs ' - ' . $extra_display->() if $extra_display;
+                    outs ' - ' . $extra_display->($_) if $extra_display;
                 }
             }
         };

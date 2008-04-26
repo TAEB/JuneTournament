@@ -6,9 +6,11 @@ use parent 'JuneTournament::Trophy::SingleAscension';
 
 sub rank_by { 'conducts' }
 sub extra_display {
-    my @conducts = $_->conducts;
+    my $self = shift;
+    my $game = shift;
+    my @conducts = $game->conducts;
     if (@conducts) {
-        return @conducts . ': ' . join ' ', $_->conducts;
+        return @conducts . ': ' . join ' ', $game->conducts;
     }
     return '(none)';
 }

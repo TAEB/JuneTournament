@@ -6,7 +6,7 @@ use parent 'JuneTournament::Trophy::SingleAscension';
 use Time::Duration;
 
 sub rank_by { 'realtime' }
-sub extra_display { concise(duration($_->realtime)) }
+sub extra_display { concise(duration($_[1]->realtime)) }
 
 1;
 

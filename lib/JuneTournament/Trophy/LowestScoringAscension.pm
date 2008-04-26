@@ -5,7 +5,7 @@ use warnings;
 use parent 'JuneTournament::Trophy::SingleAscension';
 
 sub rank_by { 'score' }
-sub extra_display { 'S:' . $_->score }
+sub extra_display { 'S:' . $_[1]->score }
 
 1;
 
