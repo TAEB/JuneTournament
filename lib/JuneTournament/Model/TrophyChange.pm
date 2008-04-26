@@ -16,6 +16,9 @@ use JuneTournament::Record schema {
     column rank =>
         type is 'int',
         is mandatory;
+    column time =>
+        type is 'int',
+        is mandatory;
 };
 
 =head2 player

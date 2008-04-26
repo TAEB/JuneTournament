@@ -34,6 +34,7 @@ sub incorporate_game_into_trophies {
                 game   => $game,
                 rank   => $rank,
                 trophy => $trophy,
+                time   => $game->endtime,
             );
         }
     }
