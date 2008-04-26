@@ -29,5 +29,19 @@ The player who played the game that made this trophy change
 
 sub player { shift->game->player }
 
+=head2 current_user_can
+
+Only root may update trophy changes. Any user may read trophy changes.
+
+=cut
+
+sub current_user_can {
+    my $self  = shift;
+    my $right = shift;
+
+    return 1 if $right eq 'read';
+    return $self->current_user->is_superuser;
+}
+
 1;
 
