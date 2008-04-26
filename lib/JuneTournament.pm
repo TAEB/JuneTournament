@@ -31,10 +31,10 @@ sub incorporate_game_into_trophies {
             my $change = JuneTournament::Model::TrophyChange->new(current_user => JuneTournament::CurrentUser->superuser);
 
             $change->create(
-                game   => $game,
-                rank   => $rank,
-                trophy => $trophy,
-                time   => $game->endtime,
+                game    => $game,
+                rank    => $rank,
+                trophy  => $trophy,
+                endtime => $game->endtime,
             );
         }
     }
