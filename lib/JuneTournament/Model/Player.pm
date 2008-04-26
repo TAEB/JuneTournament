@@ -49,5 +49,25 @@ Returns the ascensions by the player.
 
 sub ascensions { shift->games->limit_to_ascensions }
 
+=head2 trophy_changes [Trophy]
+
+Limit to a player's trophy changes, possibly to a given trophy.
+
+=cut
+
+sub trophy_changes {
+    my $self = shift;
+    my $name = shift;
+
+    my $changes = JuneTournament::Model::TrophyChangeCollection->new;
+    $changes->limit_to_player($self);
+    $changes->limit(
+        column => 'trophy',
+        value  => $name,
+    ) if $name;
+
+    return $changes;
+}
+
 1;
 
