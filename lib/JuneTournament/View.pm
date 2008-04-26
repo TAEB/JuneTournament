@@ -92,6 +92,15 @@ template '/trophy' => page {
             name => $name,
         },
     );
+
+    h3 { "Changes" };
+    render_region(
+        path => '/region/trophy_changes',
+        name => 'trophy_changes',
+        arguments => {
+            trophy => $name,
+        },
+    );
 };
 
 template '/region/recent_ascensions' => sub {
@@ -190,9 +199,16 @@ my @ranks = qw(zeroth? first second third 4th 5th);
 
 template '/region/trophy_changes' => sub {
     my $page = (get 'page') || 1;
+    my $trophy = get 'trophy';
 
     my $changes = JuneTournament::Model::TrophyChangeCollection->new;
     $changes->limit_to_rank(5);
+
+    $changes->limit(
+        column => 'trophy',
+        value => $trophy,
+    ) if $trophy;
+
     changes($changes, page => $page);
 };
 
