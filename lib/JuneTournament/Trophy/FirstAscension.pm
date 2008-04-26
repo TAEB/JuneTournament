@@ -5,7 +5,7 @@ use warnings;
 use parent 'JuneTournament::Trophy::SingleAscension';
 
 sub rank_by { 'endtime' }
-sub extra_display { gmtime($_[1]->endtime) }
+sub extra_display { scalar gmtime($_[1]->endtime) }
 
 1;
 
