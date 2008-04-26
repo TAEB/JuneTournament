@@ -15,10 +15,11 @@ use JuneTournament::Record schema {
 sub verify_token {
     my $self  = shift;
     my $token = shift;
-    my $name  = $self->name;
+    my $name  = shift || $self->name;
 
     my $rcfile = get "http://alt.org/nethack/userdata/$name/$name.nh343rc";
-    return index($rcfile, $token) > -1;
+    return undef if !defined($rcfile);
+    return index($rcfile, $token) > -1 ? 1 : 0;
 }
 
 =head2 current_user_can
@@ -36,6 +37,15 @@ sub current_user_can {
     return 1 if $self->current_user->is_superuser;
 
     return $self->__value('id') == $self->current_user->id;
+}
+
+sub validate_name {
+    my $self = shift;
+    my $name = shift;
+
+    return 0 if $name =~ /[^a-zA-Z0-9]/;
+    return 0 if length($name) > 10;
+    return 1;
 }
 
 1;
