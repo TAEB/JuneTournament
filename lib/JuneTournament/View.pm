@@ -265,8 +265,11 @@ sub change {
         outs $ranks[$rank];
     }
 
-    outs " for ";
-    trophy($change->trophy);
+    unless (get 'trophy') {
+        outs " for ";
+        trophy($change->trophy);
+    }
+
     outs " with ";
 
     hyperlink(
