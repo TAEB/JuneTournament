@@ -256,7 +256,7 @@ sub change {
     my $game = $change->game;
 
     outs player($game->player);
-    outs " wins ";
+    outs " earns ";
 
     if ($rank == 1) {
         strong { "first" }
