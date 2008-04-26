@@ -192,14 +192,10 @@ template '/region/trophy_changes' => sub {
     my $page = (get 'page') || 1;
 
     my $changes = JuneTournament::Model::TrophyChangeCollection->new;
-    $changes->limit(
-        column => 'rank',
-        value => 5,
-        operator => '<=',
-    );
-    $changes->order_by(
-        column => 'endtime',
-        order => 'descending',
+    $changes->limit_to_rank(5);
+    $changes->set_page_info(
+        current_page => $page,
+        per_page => 5,
     );
 
     ul {
@@ -225,7 +221,7 @@ template '/region/player_trophy_changes' => sub {
     $changes->limit_to_rank(5);
     $changes->set_page_info(
         current_page => $page,
-        per_page => 10,
+        per_page => 5,
     );
 
     ul {
