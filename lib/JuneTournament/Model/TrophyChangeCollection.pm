@@ -41,15 +41,21 @@ sub limit_to_player {
     my $name = shift;
     $name = $name->name if ref $name;
 
-    my $player = $self->join(
+    my $games = $self->join(
         type    => 'left',
         alias1  => 'main',  column1 => 'game',
         table2  => 'games', column2 => 'id',
     );
     $self->limit(
-        leftjoin => $player,
+        leftjoin => $games,
         column   => 'player',
         value    => $name,
+    );
+    $self->limit(
+        alias    => $games,
+        column   => 'player',
+        value    => 'NULL',
+        operator => 'IS NOT',
     );
 
     return $self;
