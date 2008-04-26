@@ -193,20 +193,7 @@ template '/region/trophy_changes' => sub {
 
     my $changes = JuneTournament::Model::TrophyChangeCollection->new;
     $changes->limit_to_rank(5);
-    $changes->set_page_info(
-        current_page => $page,
-        per_page => 5,
-    );
-
-    ul {
-        for my $change (@$changes) {
-            li {
-                change($change);
-            }
-        }
-    };
-
-    paging($changes);
+    changes($changes, page => $page);
 };
 
 template '/region/player_trophy_changes' => sub {
@@ -219,9 +206,20 @@ template '/region/player_trophy_changes' => sub {
 
     my $changes = $player->trophy_changes;
     $changes->limit_to_rank(5);
-    $changes->set_page_info(
-        current_page => $page,
+    changes($changes, page => $page);
+};
+
+sub changes {
+    my $changes = shift;
+    my %args    = (
+        page     => 1,
         per_page => 5,
+        @_,
+    );
+
+    $changes->set_page_info(
+        current_page => $args{page},
+        per_page => $args{per_page},
     );
 
     ul {
@@ -233,7 +231,7 @@ template '/region/player_trophy_changes' => sub {
     };
 
     paging($changes);
-};
+}
 
 sub change {
     my $change = shift;
