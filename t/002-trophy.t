@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-use Jifty::Test tests => 74;
+use Jifty::Test tests => 202;
 
 my @games = grep { !/^#/ } split /\n/, << ".";
 version=3.4.3:points=989206:deathdnum=7:deathlev=-5:maxlvl=53:hp=108:maxhp=125:deaths=0:deathdate=20080401:birthdate=20080330:uid=5:role=Rog:race=Hum:gender=Mal:align=Law:name=squidlarkin:death=ascended:conduct=0x480:turns=23377:achieve=0xfff:realtime=18217:starttime=1206887514:endtime=1207009643:gender0=Mal:align0=Cha
