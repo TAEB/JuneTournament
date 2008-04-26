@@ -29,7 +29,32 @@ sub rank_game {
     my $game = shift;
 
     my $standings = $self->standings;
-    undef;
+    my $lo = 0;
+    my $hi = $standings->count - 1;
+
+    while ($lo <= $hi) {
+        my $i = int(($lo + $hi) / 2);
+
+        $standings->set_page_info(
+            current_page => $i + 1,
+            per_page     => 1,
+        );
+        my $other = <$standings>;
+
+        if ($other->id == $game->id) {
+            return $i + 1;
+        }
+
+        my $cmp = $self->compare_games($game, $other);
+        if ($cmp > 0) {
+            $lo = $i + 1;
+        }
+        else {
+            $hi = $i - 1;
+        }
+    }
+
+    warn "Fell off rank_game looking for game #" . $game->id;
 }
 
 sub standings {
